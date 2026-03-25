@@ -204,9 +204,15 @@ a { color: inherit; text-decoration: none; }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.02fr 0.98fr;
-  gap: 34px;
+  grid-template-columns: 1.06fr 0.94fr;
+  gap: 38px;
   align-items: center;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .hero-copy h1 {
@@ -270,8 +276,9 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   border-radius: var(--radius-xl);
   overflow: hidden;
-  min-height: 660px;
-  padding: 24px;
+  min-height: 640px;
+  padding: 0;
+  isolation: isolate;
 }
 
 .hero-visual img {
@@ -286,22 +293,20 @@ a { color: inherit; text-decoration: none; }
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(8,26,52,0.06) 0%, rgba(8,26,52,0.34) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(8,26,52,0.12) 100%);
+  z-index: 1;
 }
 
-.hero-panel {
-  position: relative;
-  z-index: 2;
-  margin-top: auto;
-  max-width: 430px;
-  border-radius: 26px;
+.hero-summary {
+  margin-top: 30px;
+  border-radius: 28px;
   background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(255,255,255,0.96);
-  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.94);
+  padding: 26px;
   box-shadow: var(--shadow-md);
 }
 
-.hero-panel small {
+.hero-summary small {
   display: inline-block;
   margin-bottom: 10px;
   color: var(--blue);
@@ -310,7 +315,7 @@ a { color: inherit; text-decoration: none; }
   text-transform: uppercase;
 }
 
-.hero-panel h2 {
+.hero-summary h2 {
   margin: 0 0 10px;
   font-size: 26px;
   line-height: 1.08;
@@ -318,7 +323,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--navy);
 }
 
-.hero-panel p {
+.hero-summary p {
   margin: 0 0 16px;
   color: var(--muted);
   font-size: 15px;
@@ -401,9 +406,9 @@ h3 {
 
 .flow-wrap {
   display: grid;
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
   gap: 24px;
-  align-items: start;
+  align-items: stretch;
   margin-top: 34px;
 }
 
@@ -413,7 +418,39 @@ h3 {
 .dual-card,
 .cta-box {
   border-radius: 28px;
-  padding: 24px;
+  padding: 28px;
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+
+.visual-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef5fd 100%);
+  border: 1px solid rgba(37,99,235,0.08);
+  padding: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.visual-frame img {
+  width: 100%;
+  display: block;
+  border-radius: 18px;
+}
+
+.card-copy {
+  display: grid;
+  gap: 10px;
 }
 
 .flow-main img,
@@ -429,6 +466,7 @@ h3 {
 .flow-side {
   display: grid;
   gap: 18px;
+  align-content: start;
 }
 
 .side-visual {
@@ -450,6 +488,13 @@ h3 {
   grid-template-columns: repeat(3, 1fr);
   gap: 22px;
   margin-top: 30px;
+}
+
+.stack-card,
+.dual-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .stack-card h4,
@@ -553,6 +598,18 @@ footer {
   .visual-grid-2 {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .hero-visual {
+    min-height: 540px;
+  }
+}
+
+  .problems,
+  .metrics,
+  .visual-grid-3,
+  .visual-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 760px) {
@@ -606,9 +663,7 @@ footer {
             <span class="pill">Closed-loop logistics</span>
             <span class="pill">AI-driven usage logic</span>
           </div>
-        </div><div class="hero-visual glass">
-      <img src="assets/images/hygiene-roll.png" alt="HygieneRoll branded boxed supply presentation" />
-      <div class="hero-panel">
+        </div><div class="hero-summary glass">
         <small>Deployment Thesis</small>
         <h2>Not a domain listing. A launch-ready D2C operating layer.</h2>
         <p>
@@ -629,6 +684,10 @@ footer {
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="hero-visual glass">
+      <img src="assets/images/hero-lifestyle-image.jpg" alt="Tablet interface representing a modern home-centered digital hygiene supply experience" />
     </div>
   </div>
 </section>
@@ -692,17 +751,28 @@ footer {
 
     <div class="flow-wrap">
       <div class="flow-main glass">
-        <h4>System Visualization</h4>
-        <img src="assets/images/business-systems.jpg" alt="How Hygiene Roll works system flow" />
+        <span class="section-kicker">System Visualization</span>
+        <div class="visual-frame">
+          <img src="assets/images/business-systems.jpg" alt="How Hygiene Roll works system flow" />
+        </div>
+        <div class="card-copy">
+          <h4>Closed-loop supply logic</h4>
+          <p>
+            The system is presented as an operating cycle: plan setup, usage tracking, optimization, fulfillment,
+            and delivery feeding back into the next cycle.
+          </p>
+        </div>
       </div>
       <div class="flow-side glass">
-        <div class="side-visual">
+        <div class="side-visual visual-frame">
           <img src="assets/images/your-subscription.jpg" alt="Subscription management mobile interface" />
         </div>
-        <div>
-          <h4>Retention Control</h4>
+        <div class="card-copy">
+          <span class="section-kicker">Retention Control</span>
+          <h4>Consumer continuity mechanics</h4>
           <p class="copy-body">
-            The subscription interface demonstrates account continuity, next-shipment visibility, cadence adjustment, and plan control — core mechanics for retention and lifetime value.
+            The subscription interface demonstrates account continuity, next-shipment visibility, cadence adjustment,
+            and plan control — core mechanics for retention and lifetime value.
           </p>
         </div>
       </div>
@@ -720,32 +790,53 @@ footer {
 
     <div class="visual-grid-3">
       <article class="stack-card">
-        <img src="assets/images/infrastructure.jpg" alt="HygieneRoll feature banner" />
-        <h4 style="margin-top:16px;">Positioning Banner</h4>
-        <p>Category-native branding with immediate subscription and delivery signals.</p>
+        <div class="visual-frame">
+          <img src="assets/images/hygiene-roll.png" alt="HygieneRoll feature banner" />
+        </div>
+        <div class="card-copy">
+          <span class="section-kicker">Entry Surface</span>
+          <h4>Positioning Banner</h4>
+          <p>Category-native branding with immediate subscription and delivery signals.</p>
+        </div>
       </article>
       <article class="stack-card">
-        <img src="assets/images/build-your-plan.jpg" alt="Build your plan interface" />
-        <h4 style="margin-top:16px;">Plan Construction</h4>
-        <p>Household setup, product selection, and cadence configuration in a low-friction flow.</p>
+        <div class="visual-frame">
+          <img src="assets/images/build-your-plan.jpg" alt="Build your plan interface" />
+        </div>
+        <div class="card-copy">
+          <span class="section-kicker">Onboarding</span>
+          <h4>Plan Construction</h4>
+          <p>Household setup, product selection, and cadence configuration in a low-friction flow.</p>
+        </div>
       </article>
       <article class="stack-card">
-        <img src="assets/images/Delivery-cadence.jpg" alt="Delivery cadence configuration" />
-        <h4 style="margin-top:16px;">Cadence Control</h4>
-        <p>Consumers can alter timing and frequency as needs change, reducing churn and supply mismatch.</p>
+        <div class="visual-frame">
+          <img src="assets/images/delivery-cadences.jpg" alt="Delivery cadence configuration" />
+        </div>
+        <div class="card-copy">
+          <span class="section-kicker">Control Layer</span>
+          <h4>Cadence Control</h4>
+          <p>Consumers can alter timing and frequency as needs change, reducing churn and supply mismatch.</p>
+        </div>
       </article>
     </div>
 
     <div class="visual-grid-2">
       <article class="dual-card glass">
+        <span class="section-kicker">Catalog Layer</span>
         <h4>Product Selection Layer</h4>
-        <img src="assets/images/hygiene-essentials.jpg" alt="Product selection interface" />
-        <p class="caption" style="margin-top:14px;">Configurable essentials across paper, wipes, soap, and sanitizer create cross-sell and retention depth.</p>
+        <div class="visual-frame">
+          <img src="assets/images/hygiene-essentials.jpg" alt="Product selection interface" />
+        </div>
+        <p class="caption">Configurable essentials across paper, wipes, soap, and sanitizer create cross-sell and retention depth.</p>
       </article>
       <article class="dual-card glass">
+        <span class="section-kicker">Operations Layer</span>
         <h4>Autonomous Fulfillment Layer</h4>
-        <img src="assets/images/dashboard.jpg" alt="Dashboard interface" />
-        <p class="caption" style="margin-top:14px;">The dashboard anchors shipment visibility, schedule control, and account continuity.</p>
+        <div class="visual-frame">
+          <img src="assets/images/dashboard.jpg" alt="Dashboard interface" />
+        </div>
+        <p class="caption">The dashboard anchors shipment visibility, schedule control, and account continuity.</p>
       </article>
     </div>
   </div>
@@ -761,19 +852,34 @@ footer {
 
     <div class="visual-grid-3">
       <article class="stack-card">
-        <img src="assets/images/Delivery-Image.png" alt="Branded HygieneRoll box delivered at a blue door" />
-        <h4 style="margin-top:16px;">Delivery Proof</h4>
-        <p>Visible, branded doorstep delivery creates reliability and reinforces repeated purchase behavior.</p>
+        <div class="visual-frame">
+          <img src="assets/images/delivery-photo.png" alt="Branded HygieneRoll box delivered at a blue door" />
+        </div>
+        <div class="card-copy">
+          <span class="section-kicker">Physical Proof</span>
+          <h4>Delivery Proof</h4>
+          <p>Visible, branded doorstep delivery creates reliability and reinforces repeated purchase behavior.</p>
+        </div>
       </article>
       <article class="stack-card">
-        <img src="assets/images/deliverystatus.jpg" alt="Delivery tracking interface" />
-        <h4 style="margin-top:16px;">Shipment Visibility</h4>
-        <p>Transparent in-transit status reduces uncertainty and strengthens the operational quality of the subscription loop.</p>
+        <div class="visual-frame">
+          <img src="assets/images/deliverystatus.jpg" alt="Delivery tracking interface" />
+        </div>
+        <div class="card-copy">
+          <span class="section-kicker">Visibility</span>
+          <h4>Shipment Visibility</h4>
+          <p>Transparent in-transit status reduces uncertainty and strengthens the operational quality of the subscription loop.</p>
+        </div>
       </article>
       <article class="stack-card">
-        <img src="assets/images/daily-progress.jpg" alt="Lifestyle image showing mobile progress tracking" />
-        <h4 style="margin-top:16px;">Usage Intelligence</h4>
-        <p>Monitoring usage patterns over time gives the system a data layer that supports ongoing optimization.</p>
+        <div class="visual-frame">
+          <img src="assets/images/daily-progress.jpg" alt="Lifestyle image showing mobile progress tracking" />
+        </div>
+        <div class="card-copy">
+          <span class="section-kicker">Data Layer</span>
+          <h4>Usage Intelligence</h4>
+          <p>Monitoring usage patterns over time gives the system a data layer that supports ongoing optimization.</p>
+        </div>
       </article>
     </div>
   </div>
