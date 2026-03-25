@@ -1,588 +1,563 @@
-    <!DOCTYPE html><html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HygieneRoll.com — Deal-Ready D2C Hygiene Infrastructure</title>
-  <meta name="description" content="HygieneRoll.com is a deployable D2C hygiene infrastructure asset designed for subscription commerce, recurring revenue, operational speed, and autonomous supply management." />
+  <title>HygieneRoll.com — Strategic D2C Hygiene Infrastructure Asset</title>
+  <meta name="description" content="HygieneRoll.com is presented as a strategic digital asset: a deployable D2C hygiene infrastructure layer built around subscription logic, usage intelligence, cadence control, fulfillment visibility, and operational trust." />
   <meta name="robots" content="index, follow" />
-  <meta name="theme-color" content="#0b1630" />
-  <meta property="og:title" content="HygieneRoll.com — Deal-Ready D2C Hygiene Infrastructure" />
-  <meta property="og:description" content="A strategic digital asset built as a self-managed hygiene supply engine." />
+  <meta name="theme-color" content="#081a34" />
+  <meta property="og:title" content="HygieneRoll.com — Strategic D2C Hygiene Infrastructure Asset" />
+  <meta property="og:description" content="A premium acquisition narrative for HygieneRoll.com as a launch-ready D2C operating layer for hygiene brands." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/images/hygiene-roll.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="HygieneRoll.com — Deal-Ready D2C Hygiene Infrastructure" />
-  <meta name="twitter:description" content="A strategic digital asset built as a self-managed hygiene supply engine." />
+  <meta name="twitter:title" content="HygieneRoll.com — Strategic D2C Hygiene Infrastructure Asset" />
+  <meta name="twitter:description" content="A strategic digital asset presented as a deployable D2C hygiene infrastructure system." />
   <meta name="twitter:image" content="assets/images/hygiene-roll.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f3f8fe;
-      --surface: rgba(255, 255, 255, 0.86);
-      --surface-strong: #ffffff;
-      --line: rgba(15, 23, 42, 0.08);
-      --text: #0f172a;
-      --muted: #52607a;
-      --soft: #718198;
+      --bg: #eef4fb;
+      --bg-soft: #f6f9fd;
+      --surface: rgba(255,255,255,0.84);
+      --surface-strong: rgba(255,255,255,0.92);
+      --line: rgba(167, 188, 217, 0.28);
+      --line-strong: rgba(44, 91, 167, 0.18);
+      --text: #0b1f3b;
+      --muted: #61728b;
+      --blue: #2b68d8;
+      --blue-2: #7ab8ff;
       --navy: #081a34;
-      --blue: #2563eb;
-      --blue-2: #4da3ff;
-      --cyan: #65c7ff;
-      --mint: #88cfc2;
-      --radius-xl: 32px;
-      --radius-lg: 24px;
-      --radius-md: 18px;
-      --shadow-lg: 0 26px 70px rgba(8, 26, 52, 0.12);
-      --shadow-md: 0 16px 34px rgba(8, 26, 52, 0.08);
-      --max: 1240px;
+      --shadow: 0 20px 60px rgba(12, 30, 61, 0.08);
+      --shadow-soft: 0 12px 28px rgba(12, 30, 61, 0.06);
+      --radius-xl: 34px;
+      --radius-lg: 26px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+      --container: 1200px;
     }* { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(77, 163, 255, 0.18), transparent 28%),
-    radial-gradient(circle at top right, rgba(101, 199, 255, 0.12), transparent 26%),
-    linear-gradient(180deg, #f8fbff 0%, #f1f6fd 44%, #ecf3fb 100%);
+    radial-gradient(circle at top left, rgba(122, 184, 255, 0.2), transparent 32%),
+    radial-gradient(circle at 100% 40%, rgba(43, 104, 216, 0.08), transparent 28%),
+    linear-gradient(180deg, #f7fbff 0%, #edf3fa 44%, #eaf1f8 100%);
   color: var(--text);
-  line-height: 1.6;
+  overflow-x: hidden;
 }
 
-img { max-width: 100%; display: block; }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 18%, transparent 36%),
+    linear-gradient(180deg, rgba(255,255,255,0.18), transparent 25%);
+  opacity: 0.55;
+  mix-blend-mode: screen;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
 a { color: inherit; text-decoration: none; }
 
 .container {
-  width: min(calc(100% - 32px), var(--max));
+  width: min(calc(100% - 40px), var(--container));
   margin: 0 auto;
 }
 
-.section { padding: 96px 0; }
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.86);
-  border: 1px solid rgba(255,255,255,0.92);
-  box-shadow: 0 8px 24px rgba(8,26,52,0.05);
-  color: var(--blue);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-
-.section-title {
-  margin: 18px 0 14px;
-  font-size: clamp(34px, 4vw, 60px);
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  color: var(--navy);
-}
-
-.section-intro {
-  margin: 0;
-  max-width: 820px;
-  color: var(--muted);
-  font-size: clamp(18px, 2vw, 21px);
-}
-
-.topbar {
+.site-header {
   position: sticky;
   top: 0;
-  z-index: 100;
-  backdrop-filter: blur(14px);
-  background: rgba(248, 251, 255, 0.72);
-  border-bottom: 1px solid rgba(8, 26, 52, 0.06);
-}
-
-.topbar-inner {
-  min-height: 76px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-weight: 800;
-  font-size: 20px;
-  letter-spacing: -0.03em;
-  color: var(--navy);
-}
-
-.brand-mark {
-  width: 42px;
-  height: 42px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, var(--blue), var(--cyan));
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.22);
-}
-
-.brand-mark::before,
-.brand-mark::after {
-  content: "";
-  position: absolute;
-  background: rgba(255,255,255,0.92);
-  border-radius: 999px;
-  transform-origin: center;
-}
-
-.brand-mark::before {
-  width: 10px;
-  height: 30px;
-  left: 13px;
-  top: 5px;
-  transform: rotate(28deg);
-}
-
-.brand-mark::after {
-  width: 20px;
-  height: 10px;
-  left: 8px;
-  top: 22px;
-  transform: rotate(-28deg);
+  z-index: 30;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(247, 251, 255, 0.8);
+  border-bottom: 1px solid rgba(167, 188, 217, 0.16);
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 92px;
 }
 
-.nav a {
-  color: var(--muted);
-  font-weight: 600;
-  font-size: 15px;
-}
-
-.nav a:hover,
-.nav a:focus-visible { color: var(--navy); }
-
-.btn {
+.brand {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 54px;
-  padding: 0 22px;
-  border-radius: 16px;
-  font-size: 15px;
+  gap: 16px;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+}
+
+.brand img {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(66, 139, 245, 0.2);
+}
+
+.brand-mark {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+
+.brand-mark .dotcom { color: var(--blue); }
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.nav-link {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.nav-cta {
+  padding: 16px 26px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(167, 188, 217, 0.24);
+  box-shadow: var(--shadow-soft);
   font-weight: 700;
-  border: 1px solid transparent;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-  cursor: pointer;
-}
-
-.btn:hover,
-.btn:focus-visible { transform: translateY(-1px); }
-
-.btn-primary {
-  color: #fff;
-  background: linear-gradient(135deg, var(--blue), var(--blue-2));
-  box-shadow: 0 16px 40px rgba(37, 99, 235, 0.24);
-}
-
-.btn-secondary {
   color: var(--navy);
-  background: rgba(255,255,255,0.82);
-  border-color: var(--line);
 }
 
-.hero {
-  padding: 70px 0 40px;
+.section { padding: 84px 0; }
+.section-tight { padding-top: 54px; }
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.62);
+  border: 1px solid rgba(255,255,255,0.6);
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.section-head {
+  max-width: 860px;
+  margin-bottom: 34px;
+}
+
+h1, h2, h3, h4, p { margin: 0; }
+
+h1 {
+  font-size: clamp(56px, 7vw, 96px);
+  line-height: 0.92;
+  letter-spacing: -0.065em;
+  max-width: 12ch;
+}
+
+.section-title {
+  font-size: clamp(38px, 5vw, 62px);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+  max-width: 14ch;
+}
+
+.lead,
+.section-intro,
+.copy-body,
+.card-copy,
+.metric span,
+.problem p,
+.stack-copy,
+.wide-copy {
+  color: var(--muted);
+  font-size: 19px;
+  line-height: 1.74;
+  max-width: 68ch;
 }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.06fr 0.94fr;
-  gap: 38px;
-  align-items: center;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.glass {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .hero-copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.hero-copy h1 {
-  margin: 18px 0 18px;
-  font-size: clamp(44px, 6vw, 84px);
-  line-height: 0.95;
-  letter-spacing: -0.06em;
-  max-width: 800px;
-  color: var(--navy);
+  padding: 24px 0 0;
 }
 
 .hero-copy p {
-  margin: 0;
-  max-width: 760px;
-  font-size: clamp(18px, 2vw, 22px);
-  color: var(--muted);
+  margin-top: 24px;
+  max-width: 60ch;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-top: 30px;
+  margin-top: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 22px;
+  border-radius: 18px;
+  font-weight: 700;
+  font-size: 15px;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(43, 104, 216, 0.18);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2a67d8 0%, #4387ff 100%);
+  color: white;
+  box-shadow: 0 18px 34px rgba(43, 104, 216, 0.24);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.82);
+  color: var(--navy);
+  border: 1px solid rgba(167, 188, 217, 0.24);
 }
 
 .hero-pills {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 26px;
+  margin-top: 22px;
 }
 
 .pill {
-  min-height: 42px;
-  padding: 0 14px;
-  display: inline-flex;
-  align-items: center;
+  padding: 12px 16px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.78);
-  border: 1px solid rgba(8,26,52,0.08);
+  background: rgba(255,255,255,0.68);
+  border: 1px solid rgba(255,255,255,0.75);
   color: var(--muted);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(12, 30, 61, 0.04);
 }
 
-.glass,
-.panel,
-.metric,
-.feature,
-.visual-card,
-.problem-card,
-.cta-box,
-.stack-card {
-  background: var(--surface);
-  border: 1px solid rgba(255,255,255,0.88);
-  box-shadow: var(--shadow-lg);
-  backdrop-filter: blur(16px);
+.hero-visual-wrap {
+  display: grid;
+  gap: 20px;
 }
 
 .hero-visual {
-  position: relative;
-  border-radius: var(--radius-xl);
   overflow: hidden;
-  min-height: 640px;
-  padding: 0;
-  isolation: isolate;
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(225, 243, 255, 0.95), rgba(202, 229, 250, 0.68));
+  border: 1px solid rgba(255,255,255,0.72);
+  border-radius: 38px;
+  box-shadow: var(--shadow);
 }
 
 .hero-visual img {
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-visual::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(8,26,52,0.12) 100%);
-  z-index: 1;
+  height: auto;
+  border-radius: 28px;
+  object-fit: contain;
 }
 
 .hero-summary {
-  margin-top: 30px;
-  border-radius: 28px;
-  background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(255,255,255,0.94);
-  padding: 26px;
-  box-shadow: var(--shadow-md);
+  padding: 34px;
+  display: grid;
+  gap: 18px;
 }
 
 .hero-summary small {
-  display: inline-block;
-  margin-bottom: 10px;
   color: var(--blue);
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .hero-summary h2 {
-  margin: 0 0 10px;
-  font-size: 26px;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-  color: var(--navy);
-}
-
-.hero-summary p {
-  margin: 0 0 16px;
-  color: var(--muted);
-  font-size: 15px;
+  font-size: clamp(28px, 3.8vw, 46px);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  max-width: 14ch;
 }
 
 .mini-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 8px;
 }
 
 .mini-card {
-  background: #f7fbff;
-  border: 1px solid rgba(37,99,235,0.08);
-  border-radius: 16px;
-  padding: 14px 12px;
+  padding: 18px;
+  background: rgba(245, 248, 252, 0.9);
+  border-radius: 20px;
+  border: 1px solid rgba(167, 188, 217, 0.18);
 }
 
 .mini-card strong {
   display: block;
-  margin-bottom: 4px;
-  font-size: 18px;
-  letter-spacing: -0.03em;
-  color: var(--navy);
+  font-size: 15px;
+  margin-bottom: 8px;
 }
 
 .mini-card span {
-  display: block;
-  color: var(--soft);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.problems {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-  margin-top: 34px;
-}
-
-.problem-card,
-.feature,
-.metric,
-.stack-card {
-  border-radius: 24px;
-  padding: 28px;
-}
-
-.index {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(37,99,235,0.12);
-  color: var(--blue);
-  font-weight: 800;
-  margin-bottom: 16px;
-}
-
-h3 {
-  margin: 0 0 10px;
-  font-size: 22px;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--navy);
-}
-
-.problem-card p,
-.feature p,
-.metric p,
-.stack-card p,
-.caption,
-.copy-body {
-  margin: 0;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .flow-wrap {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 26px;
   align-items: stretch;
-  margin-top: 34px;
 }
 
 .flow-main,
 .flow-side,
 .wide-visual,
+.cta-box,
 .dual-card,
-.cta-box {
-  border-radius: 28px;
+.problem,
+.metric {
   padding: 28px;
 }
 
-.section-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.flow-main h4,
+.flow-side h4,
+.wide-visual h4,
+.stack-card h4,
+.dual-card h4 {
+  font-size: 14px;
   color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
 }
 
 .visual-frame {
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-  background: linear-gradient(180deg, #f8fbff 0%, #eef5fd 100%);
-  border: 1px solid rgba(37,99,235,0.08);
   padding: 14px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+  border-radius: 26px;
+  background: linear-gradient(180deg, rgba(235, 244, 255, 0.95), rgba(221, 236, 251, 0.74));
+  border: 1px solid rgba(255,255,255,0.76);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+  overflow: hidden;
 }
 
 .visual-frame img {
   width: 100%;
-  display: block;
+  height: auto;
+  object-fit: contain;
   border-radius: 18px;
 }
 
-.card-copy {
-  display: grid;
-  gap: 10px;
-}
-
-.flow-main img,
-.flow-side img,
-.wide-visual img,
-.dual-card img,
-.stack-card img,
-.side-visual img {
-  width: 100%;
-  border-radius: 22px;
-}
-
 .flow-side {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 18px;
+}
+
+.card-copy {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.72;
+  margin-top: 14px;
+}
+
+.visual-grid-3,
+.visual-grid-2,
+.problems,
+.metrics {
+  display: grid;
+  gap: 22px;
+}
+
+.visual-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.visual-grid-2,
+.problems,
+.metrics {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stack-card {
+  padding: 24px;
+  border-radius: 30px;
+  background: var(--surface-strong);
+  border: 1px solid rgba(255,255,255,0.74);
+  box-shadow: var(--shadow-soft);
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.stack-card .stack-copy,
+.dual-card .stack-copy {
+  font-size: 17px;
+  line-height: 1.72;
+  color: var(--muted);
+}
+
+.stack-kicker,
+.problem .index,
+.metric .index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  background: rgba(63, 121, 235, 0.1);
+  color: var(--blue);
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: -0.03em;
+}
+
+.stack-card h3,
+.dual-card h3,
+.problem h3,
+.metric strong {
+  font-size: clamp(22px, 2vw, 34px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.dual-card {
+  border-radius: 30px;
+  display: grid;
+  gap: 18px;
+}
+
+.wide-visual {
+  border-radius: 32px;
+  display: grid;
+  gap: 16px;
+}
+
+.problems .problem,
+.metrics .metric {
+  border-radius: 30px;
+}
+
+.problem {
   display: grid;
   gap: 18px;
   align-content: start;
 }
 
-.side-visual {
-  border-radius: 22px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.9);
-  border: 1px solid rgba(8,26,52,0.08);
-}
-
-.visual-grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-top: 30px;
-}
-
-.visual-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-  margin-top: 30px;
-}
-
-.stack-card,
-.dual-card {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.stack-card h4,
-.dual-card h4,
-.wide-visual h4,
-.flow-main h4,
-.flow-side h4,
-.cta-box h4 {
-  margin: 0 0 12px;
-  font-size: 18px;
-  letter-spacing: -0.02em;
-  color: var(--navy);
-}
-
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-top: 32px;
-}
-
-.metric strong {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 30px;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--navy);
+.problem p,
+.metric span {
+  font-size: 17px;
 }
 
 .acquire {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 26px;
-  align-items: stretch;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.metrics {
+  margin-top: 24px;
+}
+
+.metric {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+  min-height: 210px;
 }
 
 .cta-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 24px;
-}
-
-.price-box {
-  border-radius: 22px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-  border: 1px solid rgba(37,99,235,0.08);
-  padding: 22px;
-}
-
-.price-box ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  border-radius: 34px;
   display: grid;
-  gap: 12px;
-  color: var(--muted);
-  font-size: 15px;
-}
-
-.price-box li {
+  gap: 18px;
   position: relative;
-  padding-left: 24px;
+  overflow: hidden;
 }
 
-.price-box li::before {
-  content: "✓";
+.cta-box::before {
+  content: "";
   position: absolute;
-  left: 0;
-  top: 0;
-  color: #0f766e;
-  font-weight: 800;
+  inset: auto -20% -20% auto;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(122, 184, 255, 0.22), transparent 70%);
+  pointer-events: none;
 }
 
-footer {
-  padding: 36px 0 60px;
-  color: var(--soft);
+.cta-box h3 {
+  font-size: clamp(28px, 3vw, 44px);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  max-width: 12ch;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-box p {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.footer {
+  padding: 34px 0 52px;
+  color: var(--muted);
   font-size: 14px;
 }
 
 .footer-inner {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(8,26,52,0.08);
+  gap: 20px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(167, 188, 217, 0.18);
+  padding-top: 22px;
 }
 
 @media (max-width: 1120px) {
@@ -592,55 +567,43 @@ footer {
     grid-template-columns: 1fr;
   }
 
-  .problems,
-  .metrics,
-  .visual-grid-3,
-  .visual-grid-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .hero-visual {
-    min-height: 540px;
-  }
-}
-
-  .problems,
-  .metrics,
-  .visual-grid-3,
-  .visual-grid-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 760px) {
-  .section { padding: 74px 0; }
-  .nav { display: none; }
-  .hero { padding-top: 34px; }
-  .problems,
-  .metrics,
   .visual-grid-3,
   .visual-grid-2,
-  .mini-grid {
-    grid-template-columns: 1fr;
+  .problems,
+  .metrics {
+    grid-template-columns: 1fr 1fr;
   }
-  .hero-visual { min-height: 520px; }
-  .footer-inner { flex-direction: column; align-items: flex-start; }
 }
-  @media (max-width: 720px) {
-  body {
-    font-size: 16px;
-  }
 
+@media (max-width: 768px) {
   .container {
-    width: min(100% - 28px, 1180px);
+    width: min(calc(100% - 24px), var(--container));
   }
 
-  .section {
-    padding: 56px 0;
+  .nav {
+    min-height: 82px;
   }
 
-  .hero {
-    padding: 34px 0 22px;
+  .nav-link {
+    display: none;
+  }
+
+  .nav-cta {
+    padding: 14px 20px;
+  }
+
+  .section,
+  .section-tight {
+    padding: 52px 0;
+  }
+
+  h1 {
+    font-size: 48px;
+    line-height: 0.96;
+  }
+
+  .section-title {
+    font-size: 36px;
   }
 
   .hero-grid,
@@ -649,115 +612,49 @@ footer {
   .visual-grid-3,
   .visual-grid-2,
   .problems,
-  .metrics {
+  .metrics,
+  .mini-grid {
     grid-template-columns: 1fr !important;
-    gap: 18px !important;
   }
 
-  .hero-copy,
-  .hero-summary,
-  .hero-visual,
-  .flow-main,
-  .flow-side,
-  .stack-card,
-  .dual-card,
-  .wide-visual,
-  .cta-box,
-  .problem,
-  .metric {
-    min-width: 0;
-  }
-
-  h1 {
-    font-size: 44px;
-    line-height: 0.96;
-    letter-spacing: -0.05em;
-  }
-
-  .section-title {
-    font-size: 34px;
-    line-height: 1.02;
-    letter-spacing: -0.04em;
-  }
-
-  .hero-summary h2 {
-    font-size: 24px;
-    line-height: 1.08;
-  }
-
+  .hero-copy p,
+  .lead,
   .section-intro,
   .copy-body,
-  .card-copy p,
-  .caption,
+  .card-copy,
   .problem p,
   .metric span,
-  .hero-copy p,
-  .hero-summary p {
+  .stack-copy,
+  .wide-copy {
     font-size: 17px;
     line-height: 1.7;
   }
 
   .hero-summary,
-  .hero-visual,
   .flow-main,
   .flow-side,
   .wide-visual,
-  .dual-card,
   .cta-box,
+  .dual-card,
   .problem,
-  .metric {
-    padding: 22px !important;
-    border-radius: 24px !important;
-  }
-
+  .metric,
   .stack-card {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 22px !important;
-    border-radius: 24px !important;
-    background: rgba(255,255,255,0.86) !important;
-    border: 1px solid rgba(255,255,255,0.74) !important;
-    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08) !important;
-  }
-
-  .visual-frame {
-    padding: 10px !important;
-    border-radius: 20px !important;
-  }
-
-  .visual-frame img,
-  .stack-card img,
-  .dual-card img,
-  .flow-main img,
-  .flow-side img,
-  .wide-visual img {
-    width: 100% !important;
-    height: auto !important;
-    display: block;
-    object-fit: contain !important;
-    border-radius: 16px !important;
+    padding: 22px;
+    border-radius: 26px;
   }
 
   .hero-visual {
-    min-height: auto !important;
-    overflow: hidden;
+    padding: 10px;
+    border-radius: 28px;
   }
 
-  .hero-visual img {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    height: auto !important;
-    object-fit: contain !important;
-    display: block;
+  .visual-frame {
+    padding: 10px;
+    border-radius: 20px;
   }
 
-  .hero-visual::after {
-    display: none !important;
-  }
-
-  .hero-actions {
+  .hero-actions,
+  .cta-actions {
     flex-direction: column;
     align-items: stretch;
   }
@@ -765,56 +662,59 @@ footer {
   .btn,
   .pill {
     width: 100%;
-    justify-content: center;
   }
 
-  .mini-grid {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
+  .hero-pills {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }
 
-</style>
+  </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <a class="brand" href="#top" aria-label="HygieneRoll home">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span>HygieneRoll<span style="color: var(--blue);">.com</span></span>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="HygieneRoll.com home">
+        <img src="assets/images/IMG_20260324_182658.png" alt="HygieneRoll.com icon" />
+        <span class="brand-mark">
+          <span>HygieneRoll</span><span class="dotcom">.com</span>
+        </span>
       </a>
-      <nav class="nav" aria-label="Primary navigation">
-        <a href="#problem">Pressure</a>
-        <a href="#flow">Engine</a>
-        <a href="#interfaces">Interfaces</a>
-        <a href="#acquire">Acquisition</a>
-      </nav>
-      <a class="btn btn-secondary" href="mailto:agent@sohadot.com?subject=HygieneRoll.com%20Inquiry">Contact</a>
+      <div class="nav-actions">
+        <a class="nav-link" href="#flow">System</a>
+        <a class="nav-link" href="#interfaces">Interfaces</a>
+        <a class="nav-link" href="#acquire">Acquisition</a>
+        <a class="nav-cta" href="#acquire">Contact</a>
+      </div>
     </div>
   </header>  <main id="top">
-    <section class="hero">
+    <section class="section section-tight hero">
       <div class="container hero-grid">
         <div class="hero-copy">
           <span class="eyebrow">Strategic Digital Asset</span>
-          <h1>Own the Consumer Entry Point to Self-Managed Hygiene Supply.</h1>
-          <p>
-            HygieneRoll.com is positioned as a deployable D2C hygiene infrastructure asset — designed for recurring revenue,
-            direct consumer control, operational speed, and a closed-loop subscription model.
+          <h1>Own the consumer entry point to self-managed hygiene demand.</h1>
+          <p class="lead">
+            HygieneRoll.com is not being framed as a passive domain listing. It is being positioned as a premium deployment surface for direct-to-consumer hygiene infrastructure: subscription logic, cadence control, usage visibility, fulfillment orchestration, and retention continuity under a name with instant category clarity.
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#acquire">Discuss Acquisition</a>
-            <a class="btn btn-secondary" href="#flow">View Supply Engine</a>
+            <a class="btn btn-secondary" href="#flow">View Operating Logic</a>
           </div>
           <div class="hero-pills">
             <span class="pill">Subscription-first</span>
             <span class="pill">Closed-loop logistics</span>
             <span class="pill">AI-driven usage logic</span>
           </div>
-        </div><div class="hero-summary glass">
+        </div><div class="hero-visual-wrap">
+      <div class="hero-visual">
+        <img src="assets/images/hero-lifestyle-image.jpg" alt="Lifestyle product scene showing a premium digital hygiene system environment" />
+      </div>
+      <div class="hero-summary glass">
         <small>Deployment Thesis</small>
         <h2>Not a domain listing. A launch-ready D2C operating layer.</h2>
-        <p>
-          Designed to compress brand ramp-up, improve conversion clarity, and support autonomous subscription fulfillment.
+        <p class="copy-body">
+          Designed to compress brand ramp-up, improve conversion clarity, and support autonomous subscription fulfillment under a category-native name that is memorable, legible, and commercially deployable.
         </p>
         <div class="mini-grid">
           <div class="mini-card">
@@ -832,94 +732,47 @@ footer {
         </div>
       </div>
     </div>
-
-    <div class="hero-visual glass">
-      <img src="assets/images/hero-lifestyle-image.jpg" alt="Tablet interface representing a modern home-centered digital hygiene supply experience" />
-    </div>
-  </div>
-</section>
-
-<section class="section" id="problem">
-  <div class="container">
-    <span class="eyebrow">Market Pressure</span>
-    <h2 class="section-title">Why this category needs a direct operating layer.</h2>
-    <p class="section-intro">
-      Hygiene categories face converging pressure from commoditization, retail dependency, and digital execution friction.
-      The strategic value is no longer just in product presence — it is in owning the direct relationship, fulfillment cadence, and retention loop.
-    </p>
-
-    <div class="problems">
-      <article class="problem-card">
-        <div class="index">01</div>
-        <h3>Commoditization</h3>
-        <p>Repeated-purchase hygiene products increasingly compete on price, making descriptive clarity and direct consumer control more valuable.</p>
-      </article>
-      <article class="problem-card">
-        <div class="index">02</div>
-        <h3>Retail Dependency</h3>
-        <p>Traditional channels limit direct data ownership, retention, and supply cadence optimization.</p>
-      </article>
-      <article class="problem-card">
-        <div class="index">03</div>
-        <h3>Execution Delay</h3>
-        <p>Launching a new D2C identity from zero requires naming, trust, onboarding logic, and long brand build cycles.</p>
-      </article>
-    </div>
-
-    <div class="metrics">
-      <article class="metric">
-        <strong>D2C</strong>
-        <p>Direct consumer relationship layer</p>
-      </article>
-      <article class="metric">
-        <strong>LTV</strong>
-        <p>Higher recurring revenue potential</p>
-      </article>
-      <article class="metric">
-        <strong>CAC</strong>
-        <p>Reduced paid acquisition dependency</p>
-      </article>
-      <article class="metric">
-        <strong>Speed</strong>
-        <p>Operational launch advantage</p>
-      </article>
-    </div>
   </div>
 </section>
 
 <section class="section" id="flow">
   <div class="container">
-    <span class="eyebrow">Core Engine</span>
-    <h2 class="section-title">A self-managed hygiene supply engine.</h2>
-    <p class="section-intro">
-      HygieneRoll.com is not positioned as a passive storefront. It is framed as a closed-loop infrastructure model where plan selection,
-      usage tracking, optimization, logistics, and delivery reinforce each other continuously.
-    </p>
+    <div class="section-head">
+      <span class="eyebrow">Core Engine</span>
+      <h2 class="section-title">A self-managed hygiene supply system, not a generic storefront.</h2>
+      <p class="section-intro">
+        HygieneRoll.com is strongest when presented as a full conceptual operating loop: plan selection, usage tracking, optimization, logistics, and fulfillment reinforcing each other continuously. This transforms the asset from a descriptive domain into a strategic consumer infrastructure narrative.
+      </p>
+    </div>
 
     <div class="flow-wrap">
       <div class="flow-main glass">
-        <span class="section-kicker">System Visualization</span>
+        <h4>System Visualization</h4>
         <div class="visual-frame">
-          <img src="assets/images/business-systems.jpg" alt="How Hygiene Roll works system flow" />
+          <img src="assets/images/business-systems.jpg" alt="How HygieneRoll works system flow" />
         </div>
-        <div class="card-copy">
-          <h4>Closed-loop supply logic</h4>
-          <p>
-            The system is presented as an operating cycle: plan setup, usage tracking, optimization, fulfillment,
-            and delivery feeding back into the next cycle.
+        <p class="card-copy">
+          The system story is circular rather than linear: the user enters through a clean plan setup, the platform tracks usage behavior, the cadence adapts, fulfillment is triggered, and each completed delivery strengthens both retention and future demand intelligence.
+        </p>
+      </div>
+
+      <div class="flow-side glass">
+        <div>
+          <h4>Retention Control</h4>
+          <div class="visual-frame">
+            <img src="assets/images/your-subscription.jpg" alt="Subscription management mobile interface" />
+          </div>
+          <p class="card-copy">
+            Subscription management is where lifetime value becomes visible: next shipment, pause, skip, edit order, and cadence adjustment are not minor features. They are the operating levers that keep a D2C hygiene system commercially stable.
           </p>
         </div>
-      </div>
-      <div class="flow-side glass">
-        <div class="side-visual visual-frame">
-          <img src="assets/images/your-subscription.jpg" alt="Subscription management mobile interface" />
-        </div>
-        <div class="card-copy">
-          <span class="section-kicker">Retention Control</span>
-          <h4>Consumer continuity mechanics</h4>
-          <p class="copy-body">
-            The subscription interface demonstrates account continuity, next-shipment visibility, cadence adjustment,
-            and plan control — core mechanics for retention and lifetime value.
+        <div>
+          <h4>Data Layer</h4>
+          <div class="visual-frame">
+            <img src="assets/images/daily-progress.jpg" alt="Lifestyle image showing usage intelligence tracking" />
+          </div>
+          <p class="card-copy">
+            Usage intelligence makes the proposition smarter over time. Even as a conceptual layer, it signals that the asset can evolve from a transactional entry point into a demand-sensing system.
           </p>
         </div>
       </div>
@@ -929,61 +782,58 @@ footer {
 
 <section class="section" id="interfaces">
   <div class="container">
-    <span class="eyebrow">Interface Layer</span>
-    <h2 class="section-title">Consumer-facing interfaces built around recurring behavior.</h2>
-    <p class="section-intro">
-      The asset is supported by interface concepts that show how consumers would enter, configure, manage, and maintain their hygiene supply system over time.
-    </p>
+    <div class="section-head">
+      <span class="eyebrow">Interface Layer</span>
+      <h2 class="section-title">Consumer-facing interfaces built around recurring behavior.</h2>
+      <p class="section-intro">
+        These visuals show how the asset can be experienced as a premium operating environment rather than a one-page sales concept. The logic is not merely aesthetic. Each interface corresponds to a commercial function: onboarding, control, product depth, visibility, and continuity.
+      </p>
+    </div>
 
     <div class="visual-grid-3">
       <article class="stack-card">
+        <span class="stack-kicker">01</span>
         <div class="visual-frame">
-          <img src="assets/images/hygiene-roll.png" alt="HygieneRoll feature banner" />
+          <img src="assets/images/infrastructure.jpg" alt="HygieneRoll feature banner" />
         </div>
-        <div class="card-copy">
-          <span class="section-kicker">Entry Surface</span>
-          <h4>Positioning Banner</h4>
-          <p>Category-native branding with immediate subscription and delivery signals.</p>
-        </div>
+        <h3>Positioning Banner</h3>
+        <p class="stack-copy">Category-native branding with immediate subscription and delivery signals. It establishes the platform as a deployable consumer layer from the first fold.</p>
       </article>
+
       <article class="stack-card">
+        <span class="stack-kicker">02</span>
         <div class="visual-frame">
           <img src="assets/images/build-your-plan.jpg" alt="Build your plan interface" />
         </div>
-        <div class="card-copy">
-          <span class="section-kicker">Onboarding</span>
-          <h4>Plan Construction</h4>
-          <p>Household setup, product selection, and cadence configuration in a low-friction flow.</p>
-        </div>
+        <h3>Plan Construction</h3>
+        <p class="stack-copy">Household setup, product selection, and cadence configuration framed as a low-friction onboarding flow rather than a generic checkout page.</p>
       </article>
+
       <article class="stack-card">
+        <span class="stack-kicker">03</span>
         <div class="visual-frame">
           <img src="assets/images/delivery-cadences.jpg" alt="Delivery cadence configuration" />
         </div>
-        <div class="card-copy">
-          <span class="section-kicker">Control Layer</span>
-          <h4>Cadence Control</h4>
-          <p>Consumers can alter timing and frequency as needs change, reducing churn and supply mismatch.</p>
-        </div>
+        <h3>Cadence Control</h3>
+        <p class="stack-copy">Schedule flexibility reduces waste, stockout risk, and supply mismatch. It also positions the platform as adaptive instead of static.</p>
       </article>
     </div>
 
-    <div class="visual-grid-2">
+    <div class="visual-grid-2" style="margin-top:22px;">
       <article class="dual-card glass">
-        <span class="section-kicker">Catalog Layer</span>
-        <h4>Product Selection Layer</h4>
+        <h4>Catalog Layer</h4>
         <div class="visual-frame">
           <img src="assets/images/hygiene-essentials.jpg" alt="Product selection interface" />
         </div>
-        <p class="caption">Configurable essentials across paper, wipes, soap, and sanitizer create cross-sell and retention depth.</p>
+        <p class="stack-copy">Configurable essentials across paper, wipes, soap, and sanitizer create retention depth, cross-sell potential, and a broader operating scope than a single-product subscription.</p>
       </article>
+
       <article class="dual-card glass">
-        <span class="section-kicker">Operations Layer</span>
-        <h4>Autonomous Fulfillment Layer</h4>
+        <h4>Operations Layer</h4>
         <div class="visual-frame">
           <img src="assets/images/dashboard.jpg" alt="Dashboard interface" />
         </div>
-        <p class="caption">The dashboard anchors shipment visibility, schedule control, and account continuity.</p>
+        <p class="stack-copy">The dashboard anchors shipment visibility, schedule control, and account continuity. It is the operational center of the platform and the strongest proof that the system can be managed, not merely purchased.</p>
       </article>
     </div>
   </div>
@@ -991,105 +841,134 @@ footer {
 
 <section class="section">
   <div class="container">
-    <span class="eyebrow">Real-World Layer</span>
-    <h2 class="section-title">Where digital logic becomes physical delivery.</h2>
-    <p class="section-intro">
-      The value of the system is not only in configuration and tracking. It is in reliably translating demand signals into real-world delivery and consumer trust.
-    </p>
+    <div class="section-head">
+      <span class="eyebrow">Real-World Layer</span>
+      <h2 class="section-title">Where digital logic becomes physical trust.</h2>
+      <p class="section-intro">
+        The value of the system is not only in configuration and tracking. It is in translating demand signals into real-world delivery, visible reliability, and repeatable consumer trust. This is where the asset stops feeling speculative and starts feeling executable.
+      </p>
+    </div>
 
     <div class="visual-grid-3">
       <article class="stack-card">
+        <span class="stack-kicker">04</span>
         <div class="visual-frame">
           <img src="assets/images/delivery-photo.png" alt="Branded HygieneRoll box delivered at a blue door" />
         </div>
-        <div class="card-copy">
-          <span class="section-kicker">Physical Proof</span>
-          <h4>Delivery Proof</h4>
-          <p>Visible, branded doorstep delivery creates reliability and reinforces repeated purchase behavior.</p>
-        </div>
+        <h3>Delivery Proof</h3>
+        <p class="stack-copy">Visible branded doorstep delivery turns the concept into an operational signal. It demonstrates tangible trust, repeat purchase visibility, and household-level brand presence.</p>
       </article>
+
       <article class="stack-card">
+        <span class="stack-kicker">05</span>
         <div class="visual-frame">
           <img src="assets/images/deliverystatus.jpg" alt="Delivery tracking interface" />
         </div>
-        <div class="card-copy">
-          <span class="section-kicker">Visibility</span>
-          <h4>Shipment Visibility</h4>
-          <p>Transparent in-transit status reduces uncertainty and strengthens the operational quality of the subscription loop.</p>
-        </div>
+        <h3>Shipment Visibility</h3>
+        <p class="stack-copy">Transparent in-transit status reduces uncertainty and strengthens perceived operational quality. Reliability is part of the product, not an afterthought.</p>
       </article>
+
       <article class="stack-card">
+        <span class="stack-kicker">06</span>
         <div class="visual-frame">
-          <img src="assets/images/daily-progress.jpg" alt="Lifestyle image showing mobile progress tracking" />
+          <img src="assets/images/account-settings.jpg" alt="Account settings interface" />
         </div>
-        <div class="card-copy">
-          <span class="section-kicker">Data Layer</span>
-          <h4>Usage Intelligence</h4>
-          <p>Monitoring usage patterns over time gives the system a data layer that supports ongoing optimization.</p>
-        </div>
+        <h3>Account Continuity</h3>
+        <p class="stack-copy">Preferences, plan settings, notifications, and subscription management reinforce the continuity layer required for a durable D2C relationship.</p>
       </article>
     </div>
   </div>
 </section>
 
 <section class="section">
-  <div class="container acquire" id="acquire">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Market Tension</span>
+      <h2 class="section-title">Why this category rewards direct consumer control.</h2>
+      <p class="section-intro">
+        Hygiene demand is repeated, operational, and highly vulnerable to commoditization. That is precisely why a strong direct surface matters. The asset is valuable not because it is descriptive alone, but because descriptiveness can be translated into retention architecture.
+      </p>
+    </div>
+
+    <div class="problems">
+      <article class="problem glass">
+        <div class="index">01</div>
+        <h3>Commoditization</h3>
+        <p>Repeated-purchase hygiene products increasingly compete on price, making direct clarity and owned consumer entry points more strategically important.</p>
+      </article>
+
+      <article class="problem glass">
+        <div class="index">02</div>
+        <h3>Retail Dependence</h3>
+        <p>Traditional channels weaken direct data ownership, retention logic, schedule control, and household-level operational continuity.</p>
+      </article>
+
+      <article class="problem glass">
+        <div class="index">03</div>
+        <h3>Execution Delay</h3>
+        <p>Launching a new D2C identity from zero requires naming, trust formation, onboarding design, and extended brand ramp-up cycles.</p>
+      </article>
+
+      <article class="problem glass">
+        <div class="index">04</div>
+        <h3>Consumer Friction</h3>
+        <p>If replenishment, delivery cadence, and account control are unclear, repeated-purchase categories leak conversion and lifetime value.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="acquire">
+  <div class="container acquire">
     <div>
       <span class="eyebrow">Acquisition Thesis</span>
-      <h2 class="section-title">A strategic digital asset, not a passive domain.</h2>
+      <h2 class="section-title">A strategic digital asset, not a speculative listing.</h2>
       <p class="section-intro">
-        HygieneRoll.com is being presented as a deployable consumer infrastructure concept for operators pursuing D2C hygiene subscriptions,
-        autonomous fulfillment, and direct retention architecture.
+        HygieneRoll.com is being presented as an acquisition-ready operating narrative for D2C hygiene deployment. Its strength lies in how quickly it can support a story of recurring demand, cadence management, product expansion, fulfillment trust, and owned consumer continuity under one intuitive category-native surface.
       </p>
 
-      <div class="visual-grid-2" style="margin-top: 26px;">
-        <article class="feature">
+      <div class="metrics">
+        <article class="metric glass">
           <div class="index">R</div>
-          <h3>Revenue Layer</h3>
-          <p>Supports recurring subscription logic, predictable purchasing behavior, and lifetime-value expansion.</p>
+          <strong>Revenue Layer</strong>
+          <span>Supports recurring subscription behavior, reorder continuity, retention logic, and product extension across essentials.</span>
         </article>
-        <article class="feature">
+        <article class="metric glass">
           <div class="index">C</div>
-          <h3>Cost Layer</h3>
-          <p>Improves consumer clarity and reduces dependence on pure paid acquisition and retailer mediation.</p>
+          <strong>Cost Layer</strong>
+          <span>Reduces naming friction, shortens brand explanation cycles, and improves legibility at the point of acquisition and recall.</span>
+        </article>
+        <article class="metric glass">
+          <div class="index">S</div>
+          <strong>Speed Layer</strong>
+          <span>Acts as an immediate deployment surface for a D2C experiment, branded subscription portal, or retention-focused hygiene platform.</span>
+        </article>
+        <article class="metric glass">
+          <div class="index">T</div>
+          <strong>Trust Layer</strong>
+          <span>Combines descriptive clarity with operational visuals, making the concept feel executable, stable, and easier to underwrite internally.</span>
         </article>
       </div>
     </div>
 
     <aside class="cta-box glass">
-      <div>
-        <h4>Deal Position</h4>
-        <p class="copy-body">
-          This asset is suited for global hygiene brands, D2C operators, subscription-first concepts, and digital commerce teams building direct consumer infrastructure.
-        </p>
-      </div>
-
-      <div class="price-box">
-        <ul>
-          <li>Category-native naming with immediate consumer clarity</li>
-          <li>Visual operating model already structured</li>
-          <li>D2C subscription and logistics thesis clearly established</li>
-          <li>Suitable for acquisition, strategic deployment, or internal pilot positioning</li>
-        </ul>
-      </div>
-
-      <div class="hero-actions" style="margin-top: 0;">
-        <a class="btn btn-primary" href="mailto:agent@sohadot.com?subject=HygieneRoll.com%20Strategic%20Acquisition">Start Acquisition Discussion</a>
-        <a class="btn btn-secondary" href="https://www.sohadot.com" target="_blank" rel="noopener noreferrer">Visit Sohadot</a>
+      <span class="eyebrow">Premium Positioning</span>
+      <h3>Acquire the entry surface before the category narrative is owned by someone else.</h3>
+      <p class="copy-body">
+        The highest-value framing is not “buy this domain.” It is “secure a category-native D2C operating layer that can be activated quickly, integrated into a broader brand architecture, and used to support subscription-led consumer infrastructure.”
+      </p>
+      <div class="cta-actions">
+        <a class="btn btn-primary" href="mailto:agent@sohadot.com?subject=HygieneRoll.com%20Acquisition%20Inquiry">Contact for Acquisition</a>
+        <a class="btn btn-secondary" href="https://sohadot.com" target="_blank" rel="noopener">View Seller Profile</a>
       </div>
     </aside>
   </div>
 </section>
 
-  </main>  <footer>
+  </main>  <footer class="footer">
     <div class="container footer-inner">
-      <div>
-        <strong>HygieneRoll.com</strong><br />
-        Deal-ready D2C hygiene infrastructure presentation.
-      </div>
-      <div>
-        Contact: <a href="mailto:agent@sohadot.com">agent@sohadot.com</a> · <a href="https://www.sohadot.com" target="_blank" rel="noopener noreferrer">sohadot.com</a>
-      </div>
+      <span>HygieneRoll.com — Strategic D2C Hygiene Infrastructure Asset</span>
+      <span>Presented by Sohadot</span>
     </div>
   </footer>
 </body>
