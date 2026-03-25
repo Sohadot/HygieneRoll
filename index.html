@@ -95,47 +95,47 @@ a { color: inherit; text-decoration: none; }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px; /* مسافة مدروسة لمنع الالتصاق */
-  font-weight: 900;
-  /* نرفع الحجم ليكون متوافقاً مع كتلة اللوغو */
-  font-size: 38px; 
-  letter-spacing: -0.05em; /* تضييق المسافات يعطي طابع الـ Luxury Brands */
-  line-height: 0.8; /* يقلل الفراغ الوهمي فوق وتحت النص */
+  gap: 10px; /* مسافة معتدلة */
+  font-weight: 800; /* تقليل بسيط من 900 ليعطي مظهراً أنحف وأرقى */
+  font-size: 28px; /* هذا هو الحجم المثالي للـ Navbar الاحترافي */
+  letter-spacing: -0.02em; 
+  line-height: 1;
 }
 
 .brand-logo {
-  width: 54px;  /* تقليل طفيف جداً لخلق توازن بصري (Visual Weight) */
-  height: 54px;
+  /* اجعل اللوغو هو القائد بصرياً ولكن بحجم معقول */
+  width: 48px; 
+  height: 48px;
   object-fit: contain;
   display: block;
-  flex: 0 0 54px;
+  flex: 0 0 48px;
 }
 
 .brand-mark {
   display: flex;
   align-items: baseline;
-  /* إزالة gap هنا للسيطرة على المسافة يدوياً */
+  gap: 1px;
 }
 
 .brand-mark span:first-child {
   color: #0f2342;
-  /* تجنب جعل الخط ضخماً جداً بشكل يزعج العين */
 }
 
 .brand-mark .dotcom {
-  /* نستخدم نسبة مئوية ليبقى متناسقاً مهما كبرنا العنوان */
-  font-size: 0.55em; 
-  font-weight: 800;
-  color: #2563eb; /* أو var(--blue) */
-  margin-left: 1px;
-  position: relative;
-  top: -2px; /* رفعه قليلاً ليتناسب مع خط الارتكاز */
+  /* اجعل الـ .com تبدو كإضافة أنيقة وليست جزءاً ضخماً من الكلمة */
+  font-size: 14px; 
+  font-weight: 600;
+  color: #2563eb; 
+  margin-left: 2px;
+  opacity: 0.9;
 }
 
-.nav-link {
-  color: var(--muted);
-  font-weight: 600;
-  font-size: 14px;
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%; /* إضافة هوامش جانبية تمنع التصاق العناصر بالحواف */
+  min-height: 80px; /* تقليل الارتفاع قليلاً ليظهر الشريط "مضغوطاً" ونظيفاً */
 }
 
 .nav-cta {
