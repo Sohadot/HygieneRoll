@@ -95,37 +95,41 @@ a { color: inherit; text-decoration: none; }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px; /* تقليل المسافة */
+  gap: 12px; /* مسافة مدروسة لمنع الالتصاق */
   font-weight: 900;
-  font-size: 26px; /* تكبير واضح */
-  letter-spacing: -0.03em;
-  line-height: 1;
+  /* نرفع الحجم ليكون متوافقاً مع كتلة اللوغو */
+  font-size: 38px; 
+  letter-spacing: -0.05em; /* تضييق المسافات يعطي طابع الـ Luxury Brands */
+  line-height: 0.8; /* يقلل الفراغ الوهمي فوق وتحت النص */
 }
 
 .brand-logo {
-  width: 64px;
-  height: 64px;
+  width: 54px;  /* تقليل طفيف جداً لخلق توازن بصري (Visual Weight) */
+  height: 54px;
   object-fit: contain;
   display: block;
-  flex: 0 0 64px;
+  flex: 0 0 54px;
 }
 
 .brand-mark {
-.brand-mark {
   display: flex;
   align-items: baseline;
-  gap: 2px;
+  /* إزالة gap هنا للسيطرة على المسافة يدوياً */
 }
 
 .brand-mark span:first-child {
   color: #0f2342;
+  /* تجنب جعل الخط ضخماً جداً بشكل يزعج العين */
 }
 
 .brand-mark .dotcom {
-  font-size: 18px; /* أصغر من الاسم */
-  font-weight: 700;
-  color: var(--blue);
-  margin-left: 2px;
+  /* نستخدم نسبة مئوية ليبقى متناسقاً مهما كبرنا العنوان */
+  font-size: 0.55em; 
+  font-weight: 800;
+  color: #2563eb; /* أو var(--blue) */
+  margin-left: 1px;
+  position: relative;
+  top: -2px; /* رفعه قليلاً ليتناسب مع خط الارتكاز */
 }
 
 .nav-link {
