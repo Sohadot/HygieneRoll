@@ -116,37 +116,74 @@ a { color: inherit; text-decoration: none; }
   align-items: baseline;
   gap: 1px;
 }
-
-.brand-mark span:first-child {
-  color: #0f2342;
-}
-
-.brand-mark .dotcom {
-  /* اجعل الـ .com تبدو كإضافة أنيقة وليست جزءاً ضخماً من الكلمة */
-  font-size: 14px; 
-  font-weight: 600;
-  color: #2563eb; 
-  margin-left: 2px;
-  opacity: 0.9;
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(248, 251, 255, 0.94);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 5%; /* إضافة هوامش جانبية تمنع التصاق العناصر بالحواف */
-  min-height: 80px; /* تقليل الارتفاع قليلاً ليظهر الشريط "مضغوطاً" ونظيفاً */
+  padding: 0 24px; /* مساحة جانبية لعدم الالتصاق بالحواف */
+  height: 80px; /* تحديد ارتفاع ثابت يضمن النظام */
+}
+
+.brand {
+  display: flex;
+  align-items: center; /* توسيط عمودي مثالي */
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-logo {
+  height: 40px; /* حجم معتدل واحترافي */
+  width: auto;
+  display: block;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: baseline; /* يضمن أن .com تجلس على نفس سطر النص */
+  font-family: sans-serif; /* تأكد من استخدام خط عريض */
+}
+
+.brand-mark span:first-child {
+  font-size: 28px; /* حجم كبير بما يكفي لينافس اللوغو */
+  font-weight: 800;
+  color: #0f2342;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.brand-mark .dotcom {
+  font-size: 16px; /* أصغر بوضوح ليعطي طابع التقنية */
+  font-weight: 700;
+  color: #2563eb;
+  margin-left: 2px;
 }
 
 .nav-cta {
-  padding: 16px 26px;
-  border-radius: 22px;
-  background: rgba(255,255,255,0.88);
-  border: 1px solid rgba(167, 188, 217, 0.24);
-  box-shadow: var(--shadow-soft);
-  font-weight: 700;
-  color: var(--navy);
-}
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 154px;
+  height: 64px;
+  padding: 0 28px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  font-weight: 800;
+  font-size: 18px;
+  color: #0f2342;
+  text-decoration: none;
+  }
 
 .section { padding: 84px 0; }
 .section-tight { padding-top: 54px; }
