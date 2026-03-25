@@ -95,10 +95,11 @@ a { color: inherit; text-decoration: none; }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px; /* تقليل المسافة */
   font-weight: 900;
-  font-size: 20px;
-  letter-spacing: -0.04em;
+  font-size: 26px; /* تكبير واضح */
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 .brand-logo {
@@ -110,17 +111,21 @@ a { color: inherit; text-decoration: none; }
 }
 
 .brand-mark {
+.brand-mark {
   display: flex;
   align-items: baseline;
   gap: 2px;
 }
 
-.brand-mark .dotcom { color: var(--blue); }
+.brand-mark span:first-child {
+  color: #0f2342;
+}
 
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.brand-mark .dotcom {
+  font-size: 18px; /* أصغر من الاسم */
+  font-weight: 700;
+  color: var(--blue);
+  margin-left: 2px;
 }
 
 .nav-link {
