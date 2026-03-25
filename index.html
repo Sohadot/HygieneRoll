@@ -101,11 +101,21 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -0.04em;
 }
 
-.brand img {
+.brand-badge {
   width: 54px;
   height: 54px;
   border-radius: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7ec2ff 0%, #4f98f5 100%);
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.06em;
   box-shadow: 0 10px 28px rgba(66, 139, 245, 0.2);
+  flex: 0 0 54px;
+  overflow: hidden;
 }
 
 .brand-mark {
@@ -676,7 +686,7 @@ h1 {
   <header class="site-header">
     <div class="container nav">
       <a href="#top" class="brand" aria-label="HygieneRoll.com home">
-        <img src="assets/images/IMG_20260324_182658.png" alt="HygieneRoll.com icon" />
+        <span class="brand-badge" aria-hidden="true">H</span>
         <span class="brand-mark">
           <span>HygieneRoll</span><span class="dotcom">.com</span>
         </span>
@@ -794,7 +804,7 @@ h1 {
       <article class="stack-card">
         <span class="stack-kicker">01</span>
         <div class="visual-frame">
-          <img src="assets/images/infrastructure.jpg" alt="HygieneRoll feature banner" />
+          <img src="assets/images/hygiene-roll.png" alt="HygieneRoll positioning banner" />
         </div>
         <h3>Positioning Banner</h3>
         <p class="stack-copy">Category-native branding with immediate subscription and delivery signals. It establishes the platform as a deployable consumer layer from the first fold.</p>
