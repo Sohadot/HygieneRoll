@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en">
+    <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -626,8 +626,155 @@ footer {
   .hero-visual { min-height: 520px; }
   .footer-inner { flex-direction: column; align-items: flex-start; }
 }
+  @media (max-width: 720px) {
+  body {
+    font-size: 16px;
+  }
 
-  </style>
+  .container {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .section {
+    padding: 56px 0;
+  }
+
+  .hero {
+    padding: 34px 0 22px;
+  }
+
+  .hero-grid,
+  .flow-wrap,
+  .acquire,
+  .visual-grid-3,
+  .visual-grid-2,
+  .problems,
+  .metrics {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .hero-copy,
+  .hero-summary,
+  .hero-visual,
+  .flow-main,
+  .flow-side,
+  .stack-card,
+  .dual-card,
+  .wide-visual,
+  .cta-box,
+  .problem,
+  .metric {
+    min-width: 0;
+  }
+
+  h1 {
+    font-size: 44px;
+    line-height: 0.96;
+    letter-spacing: -0.05em;
+  }
+
+  .section-title {
+    font-size: 34px;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+  }
+
+  .hero-summary h2 {
+    font-size: 24px;
+    line-height: 1.08;
+  }
+
+  .section-intro,
+  .copy-body,
+  .card-copy p,
+  .caption,
+  .problem p,
+  .metric span,
+  .hero-copy p,
+  .hero-summary p {
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .hero-summary,
+  .hero-visual,
+  .flow-main,
+  .flow-side,
+  .wide-visual,
+  .dual-card,
+  .cta-box,
+  .problem,
+  .metric {
+    padding: 22px !important;
+    border-radius: 24px !important;
+  }
+
+  .stack-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 22px !important;
+    border-radius: 24px !important;
+    background: rgba(255,255,255,0.86) !important;
+    border: 1px solid rgba(255,255,255,0.74) !important;
+    box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08) !important;
+  }
+
+  .visual-frame {
+    padding: 10px !important;
+    border-radius: 20px !important;
+  }
+
+  .visual-frame img,
+  .stack-card img,
+  .dual-card img,
+  .flow-main img,
+  .flow-side img,
+  .wide-visual img {
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+    object-fit: contain !important;
+    border-radius: 16px !important;
+  }
+
+  .hero-visual {
+    min-height: auto !important;
+    overflow: hidden;
+  }
+
+  .hero-visual img {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block;
+  }
+
+  .hero-visual::after {
+    display: none !important;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn,
+  .pill {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .mini-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+</style>
 </head>
 <body>
   <header class="topbar">
