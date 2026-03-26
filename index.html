@@ -358,29 +358,41 @@ h1 {
   max-width: 68ch;
 }
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-  gap: 28px;
-  align-items: start;
+/* =========================
+   HERO — CLEAN FINAL VERSION
+   ========================= */
+
+.hero {
+  padding: 56px 0 28px;
 }
 
-.glass {
-  background: var(--surface);
-  border: 1px solid rgba(255,255,255,0.7);
-  box-shadow: var(--shadow);
-  border-radius: var(--radius-xl);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 48px;
 }
 
 .hero-copy {
-  padding: 24px 0 0;
+  min-width: 0;
 }
 
-.hero-copy p {
-  margin-top: 24px;
-  max-width: 60ch;
+.hero-copy h1 {
+  margin: 0 0 18px;
+  font-size: clamp(2.5rem, 5vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  font-weight: 800;
+  color: #0f2342;
+  max-width: 12ch;
+}
+
+.hero-copy .lead {
+  margin: 0;
+  font-size: 1.12rem;
+  line-height: 1.72;
+  color: #5c6b80;
+  max-width: 62ch;
 }
 
 .hero-actions {
@@ -395,67 +407,95 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 16px 22px;
+  min-height: 56px;
+  padding: 0 24px;
   border-radius: 18px;
   font-weight: 700;
   font-size: 15px;
-  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+  text-decoration: none;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
 .btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(43, 104, 216, 0.18);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #2a67d8 0%, #4387ff 100%);
-  color: white;
-  box-shadow: 0 18px 34px rgba(43, 104, 216, 0.24);
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
 }
 
 .btn-secondary {
-  background: rgba(255,255,255,0.82);
-  color: var(--navy);
-  border: 1px solid rgba(167, 188, 217, 0.24);
-}
-
-.hero-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 22px;
-}
-
-.pill {
-  padding: 12px 16px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.68);
-  border: 1px solid rgba(255,255,255,0.75);
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 700;
-  box-shadow: 0 8px 20px rgba(12, 30, 61, 0.04);
-}
-
-.hero-visual-wrap {
-  display: grid;
-  gap: 20px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #0f2342;
+  border: 1px solid rgba(15, 35, 66, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
 }
 
 .hero-visual {
-  overflow: hidden;
-  padding: 16px;
-  background: linear-gradient(180deg, rgba(225, 243, 255, 0.95), rgba(202, 229, 250, 0.68));
-  border: 1px solid rgba(255,255,255,0.72);
-  border-radius: 38px;
-  box-shadow: var(--shadow);
+  min-width: 0;
 }
 
 .hero-visual img {
   width: 100%;
   height: auto;
-  border-radius: 28px;
+  display: block;
+  border-radius: 24px;
   object-fit: contain;
+  box-shadow: 0 20px 60px rgba(15, 35, 66, 0.14);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .hero-copy h1 {
+    max-width: 14ch;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .hero {
+    padding: 34px 0 18px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.1rem, 8vw, 3rem);
+    line-height: 1.04;
+    max-width: 100%;
+  }
+
+  .hero-copy .lead {
+    font-size: 1.02rem;
+    line-height: 1.68;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+.glass {
+  background: var(--surface);
+  border: 1px solid rgba(255,255,255,0.7);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 .hero-summary {
@@ -859,48 +899,38 @@ h1 {
   
   <main id="top">
     <section class="section section-tight hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <span class="eyebrow">Strategic Digital Asset</span>
-          <h1>Own the consumer entry point to self-managed hygiene demand.</h1>
-          <p class="lead">
-            HygieneRoll.com is not being framed as a passive domain listing. It is being positioned as a premium deployment surface for direct-to-consumer hygiene infrastructure: subscription logic, cadence control, usage visibility, fulfillment orchestration, and retention continuity under a name with instant category clarity.
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#acquire">Discuss Acquisition</a>
-            <a class="btn btn-secondary" href="#flow">View Operating Logic</a>
-          </div>
-          <div class="hero-pills">
-            <span class="pill">Subscription-first</span>
-            <span class="pill">Closed-loop logistics</span>
-            <span class="pill">AI-driven usage logic</span>
-          </div>
-        </div><div class="hero-visual-wrap">
-      <div class="hero-visual">
-        <img src="assets/images/hero-lifestyle-image.jpg" alt="Lifestyle product scene showing a premium digital hygiene system environment" />
+  <div class="container hero-grid">
+
+    <div class="hero-copy">
+
+      <span class="eyebrow">STRATEGIC DIGITAL ASSET</span>
+
+      <h1>
+        Own the consumer entry point to automated hygiene demand.
+      </h1>
+
+      <p class="lead">
+        <strong>HygieneRoll.com</strong> converts everyday hygiene consumption into controlled, intelligent recurring revenue.
+
+        From enabling FMCG brands to transition into direct subscriptions, to stabilizing retention for D2C operators, to launching entirely new automated hygiene verticals — this is not a concept layer, but a ready deployment system.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#acquire" class="btn btn-primary">
+          Acquire Strategic Asset
+        </a>
+
+        <a href="#flow" class="btn btn-secondary">
+          View Operating System
+        </a>
       </div>
-      <div class="hero-summary glass">
-        <small>Deployment Thesis</small>
-        <h2>Not a domain listing. A launch-ready D2C operating layer.</h2>
-        <p class="copy-body">
-          Designed to compress brand ramp-up, improve conversion clarity, and support autonomous subscription fulfillment under a category-native name that is memorable, legible, and commercially deployable.
-        </p>
-        <div class="mini-grid">
-          <div class="mini-card">
-            <strong>Revenue</strong>
-            <span>Recurring subscription logic</span>
-          </div>
-          <div class="mini-card">
-            <strong>Cost</strong>
-            <span>Lower acquisition friction</span>
-          </div>
-          <div class="mini-card">
-            <strong>Speed</strong>
-            <span>Fast deployment surface</span>
-          </div>
-        </div>
-      </div>
+
     </div>
+
+    <div class="hero-visual">
+      <img src="assets/images/business-systems.jpg" alt="HygieneRoll system flow visualization" />
+    </div>
+
   </div>
 </section>
 
