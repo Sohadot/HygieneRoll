@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(mv \"assets/images/infrastruction.jpg\" \"assets/images/infrastructure.jpg\")",
-      "Bash(ls assets/images/infra*)"
+      "Bash(ls assets/images/infra*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(where python *)",
+      "Bash(where py *)",
+      "Bash(where node *)"
     ]
   }
 }

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>The D2C Hygiene Replenishment Model — HygieneRoll.com</title>
+  <meta name="description" content="A reference framework for direct-to-consumer hygiene replenishment: subscription logic, cadence control, usage visibility, fulfillment continuity, and the role of category-native consumer entry points." />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#081a34" />
+
+  <meta property="og:title" content="The D2C Hygiene Replenishment Model — HygieneRoll.com" />
+  <meta property="og:description" content="Why hygiene categories increasingly require owned consumer entry points, and what changes when replenishment becomes a direct, recurring relationship." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="assets/images/hygiene-roll.png" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="The D2C Hygiene Replenishment Model — HygieneRoll.com" />
+  <meta name="twitter:description" content="A reference framework for category-native hygiene replenishment systems." />
+  <meta name="twitter:image" content="assets/images/hygiene-roll.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #edf4fb;
+      --bg-2: #f6f9fd;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-strong: rgba(255, 255, 255, 0.92);
+      --line: rgba(15, 35, 66, 0.08);
+      --line-soft: rgba(132, 160, 198, 0.16);
+      --text: #0b1f3b;
+      --muted: #61728b;
+      --muted-2: #7a8aa1;
+      --blue: #2563eb;
+      --blue-2: #5aa6ff;
+      --navy: #081a34;
+      --shadow: 0 18px 50px rgba(12, 30, 61, 0.08);
+      --shadow-soft: 0 10px 28px rgba(12, 30, 61, 0.06);
+      --radius-xl: 34px;
+      --radius-lg: 26px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+      --container: 1200px;
+      --section-space: 88px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(95, 165, 255, 0.14), transparent 28%),
+        radial-gradient(circle at 100% 36%, rgba(37, 99, 235, 0.06), transparent 24%),
+        linear-gradient(180deg, #f7fbff 0%, #eef4fb 52%, #eaf1f8 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 18%, transparent 36%),
+        linear-gradient(180deg, rgba(255,255,255,0.12), transparent 24%);
+      opacity: 0.6;
+      mix-blend-mode: screen;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(calc(100% - 40px), var(--container));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: var(--section-space) 0;
+      position: relative;
+    }
+
+    .section-tight {
+      padding-top: 56px;
+      padding-bottom: 56px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(245, 249, 255, 0.84);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(15, 35, 66, 0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 88px;
+      padding: 12px 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 0 1 auto;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      display: block;
+      flex: 0 0 44px;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: baseline;
+      line-height: 1;
+      letter-spacing: -0.045em;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .brand-mark span:first-child {
+      font-size: 2rem;
+      color: #0f2342;
+    }
+
+    .brand-mark .dotcom {
+      margin-left: 2px;
+      font-size: 1.18rem;
+      color: var(--blue);
+      font-weight: 800;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #5e6f86;
+      transition: 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #0f2342;
+      background: rgba(37, 99, 235, 0.05);
+    }
+
+    .nav-link.active {
+      color: #0f2342;
+      background: rgba(37, 99, 235, 0.08);
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 124px;
+      height: 54px;
+      padding: 0 20px;
+      border-radius: 18px;
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #0f2342;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(15, 35, 66, 0.06);
+      box-shadow:
+        0 10px 30px rgba(15, 35, 66, 0.06),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88);
+      transition: 0.22s ease;
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      background: #ffffff;
+      box-shadow:
+        0 14px 34px rgba(15, 35, 66, 0.09),
+        inset 0 1px 0 rgba(255,255,255,0.92);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.68);
+      border: 1px solid rgba(255,255,255,0.72);
+      box-shadow: 0 8px 20px rgba(12, 30, 61, 0.04);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, h4, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(2.6rem, 5.5vw, 4.6rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      color: #0d2344;
+      max-width: 18ch;
+      margin-top: 22px;
+    }
+
+    .section-title {
+      font-size: clamp(2.1rem, 4vw, 3.4rem);
+      line-height: 1.0;
+      letter-spacing: -0.045em;
+      color: #0d2344;
+      max-width: 22ch;
+      margin-top: 18px;
+    }
+
+    .lead,
+    .section-intro,
+    .copy-body,
+    .stack-copy,
+    .problem p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      line-height: 1.72;
+    }
+
+    .section-head {
+      max-width: 880px;
+      margin-bottom: 34px;
+    }
+
+    .section-intro {
+      margin-top: 18px;
+      max-width: 72ch;
+    }
+
+    .glass {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.74);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .reference-prose {
+      max-width: 72ch;
+      display: grid;
+      gap: 22px;
+    }
+
+    .reference-prose p {
+      color: #243a5d;
+      font-size: 1.12rem;
+      line-height: 1.78;
+    }
+
+    .reference-prose p strong {
+      color: #0d2344;
+      font-weight: 700;
+    }
+
+    .reference-prose p em {
+      font-style: italic;
+      color: #324a72;
+    }
+
+    .reference-prose a {
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .reference-prose a:hover {
+      text-decoration: underline;
+    }
+
+    .stack-card,
+    .dual-card,
+    .problem {
+      padding: 28px;
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .stack-card {
+      border-radius: 30px;
+      background: var(--surface-strong);
+      border: 1px solid rgba(255,255,255,0.78);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .stack-kicker,
+    .problem .index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: rgba(63, 121, 235, 0.1);
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .stack-card h3,
+    .dual-card h3,
+    .problem h3 {
+      font-size: clamp(1.6rem, 1.9vw, 2.2rem);
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      color: #0d2344;
+    }
+
+    .stack-card h4,
+    .dual-card h4 {
+      font-size: 13px;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .stack-copy {
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.7;
+    }
+
+    .dual-card {
+      border-radius: 30px;
+    }
+
+    .problem {
+      min-height: 200px;
+      border-radius: 30px;
+    }
+
+    .problems,
+    .visual-grid-2,
+    .visual-grid-3 {
+      display: grid;
+      gap: 22px;
+    }
+
+    .problems,
+    .visual-grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .visual-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .footer {
+      padding: 34px 0 52px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(167, 188, 217, 0.18);
+      padding-top: 22px;
+    }
+
+    @media (max-width: 1120px) {
+      .visual-grid-3,
+      .visual-grid-2,
+      .problems {
+        grid-template-columns: 1fr 1fr;
+      }
+      .section-intro { max-width: none; }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: min(calc(100% - 24px), var(--container));
+      }
+
+      .nav {
+        min-height: 80px;
+        gap: 10px;
+      }
+
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+      }
+
+      .brand-mark span:first-child { font-size: 1.72rem; }
+      .brand-mark .dotcom { font-size: 1rem; }
+
+      .nav-link { display: none; }
+
+      .nav-cta {
+        min-width: 108px;
+        height: 50px;
+        padding: 0 16px;
+        font-size: 0.92rem;
+      }
+
+      .section,
+      .section-tight {
+        padding: 56px 0;
+      }
+
+      h1 {
+        font-size: clamp(2.3rem, 10vw, 3.4rem);
+        max-width: 100%;
+      }
+
+      .section-title { max-width: 100%; }
+
+      .lead,
+      .section-intro,
+      .copy-body,
+      .stack-copy,
+      .problem p {
+        font-size: 1rem;
+        line-height: 1.68;
+      }
+
+      .reference-prose p { font-size: 1.04rem; line-height: 1.72; }
+
+      .visual-grid-3,
+      .visual-grid-2,
+      .problems {
+        grid-template-columns: 1fr !important;
+      }
+
+      .stack-card,
+      .dual-card,
+      .problem {
+        padding: 22px;
+        border-radius: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="HygieneRoll.com home">
+        <img src="assets/images/logo-hygieneroll.png" class="brand-logo" alt="HygieneRoll logo" />
+        <span class="brand-mark">
+          <span>HygieneRoll</span><span class="dotcom">.com</span>
+        </span>
+      </a>
+
+      <div class="nav-actions">
+        <a class="nav-link active" href="replenishment-model.html">Model</a>
+        <a class="nav-link" href="index.html#flow">System</a>
+        <a class="nav-link" href="index.html#interfaces">Interfaces</a>
+        <a class="nav-cta" href="index.html#acquire">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section class="section section-tight">
+      <div class="container">
+        <span class="eyebrow">Category Reference</span>
+        <h1>The D2C Hygiene Replenishment Model.</h1>
+        <p class="lead" style="margin-top: 24px; max-width: 64ch;">
+          Why hygiene categories increasingly require owned consumer entry points, and what changes when replenishment becomes a direct, recurring relationship instead of a retail event.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">01 — The Layer</span>
+          <h2 class="section-title">The Replenishment Layer.</h2>
+        </div>
+        <div class="reference-prose">
+          <p>
+            Hygiene products sit in an unusual category. They are essential, repeatedly purchased, low-margin per unit, and structurally tied to household routines. Unlike electronics or apparel, the consumer does not deliberate before each purchase — they react to depletion. The product reorders itself in household behavior long before any system reorders it formally.
+          </p>
+          <p>
+            This pattern creates a layer that most brands do not occupy directly: the replenishment layer. It is not the moment of brand discovery, and not the moment of impulse purchase. It is the moment when a household notices something is running low and resolves the problem with the lowest possible friction.
+          </p>
+          <p><strong>Whoever owns that moment owns the relationship.</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">02 — Structural Tension</span>
+          <h2 class="section-title">Why retail dependency weakens the category.</h2>
+          <p class="section-intro">
+            Most hygiene brands still rely on retail as the primary distribution surface. This works for visibility, but creates structural weaknesses for any brand attempting long-term consumer continuity.
+          </p>
+        </div>
+
+        <div class="problems">
+          <article class="problem glass">
+            <div class="index">A</div>
+            <h3>Rented Relationship</h3>
+            <p>
+              The retailer holds the customer relationship. The brand sees aggregate sales, not households. Loyalty programs, when present, are retailer-owned, not brand-owned.
+            </p>
+          </article>
+
+          <article class="problem glass">
+            <div class="index">B</div>
+            <h3>Invisible Cadence</h3>
+            <p>
+              Without direct subscription, brands cannot observe usage rhythm — only purchase events at point of sale. Replenishment timing remains opaque to the operator.
+            </p>
+          </article>
+
+          <article class="problem glass">
+            <div class="index">C</div>
+            <h3>Substitution Risk</h3>
+            <p>
+              Shelf adjacency means a price-cut competitor can redirect the next purchase without warning. Loyalty in retail is shallow by structure, not by execution.
+            </p>
+          </article>
+
+          <article class="problem glass">
+            <div class="index">D</div>
+            <h3>Compounding Drift</h3>
+            <p>
+              For categories where consumption is high-frequency and predictable, these weaknesses compound over time, eroding direct consumer continuity year over year.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">03 — Operating Forces</span>
+          <h2 class="section-title">The four forces that organize a D2C hygiene system.</h2>
+          <p class="section-intro">
+            A direct-to-consumer hygiene system, structured properly, organizes itself around four operating forces. Each one converts a household behavior into a measurable, controllable signal. These are not features. They are the operating fabric of the category-native model.
+          </p>
+        </div>
+
+        <div class="visual-grid-2">
+          <article class="dual-card glass">
+            <h4>Force 01</h4>
+            <h3>Subscription Logic</h3>
+            <p class="stack-copy">
+              Converts irregular purchase events into predictable recurring relationships. The household's behavior becomes legible to the operator for the first time.
+            </p>
+          </article>
+
+          <article class="dual-card glass">
+            <h4>Force 02</h4>
+            <h3>Cadence Control</h3>
+            <p class="stack-copy">
+              Gives the household and the operator shared control over delivery rhythm. Reduces both stockouts and oversupply, and makes the relationship feel adaptive rather than rigid.
+            </p>
+          </article>
+
+          <article class="dual-card glass">
+            <h4>Force 03</h4>
+            <h3>Usage Visibility</h3>
+            <p class="stack-copy">
+              Captures the rate at which a product is actually consumed, allowing the system to evolve from order-taking into demand-sensing. The platform improves with time, not against it.
+            </p>
+          </article>
+
+          <article class="dual-card glass">
+            <h4>Force 04</h4>
+            <h3>Fulfillment Continuity</h3>
+            <p class="stack-copy">
+              Makes reliability part of the product. The household experiences uninterrupted supply rather than reactive reorder. Trust forms through repeatability, not through promotion.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">04 — Surface Logic</span>
+          <h2 class="section-title">Category-native vs. brand-specific surfaces.</h2>
+        </div>
+        <div class="reference-prose">
+          <p>
+            A common assumption is that a strong product brand can operate its own D2C surface effectively. This is partially true. Brand-specific surfaces handle product loyalty well — when the consumer already knows what they want.
+          </p>
+          <p>
+            But replenishment behavior is not brand-loyal in the same way. Households think in categories: <em>"we are running low on toilet paper,"</em> not <em>"we are running low on a specific brand."</em> The mental query is category-first.
+          </p>
+          <p>
+            A category-native surface — one whose name communicates the category itself — captures this query at the level it actually occurs. It is not in competition with brand surfaces. It sits one layer above them, addressing a different mental moment.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">05 — Trajectory</span>
+          <h2 class="section-title">Expansion follows household behavior, not product lines.</h2>
+          <p class="section-intro">
+            From the household's perspective, replenishment is one behavior covering many adjacent product types. A category-native surface that begins in paper-based hygiene typically extends along a coherent trajectory.
+          </p>
+        </div>
+
+        <div class="visual-grid-3">
+          <article class="stack-card">
+            <span class="stack-kicker">T1</span>
+            <h3>Paper Hygiene</h3>
+            <p class="stack-copy">
+              Tissue, rolls, paper towels, wipes. Highest frequency, strongest category clarity. The natural entry point because consumer language and product behavior align directly.
+            </p>
+          </article>
+
+          <article class="stack-card">
+            <span class="stack-kicker">T2</span>
+            <h3>Personal Care</h3>
+            <p class="stack-copy">
+              Soap, body wash, sanitizer, basic personal essentials. Same household, same delivery cadence, same replenishment rhythm. Expansion happens without changing the operating surface.
+            </p>
+          </article>
+
+          <article class="stack-card">
+            <span class="stack-kicker">T3</span>
+            <h3>Household Hygiene</h3>
+            <p class="stack-copy">
+              Cleaning products, disinfectants, recurring home essentials. Same relationship, broader basket. The platform deepens without losing focus on replenishment behavior.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Reference Note</span>
+          <h2 class="section-title">A surface for the model.</h2>
+        </div>
+        <div class="reference-prose">
+          <p>
+            The replenishment model described here is not theoretical. It is the operating logic that any serious D2C hygiene initiative must eventually adopt. The remaining question is not whether the model works, but which surface holds it.
+          </p>
+          <p>
+            <a href="index.html">HygieneRoll.com</a> was structured as the category-native consumer entry layer for this model — anchored in paper-based hygiene, designed to extend across the full household category, and presented as a deployable surface rather than a speculative name.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>HygieneRoll.com — Category-Native Consumer Entry Layer for Recurring Hygiene Replenishment</span>
+      <span>Presented by Sohadot</span>
+    </div>
+  </footer>
+</body>
+</html>
