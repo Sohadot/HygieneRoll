@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mv \"assets/images/infrastruction.jpg\" \"assets/images/infrastructure.jpg\")",
+      "Bash(ls assets/images/infra*)"
+    ]
+  }
+}
