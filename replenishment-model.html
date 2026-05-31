@@ -466,6 +466,83 @@
         padding: 22px;
         border-radius: 26px;
       }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 12px 14px;
+        font-size: 0.88rem;
+      }
+
+      .comparison-table td:first-child {
+        white-space: normal;
+      }
+
+      .buyer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stat-figure {
+      font-size: clamp(2.4rem, 3.5vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      color: #0d2344;
+      line-height: 1;
+      margin: 4px 0 8px;
+    }
+
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.74);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    .comparison-table th {
+      background: rgba(37, 99, 235, 0.07);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 14px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(15, 35, 66, 0.08);
+      white-space: nowrap;
+    }
+
+    .comparison-table td {
+      padding: 16px 20px;
+      color: #243a5d;
+      border-bottom: 1px solid rgba(15, 35, 66, 0.05);
+      vertical-align: top;
+      line-height: 1.58;
+    }
+
+    .comparison-table tbody tr:last-child td {
+      border-bottom: none;
+      background: rgba(37, 99, 235, 0.035);
+      font-weight: 600;
+      color: #0d2344;
+    }
+
+    .comparison-table td:first-child {
+      font-weight: 600;
+      color: #0d2344;
+      white-space: nowrap;
+    }
+
+    .buyer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
     }
   </style>
 </head>
@@ -662,6 +739,139 @@
             <h3>Household Hygiene</h3>
             <p class="stack-copy">
               Cleaning products, disinfectants, recurring home essentials. Same relationship, broader basket. The platform deepens without losing focus on replenishment behavior.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">06 — Market Reality</span>
+          <h2 class="section-title">Three markets. One behavioral intersection.</h2>
+          <p class="section-intro">
+            HygieneRoll.com does not sit inside a single market. It sits at the intersection of three distinct but convergent ones — each organized around the same underlying consumer behavior: predictable, habitual, and operationally underserved by direct ownership.
+          </p>
+        </div>
+
+        <div class="visual-grid-3">
+          <article class="stack-card">
+            <h4>Subscription Economy</h4>
+            <div class="stat-figure">$519B</div>
+            <p class="stack-copy">
+              North American subscription economy projected to reach $519.3B by 2033, from $188.1B in 2024. The structural shift toward recurring consumer relationships is already underway.
+            </p>
+          </article>
+
+          <article class="stack-card">
+            <h4>Hygiene Category Scale</h4>
+            <div class="stat-figure">$43B</div>
+            <p class="stack-copy">
+              Global cleaning and hygiene products market valued at approximately $32.1B in 2024, projected to reach $43.3B by 2033. The category is large, growing, and demand is structural.
+            </p>
+          </article>
+
+          <article class="stack-card">
+            <h4>Paper-Based Foundation</h4>
+            <div class="stat-figure">$281B</div>
+            <p class="stack-copy">
+              Global paper products market projected to reach $281.23B by 2030 — the highest-frequency, most habitual layer of household replenishment behavior.
+            </p>
+          </article>
+        </div>
+
+        <div class="reference-prose" style="margin-top: 28px;">
+          <p>
+            These figures are not cited to suggest HygieneRoll.com captures them directly. They are cited because the consumer behavior that organizes each of them — recurring, habitual, category-first — is precisely what a category-native replenishment surface is designed to intercept.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">07 — Alternative Paths</span>
+          <h2 class="section-title">The cost of building around the entry point.</h2>
+          <p class="section-intro">
+            Any operator entering the D2C hygiene replenishment space faces a set of structural path choices. Each route carries a distinct cost profile — in time, in relationship quality, and in operational control.
+          </p>
+        </div>
+
+        <div class="table-wrap">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Route</th>
+                <th>Strategic Cost</th>
+                <th>Time Burden</th>
+                <th>Consumer Relationship Control</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Build a new D2C identity from zero</td>
+                <td>Naming, trust formation, category education</td>
+                <td>High</td>
+                <td>Owned, but slow to establish</td>
+              </tr>
+              <tr>
+                <td>Use a generic subscription surface</td>
+                <td>Weak category memory, low recall</td>
+                <td>Medium</td>
+                <td>Partial — platform dependency risk</td>
+              </tr>
+              <tr>
+                <td>Depend on retail channels</td>
+                <td>Cadence and relationship remain mediated</td>
+                <td>Ongoing</td>
+                <td>Low — retailer holds the consumer</td>
+              </tr>
+              <tr>
+                <td>HygieneRoll.com</td>
+                <td>Category-native entry surface, no naming friction</td>
+                <td>Immediate activation potential</td>
+                <td>Owned surface, direct from launch</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-tight">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">08 — Who This Is For</span>
+          <h2 class="section-title">Three buyer profiles. One logical fit.</h2>
+          <p class="section-intro">
+            The asset is not positioned as available to anyone. It is structured for a specific set of operators — each of whom has a distinct reason to value category-native consumer infrastructure over generic alternatives.
+          </p>
+        </div>
+
+        <div class="buyer-grid">
+          <article class="stack-card">
+            <span class="stack-kicker">01</span>
+            <h3>Household Hygiene Brand</h3>
+            <p class="stack-copy">
+              A brand that already owns hygiene products and is looking to establish a direct, recurring consumer relationship — outside of retail mediation and inside a surface that immediately communicates category intent without explanation.
+            </p>
+          </article>
+
+          <article class="stack-card">
+            <span class="stack-kicker">02</span>
+            <h3>Subscription Operator</h3>
+            <p class="stack-copy">
+              A platform or replenishment operator that needs category clarity rather than a generic name. Operating under a category-native surface reduces consumer education cost and strengthens recall at the exact moment replenishment behavior occurs.
+            </p>
+          </article>
+
+          <article class="stack-card">
+            <span class="stack-kicker">03</span>
+            <h3>Commerce Infrastructure Player</h3>
+            <p class="stack-copy">
+              A logistics or commerce operator seeking a consumer-facing layer for a recurring-use category. The asset provides the entry surface without requiring a separate brand-building investment before activation.
             </p>
           </article>
         </div>
