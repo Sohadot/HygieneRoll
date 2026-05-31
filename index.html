@@ -767,6 +767,156 @@
       font-size: 1rem;
       line-height: 1.72;
     }
+
+    .arch-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 4px 0;
+    }
+
+    .arch-layer {
+      padding: 13px 16px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .arch-layer--demand,
+    .arch-layer--fulfill {
+      background: rgba(37, 99, 235, 0.05);
+      border: 1px solid rgba(37, 99, 235, 0.1);
+    }
+
+    .arch-layer--core {
+      background: rgba(13, 35, 68, 0.06);
+      border: 1.5px solid rgba(13, 35, 68, 0.14);
+      padding: 16px;
+    }
+
+    .arch-layer-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0d2344;
+    }
+
+    .arch-layer-tags,
+    .arch-core-signals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .arch-layer-tags span,
+    .arch-core-signals span {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--blue);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .arch-core-logo {
+      font-size: 1.18rem;
+      font-weight: 900;
+      color: #0d2344;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .arch-core-logo span { color: var(--blue); }
+
+    .arch-core-desc {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .arch-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .arch-line {
+      width: 1px;
+      height: 12px;
+      background: rgba(37, 99, 235, 0.2);
+    }
+
+    .arch-arrow {
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid rgba(37, 99, 235, 0.2);
+    }
+
+    .cat-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 4px 0;
+    }
+
+    .cat-tier {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .cat-tier-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .cat-tier-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0d2344;
+    }
+
+    .cat-tier-badge {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--blue);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .cat-tier-badge--soft { color: var(--muted); }
+    .cat-tier-badge--dim  { color: var(--muted-2); }
+
+    .cat-tier-detail {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .cat-tier-bar {
+      height: 5px;
+      background: rgba(37, 99, 235, 0.07);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .cat-tier-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, #2563eb, #5aa6ff);
+    }
+
+    .cat-tier-fill--mid { background: linear-gradient(90deg, #5aa6ff, #93c5fd); }
+    .cat-tier-fill--low { background: linear-gradient(90deg, #93c5fd, #bfdbfe); }
   </style>
 </head>
 <body>
@@ -914,10 +1064,10 @@
     <section class="section" id="interfaces">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">Interface Layer</span>
-          <h2 class="section-title">Consumer-facing interfaces designed around recurring behavior.</h2>
+          <span class="eyebrow">Operating Architecture</span>
+          <h2 class="section-title">The operating layers of a direct replenishment relationship.</h2>
           <p class="section-intro">
-            These visuals show how the asset can be experienced as a premium operating environment rather than a one-page concept. Each interface maps to a commercial function: onboarding, cadence control, catalog depth, account continuity, and operational visibility.
+            Each layer of the platform translates a household behavior into a commercial signal — from category entry and plan construction to cadence control, fulfillment continuity, and account retention. The architecture is designed to be self-reinforcing.
           </p>
         </div>
 
@@ -925,11 +1075,39 @@
           <article class="stack-card">
             <span class="stack-kicker">01</span>
             <div class="visual-frame">
-              <img src="assets/images/infrastructure.jpg" alt="HygieneRoll feature banner" />
+              <div class="arch-diagram">
+                <div class="arch-layer arch-layer--demand">
+                  <span class="arch-layer-label">Consumer Demand</span>
+                  <div class="arch-layer-tags">
+                    <span>Recurring</span><span>Habitual</span><span>Category-First</span>
+                  </div>
+                </div>
+                <div class="arch-connector">
+                  <div class="arch-line"></div>
+                  <div class="arch-arrow"></div>
+                </div>
+                <div class="arch-layer arch-layer--core">
+                  <div class="arch-core-logo">HygieneRoll<span>.com</span></div>
+                  <div class="arch-core-desc">Category-Native Entry Surface</div>
+                  <div class="arch-core-signals">
+                    <span>Subscription</span><span>Cadence</span><span>Intelligence</span><span>Continuity</span>
+                  </div>
+                </div>
+                <div class="arch-connector">
+                  <div class="arch-line"></div>
+                  <div class="arch-arrow"></div>
+                </div>
+                <div class="arch-layer arch-layer--fulfill">
+                  <span class="arch-layer-label">Fulfillment &amp; Continuity</span>
+                  <div class="arch-layer-tags">
+                    <span>Direct</span><span>Predictable</span><span>Owned</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <h3>Positioning Banner</h3>
+            <h3>Entry Layer Architecture</h3>
             <p class="stack-copy">
-              Category-native branding with immediate subscription and delivery signals. It establishes the platform as a deployable consumer layer from the first fold.
+              The platform positions itself between recurring consumer demand and direct fulfillment — a category-native surface that translates household behavior into an owned, operational relationship.
             </p>
           </article>
 
@@ -958,12 +1136,43 @@
 
         <div class="visual-grid-2" style="margin-top: 22px;">
           <article class="dual-card glass">
-            <h4>Catalog Layer</h4>
+            <h4>Expansion Architecture</h4>
             <div class="visual-frame">
-              <img src="assets/images/hygiene-essentials.jpg" alt="Product selection interface" />
+              <div class="cat-stack">
+                <div class="cat-tier">
+                  <div class="cat-tier-top">
+                    <span class="cat-tier-name">Paper Hygiene</span>
+                    <span class="cat-tier-badge">Entry Point</span>
+                  </div>
+                  <div class="cat-tier-detail">Tissue · Rolls · Paper Towels · Wipes</div>
+                  <div class="cat-tier-bar">
+                    <div class="cat-tier-fill" style="width:100%"></div>
+                  </div>
+                </div>
+                <div class="cat-tier">
+                  <div class="cat-tier-top">
+                    <span class="cat-tier-name">Personal Care</span>
+                    <span class="cat-tier-badge cat-tier-badge--soft">Expansion Layer</span>
+                  </div>
+                  <div class="cat-tier-detail">Soap · Body Wash · Sanitizer · Essentials</div>
+                  <div class="cat-tier-bar">
+                    <div class="cat-tier-fill cat-tier-fill--mid" style="width:70%"></div>
+                  </div>
+                </div>
+                <div class="cat-tier">
+                  <div class="cat-tier-top">
+                    <span class="cat-tier-name">Household Hygiene</span>
+                    <span class="cat-tier-badge cat-tier-badge--dim">Full Category</span>
+                  </div>
+                  <div class="cat-tier-detail">Cleaning · Disinfecting · Home Essentials</div>
+                  <div class="cat-tier-bar">
+                    <div class="cat-tier-fill cat-tier-fill--low" style="width:46%"></div>
+                  </div>
+                </div>
+              </div>
             </div>
             <p class="stack-copy">
-              Configurable essentials across paper, wipes, soap, and sanitizer create retention depth, product extension potential, and broader operating scope.
+              The entry category anchors paper hygiene — where consumer language and replenishment behavior align most directly. The platform extends naturally from that anchor across the full household surface.
             </p>
           </article>
 
