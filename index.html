@@ -917,6 +917,83 @@
 
     .cat-tier-fill--mid { background: linear-gradient(90deg, #5aa6ff, #93c5fd); }
     .cat-tier-fill--low { background: linear-gradient(90deg, #93c5fd, #bfdbfe); }
+
+    /* Shared UI mockup base */
+    .ui-card {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      padding: 16px;
+      background: rgba(255,255,255,0.97);
+      border-radius: 16px;
+      border: 1px solid rgba(15,35,66,0.06);
+      box-shadow: 0 6px 20px rgba(12,30,61,0.06);
+    }
+    .ui-card-header {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0d2344;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(15,35,66,0.05);
+    }
+    .ui-divider { height: 1px; background: rgba(15,35,66,0.06); }
+    .ui-row { display:flex; align-items:center; justify-content:space-between; font-size:11px; font-weight:600; color:#0d2344; padding: 5px 0; }
+    .ui-micro { font-size:10px; font-weight:700; color: var(--muted); text-transform:uppercase; letter-spacing:0.07em; }
+
+    /* Plan Builder */
+    .pb-toggle { display:flex; background:rgba(37,99,235,0.06); border-radius:9px; padding:3px; gap:3px; }
+    .pb-opt { flex:1; text-align:center; padding:6px 0; border-radius:7px; font-size:11px; font-weight:700; color:var(--muted); }
+    .pb-opt--on { background:#fff; color:#0d2344; box-shadow:0 2px 6px rgba(12,30,61,0.07); }
+    .pb-size { font-size:1.4rem; font-weight:900; color:#0d2344; letter-spacing:-0.04em; line-height:1; }
+    .pb-product { display:flex; align-items:center; justify-content:space-between; padding:6px 9px; background:rgba(37,99,235,0.04); border-radius:8px; font-size:11px; font-weight:600; color:#0d2344; }
+    .pb-pill { font-size:9px; font-weight:800; padding:2px 7px; border-radius:99px; background:rgba(37,99,235,0.1); color:var(--blue); }
+    .pb-pill--off { background:rgba(15,35,66,0.06); color:var(--muted); }
+    .pb-cad-row { display:flex; gap:4px; }
+    .pb-cad { flex:1; text-align:center; padding:6px 2px; border-radius:7px; font-size:9px; font-weight:700; color:var(--muted); background:rgba(15,35,66,0.04); border:1px solid transparent; }
+    .pb-cad--on { background:rgba(37,99,235,0.08); color:var(--blue); border-color:rgba(37,99,235,0.14); }
+    .pb-confirm { text-align:center; padding:9px; background:linear-gradient(135deg,#2a67d8,#4387ff); color:#fff; border-radius:9px; font-size:10px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; }
+
+    /* Usage Intelligence */
+    .ui-level-bar { height:7px; background:rgba(37,99,235,0.08); border-radius:99px; overflow:hidden; }
+    .ui-level-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#f59e0b,#fbbf24); }
+    .ui-level-val { font-size:11px; font-weight:700; color:#d97706; }
+    .ui-signal-row { display:flex; align-items:center; gap:9px; padding:9px 11px; background:rgba(37,99,235,0.05); border-radius:11px; border:1px solid rgba(37,99,235,0.1); }
+    .ui-pulse { width:8px; height:8px; border-radius:50%; background:var(--blue); flex-shrink:0; box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
+    .ui-signal-text { font-size:11px; font-weight:700; color:#0d2344; }
+    .ui-signal-date { font-size:10px; color:var(--muted); }
+    .ui-chart { display:flex; align-items:flex-end; gap:4px; height:44px; }
+    .ui-col { display:flex; flex-direction:column; align-items:center; gap:3px; flex:1; }
+    .ui-bar-inner { width:100%; border-radius:3px 3px 0 0; background:rgba(37,99,235,0.15); }
+    .ui-bar-inner--fill { background:linear-gradient(180deg,#2563eb,#5aa6ff); }
+    .ui-col-label { font-size:8px; color:var(--muted-2); font-weight:600; }
+
+    /* Shipment Visibility */
+    .sv-eta { font-size:12px; font-weight:700; color:#0d2344; text-align:center; }
+    .sv-track { display:flex; align-items:center; padding:4px 0; }
+    .sv-node { display:flex; flex-direction:column; align-items:center; gap:4px; flex:0 0 auto; }
+    .sv-dot { width:13px; height:13px; border-radius:50%; background:rgba(37,99,235,0.1); border:2px solid rgba(37,99,235,0.2); }
+    .sv-dot--done { background:var(--blue); border-color:var(--blue); }
+    .sv-dot--now { background:#fff; border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,0.18); }
+    .sv-node-label { font-size:8px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; }
+    .sv-node-label--done { color:#0d2344; }
+    .sv-node-label--now { color:var(--blue); }
+    .sv-seg { flex:1; height:2px; background:rgba(37,99,235,0.1); margin-bottom:20px; }
+    .sv-seg--done { background:var(--blue); }
+    .sv-seg--now { background:linear-gradient(90deg,var(--blue),rgba(37,99,235,0.15)); }
+    .sv-badge { text-align:center; padding:8px; background:rgba(37,99,235,0.06); border-radius:9px; font-size:10px; font-weight:800; color:var(--blue); letter-spacing:0.04em; }
+
+    /* Account Continuity */
+    .ac-plan { display:flex; align-items:center; justify-content:space-between; padding:9px 11px; background:rgba(37,99,235,0.05); border-radius:10px; border:1px solid rgba(37,99,235,0.1); }
+    .ac-plan-name { font-size:11px; font-weight:800; color:#0d2344; }
+    .ac-plan-sub { font-size:9px; color:var(--muted); }
+    .ac-manage { font-size:9px; font-weight:800; color:var(--blue); text-transform:uppercase; letter-spacing:0.05em; }
+    .ac-item { display:flex; align-items:center; justify-content:space-between; padding:6px 0; font-size:11px; font-weight:600; color:#0d2344; }
+    .ac-badge { font-size:9px; font-weight:800; padding:2px 7px; border-radius:99px; background:rgba(15,35,66,0.06); color:var(--muted); }
+    .ac-badge--on { background:rgba(37,99,235,0.1); color:var(--blue); }
+    .ac-arrow { color:var(--muted-2); font-size:13px; }
   </style>
 </head>
 <body>
@@ -1050,7 +1127,28 @@
             <div>
               <h4>Usage Intelligence</h4>
               <div class="visual-frame">
-                <img src="assets/images/daily-progress.jpg" alt="Lifestyle image showing usage intelligence tracking" />
+                <div class="ui-card">
+                  <div class="ui-card-header">Replenishment Signal</div>
+                  <div style="display:flex;flex-direction:column;gap:5px;">
+                    <span class="ui-micro">Current Supply Level</span>
+                    <div class="ui-level-bar"><div class="ui-level-fill" style="width:28%"></div></div>
+                    <span class="ui-level-val">Running Low — 28%</span>
+                  </div>
+                  <div class="ui-signal-row">
+                    <div class="ui-pulse"></div>
+                    <div>
+                      <div class="ui-signal-text">Replenishment Signal Active</div>
+                      <div class="ui-signal-date">Next delivery: Nov 18</div>
+                    </div>
+                  </div>
+                  <div class="ui-chart">
+                    <div class="ui-col"><div class="ui-bar-inner" style="height:80%"></div><span class="ui-col-label">Wk 42</span></div>
+                    <div class="ui-col"><div class="ui-bar-inner" style="height:60%"></div><span class="ui-col-label">Wk 43</span></div>
+                    <div class="ui-col"><div class="ui-bar-inner" style="height:38%"></div><span class="ui-col-label">Wk 44</span></div>
+                    <div class="ui-col"><div class="ui-bar-inner" style="height:18%"></div><span class="ui-col-label">Wk 45</span></div>
+                    <div class="ui-col"><div class="ui-bar-inner ui-bar-inner--fill" style="height:92%"></div><span class="ui-col-label" style="color:var(--blue)">Wk 46</span></div>
+                  </div>
+                </div>
               </div>
               <p class="card-copy">
                 Usage monitoring signals that the platform can evolve from a transactional touchpoint into a demand-sensing system with improving operational quality.
@@ -1114,7 +1212,32 @@
           <article class="stack-card">
             <span class="stack-kicker">02</span>
             <div class="visual-frame">
-              <img src="assets/images/build-your-plan.jpg" alt="Build your plan interface" />
+              <div class="ui-card">
+                <div class="ui-card-header">Build Your Plan</div>
+                <div class="pb-toggle">
+                  <span class="pb-opt pb-opt--on">Individual</span>
+                  <span class="pb-opt">Family</span>
+                </div>
+                <div class="ui-row">
+                  <span class="ui-micro">Household size</span>
+                  <span class="pb-size">2 <span style="font-size:0.7rem;font-weight:700;color:var(--muted)">people</span></span>
+                </div>
+                <div class="ui-divider"></div>
+                <span class="ui-micro">Products</span>
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                  <div class="pb-product"><span>Paper Rolls</span><span class="pb-pill">On</span></div>
+                  <div class="pb-product"><span>Wipes</span><span class="pb-pill">On</span></div>
+                  <div class="pb-product"><span>Soap</span><span class="pb-pill pb-pill--off">Off</span></div>
+                </div>
+                <div class="ui-divider"></div>
+                <span class="ui-micro">Delivery Cadence</span>
+                <div class="pb-cad-row">
+                  <span class="pb-cad pb-cad--on">Monthly</span>
+                  <span class="pb-cad">6 Weeks</span>
+                  <span class="pb-cad">Quarterly</span>
+                </div>
+                <div class="pb-confirm">Confirm Plan</div>
+              </div>
             </div>
             <h3>Plan Construction</h3>
             <p class="stack-copy">
@@ -1214,7 +1337,32 @@
           <article class="stack-card">
             <span class="stack-kicker">05</span>
             <div class="visual-frame">
-              <img src="assets/images/deliverystatus.jpg" alt="Delivery tracking interface" />
+              <div class="ui-card">
+                <div class="ui-card-header">Next Delivery</div>
+                <div class="sv-eta">ETA: Nov 18 · 2:30 PM</div>
+                <div class="sv-track">
+                  <div class="sv-node">
+                    <div class="sv-dot sv-dot--done"></div>
+                    <span class="sv-node-label sv-node-label--done">Placed</span>
+                  </div>
+                  <div class="sv-seg sv-seg--done"></div>
+                  <div class="sv-node">
+                    <div class="sv-dot sv-dot--done"></div>
+                    <span class="sv-node-label sv-node-label--done">Prepared</span>
+                  </div>
+                  <div class="sv-seg sv-seg--now"></div>
+                  <div class="sv-node">
+                    <div class="sv-dot sv-dot--now"></div>
+                    <span class="sv-node-label sv-node-label--now">In Transit</span>
+                  </div>
+                  <div class="sv-seg"></div>
+                  <div class="sv-node">
+                    <div class="sv-dot"></div>
+                    <span class="sv-node-label">Delivered</span>
+                  </div>
+                </div>
+                <div class="sv-badge">In Transit · On Schedule</div>
+              </div>
             </div>
             <h3>Shipment Visibility</h3>
             <p class="stack-copy">
@@ -1225,7 +1373,27 @@
           <article class="stack-card">
             <span class="stack-kicker">06</span>
             <div class="visual-frame">
-              <img src="assets/images/account-settings.jpg" alt="Account settings interface" />
+              <div class="ui-card">
+                <div class="ui-card-header">Account Settings</div>
+                <div class="ac-plan">
+                  <div>
+                    <div class="ac-plan-name">Premium Plan</div>
+                    <div class="ac-plan-sub">Renews Monthly · Active</div>
+                  </div>
+                  <span class="ac-manage">Manage</span>
+                </div>
+                <div class="ui-divider"></div>
+                <div style="display:flex;flex-direction:column;">
+                  <div class="ac-item"><span>Push Notifications</span><span class="ac-badge ac-badge--on">On</span></div>
+                  <div class="ac-item"><span>Delivery Alerts</span><span class="ac-badge ac-badge--on">On</span></div>
+                  <div class="ac-item"><span>Dark Mode</span><span class="ac-badge">Off</span></div>
+                </div>
+                <div class="ui-divider"></div>
+                <div style="display:flex;flex-direction:column;">
+                  <div class="ac-item"><span>Change Password</span><span class="ac-arrow">›</span></div>
+                  <div class="ac-item"><span>Two-Factor Auth</span><span class="ac-arrow">›</span></div>
+                </div>
+              </div>
             </div>
             <h3>Account Continuity</h3>
             <p class="stack-copy">
