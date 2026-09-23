@@ -960,6 +960,22 @@
       border-top: 5px solid rgba(37, 99, 235, 0.2);
     }
 
+    .loop-return {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px dashed rgba(37, 99, 235, 0.35);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
     .cat-stack {
       display: flex;
       flex-direction: column;
@@ -1004,22 +1020,6 @@
       line-height: 1.4;
     }
 
-    .cat-tier-bar {
-      height: 5px;
-      background: rgba(37, 99, 235, 0.07);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .cat-tier-fill {
-      height: 100%;
-      border-radius: 99px;
-      background: linear-gradient(90deg, #2563eb, #5aa6ff);
-    }
-
-    .cat-tier-fill--mid { background: linear-gradient(90deg, #5aa6ff, #93c5fd); }
-    .cat-tier-fill--low { background: linear-gradient(90deg, #93c5fd, #bfdbfe); }
-
     /* Shared UI mockup base */
     .ui-card {
       display: flex;
@@ -1058,19 +1058,18 @@
     .pb-cad--on { background:rgba(37,99,235,0.08); color:var(--blue); border-color:rgba(37,99,235,0.14); }
     .pb-confirm { text-align:center; padding:9px; background:linear-gradient(135deg,#2a67d8,#4387ff); color:#fff; border-radius:9px; font-size:10px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; }
 
-    /* Usage Intelligence */
-    .ui-level-bar { height:7px; background:rgba(37,99,235,0.08); border-radius:99px; overflow:hidden; }
-    .ui-level-fill { height:100%; border-radius:99px; background:linear-gradient(90deg,#f59e0b,#fbbf24); }
-    .ui-level-val { font-size:11px; font-weight:700; color:#d97706; }
+    /* Replenishment state */
+    .state-seq { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+    .state-seq li { position:relative; display:flex; align-items:center; gap:8px; padding:4px 0 4px 2px; font-size:11px; font-weight:700; color:#0d2344; }
+    .state-seq li:not(:last-child) { padding-bottom:10px; }
+    .state-seq li:not(:last-child)::after { content:""; position:absolute; left:4px; top:16px; width:1px; height:calc(100% - 14px); background:rgba(37,99,235,0.22); }
+    .state-seq li::before { content:""; width:9px; height:9px; border-radius:50%; background:#fff; border:2px solid rgba(37,99,235,0.28); flex-shrink:0; position:relative; z-index:1; }
+    .state-seq li.state-now { color:var(--blue); }
+    .state-seq li.state-now::before { background:var(--blue); border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
     .ui-signal-row { display:flex; align-items:center; gap:9px; padding:9px 11px; background:rgba(37,99,235,0.05); border-radius:11px; border:1px solid rgba(37,99,235,0.1); }
     .ui-pulse { width:8px; height:8px; border-radius:50%; background:var(--blue); flex-shrink:0; box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
     .ui-signal-text { font-size:11px; font-weight:700; color:#0d2344; }
     .ui-signal-date { font-size:10px; color:var(--muted); }
-    .ui-chart { display:flex; align-items:flex-end; gap:4px; height:44px; }
-    .ui-col { display:flex; flex-direction:column; align-items:center; gap:3px; flex:1; }
-    .ui-bar-inner { width:100%; border-radius:3px 3px 0 0; background:rgba(37,99,235,0.15); }
-    .ui-bar-inner--fill { background:linear-gradient(180deg,#2563eb,#5aa6ff); }
-    .ui-col-label { font-size:8px; color:var(--muted-2); font-weight:600; }
 
     /* Shipment Visibility */
     .sv-eta { font-size:12px; font-weight:700; color:#0d2344; text-align:center; }
@@ -1250,7 +1249,7 @@
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Core Engine</span>
-          <h2 class="section-title">A self-managed hygiene supply system, not a generic storefront.</h2>
+          <h2 class="section-title">A coordinated hygiene replenishment loop, not a generic storefront.</h2>
           <p class="section-intro">
             The illustrative operating model is a continuous loop: plan selection, usage, cadence, logistics, and fulfillment reinforcing one another. Each step is a developed concept an operator could deploy.
           </p>
@@ -1260,10 +1259,46 @@
           <div class="flow-main glass">
             <h3 class="card-label">System Visualization</h3>
             <div class="visual-frame">
-              <img src="assets/images/business-systems.jpg" alt="Concept diagram of a continuous hygiene replenishment loop" />
+              <div class="arch-diagram">
+                <div class="arch-layer arch-layer--demand">
+                  <span class="arch-layer-label">Household Need</span>
+                  <div class="arch-layer-tags">
+                    <span>Paper</span><span>Personal care</span><span>Cleaning</span>
+                  </div>
+                </div>
+                <div class="arch-connector"><div class="arch-line"></div><div class="arch-arrow"></div></div>
+                <div class="arch-layer arch-layer--core">
+                  <div class="arch-core-desc">Plan and cadence</div>
+                  <div class="arch-core-signals">
+                    <span>Basket</span><span>Timing</span><span>Skip</span><span>Adjust</span>
+                  </div>
+                </div>
+                <div class="arch-connector"><div class="arch-line"></div><div class="arch-arrow"></div></div>
+                <div class="arch-layer arch-layer--demand">
+                  <span class="arch-layer-label">Usage and cadence signals</span>
+                  <div class="arch-layer-tags">
+                    <span>Depletion</span><span>Signal</span><span>Decision support</span>
+                  </div>
+                </div>
+                <div class="arch-connector"><div class="arch-line"></div><div class="arch-arrow"></div></div>
+                <div class="arch-layer arch-layer--fulfill">
+                  <span class="arch-layer-label">Operator fulfillment</span>
+                  <div class="arch-layer-tags">
+                    <span>Commerce system</span><span>Delivery</span>
+                  </div>
+                </div>
+                <div class="arch-connector"><div class="arch-line"></div><div class="arch-arrow"></div></div>
+                <div class="arch-layer arch-layer--demand">
+                  <span class="arch-layer-label">Household return</span>
+                  <div class="arch-layer-tags">
+                    <span>Cycle closes</span><span>Next need</span>
+                  </div>
+                </div>
+                <div class="loop-return"><span aria-hidden="true">↺</span><span>Next cycle</span></div>
+              </div>
             </div>
             <p class="card-copy">
-              The story is circular. A household enters through plan setup, usage becomes visible, cadence adapts, and fulfillment follows. Completed delivery is what makes the next cycle more accurate.
+              A household enters through plan setup, usage and cadence signals can inform the cycle, operator fulfillment follows, and completed delivery closes the loop.
             </p>
           </div>
 
@@ -1271,7 +1306,25 @@
             <div>
               <h3 class="card-label">Retention Control</h3>
               <div class="visual-frame">
-                <img src="assets/images/your-subscription.jpg" alt="Concept interface for managing a hygiene subscription" />
+                <div class="ui-card">
+                  <div class="ui-card-header">Household Plan</div>
+                  <span class="ui-micro">Next cycle</span>
+                  <div class="pb-size" style="font-size:1.15rem">In 18 days</div>
+                  <div class="ui-divider"></div>
+                  <span class="ui-micro">Household essentials</span>
+                  <div style="display:flex;flex-direction:column;gap:4px;">
+                    <div class="pb-product"><span>Paper hygiene</span><span class="pb-pill">On</span></div>
+                    <div class="pb-product"><span>Personal care</span><span class="pb-pill">On</span></div>
+                    <div class="pb-product"><span>Cleaning essentials</span><span class="pb-pill pb-pill--off">Off</span></div>
+                  </div>
+                  <div class="ui-divider"></div>
+                  <span class="ui-micro">Controls</span>
+                  <div class="pb-cad-row">
+                    <span class="pb-cad">Pause</span>
+                    <span class="pb-cad">Skip</span>
+                    <span class="pb-cad pb-cad--on">Adjust</span>
+                  </div>
+                </div>
               </div>
               <p class="card-copy">
                 Pause, skip, edit, and cadence changes are the controls that keep a replenishment relationship stable. They are shown here as interface concepts.
@@ -1279,28 +1332,23 @@
             </div>
 
             <div>
-              <h3 class="card-label">Usage Intelligence</h3>
+              <h3 class="card-label">Usage Signals</h3>
               <div class="visual-frame">
                 <div class="ui-card">
-                  <div class="ui-card-header">Replenishment Signal</div>
-                  <div style="display:flex;flex-direction:column;gap:5px;">
-                    <span class="ui-micro">Current Supply Level</span>
-                    <div class="ui-level-bar"><div class="ui-level-fill" style="width:28%"></div></div>
-                    <span class="ui-level-val">Running Low — 28%</span>
-                  </div>
+                  <div class="ui-card-header">Replenishment State</div>
+                  <ol class="state-seq">
+                    <li>Available</li>
+                    <li>In use</li>
+                    <li class="state-now">Running low</li>
+                    <li>Replenish</li>
+                    <li>Return</li>
+                  </ol>
                   <div class="ui-signal-row">
                     <div class="ui-pulse"></div>
                     <div>
-                      <div class="ui-signal-text">Replenishment Signal Active</div>
-                      <div class="ui-signal-date">Next delivery: Nov 18</div>
+                      <div class="ui-signal-text">Usage signal</div>
+                      <div class="ui-signal-date">Next cycle: in 18 days</div>
                     </div>
-                  </div>
-                  <div class="ui-chart">
-                    <div class="ui-col"><div class="ui-bar-inner" style="height:80%"></div><span class="ui-col-label">Wk 42</span></div>
-                    <div class="ui-col"><div class="ui-bar-inner" style="height:60%"></div><span class="ui-col-label">Wk 43</span></div>
-                    <div class="ui-col"><div class="ui-bar-inner" style="height:38%"></div><span class="ui-col-label">Wk 44</span></div>
-                    <div class="ui-col"><div class="ui-bar-inner" style="height:18%"></div><span class="ui-col-label">Wk 45</span></div>
-                    <div class="ui-col"><div class="ui-bar-inner ui-bar-inner--fill" style="height:92%"></div><span class="ui-col-label" style="color:var(--blue)">Wk 46</span></div>
                   </div>
                 </div>
               </div>
@@ -1342,7 +1390,7 @@
                   <div class="arch-core-logo">HygieneRoll<span>.com</span></div>
                   <div class="arch-core-desc">Category-Native Entry Surface</div>
                   <div class="arch-core-signals">
-                    <span>Subscription</span><span>Cadence</span><span>Intelligence</span><span>Continuity</span>
+                    <span>Subscription</span><span>Cadence</span><span>Signals</span><span>Continuity</span>
                   </div>
                 </div>
                 <div class="arch-connector">
@@ -1352,7 +1400,7 @@
                 <div class="arch-layer arch-layer--fulfill">
                   <span class="arch-layer-label">Fulfillment &amp; Continuity</span>
                   <div class="arch-layer-tags">
-                    <span>Direct</span><span>Predictable</span><span>Owned</span>
+                    <span>Direct</span><span>Predictable</span><span>Operator-run</span>
                   </div>
                 </div>
               </div>
@@ -1401,9 +1449,21 @@
 
           <article class="stack-card">
             <span class="stack-kicker">03</span>
-            <div class="visual-frame">
-              <img src="assets/images/delivery-cadences.jpg" alt="Delivery cadence configuration" />
-            </div>
+              <div class="visual-frame">
+                <div class="ui-card">
+                  <div class="ui-card-header">Cadence Control</div>
+                  <span class="ui-micro">Timing follows the household</span>
+                  <div style="display:flex;flex-direction:column;gap:4px;">
+                    <div class="pb-product"><span>Paper hygiene</span><span class="pb-pill">Every 4 weeks</span></div>
+                    <div class="pb-product"><span>Personal care</span><span class="pb-pill">Every 6 weeks</span></div>
+                    <div class="pb-product"><span>Cleaning essentials</span><span class="pb-pill">Quarterly</span></div>
+                  </div>
+                  <div class="ui-divider"></div>
+                  <span class="ui-micro">Next cycle</span>
+                  <div class="pb-size" style="font-size:1.15rem">In 18 days</div>
+                  <div class="pb-confirm">Skip this cycle</div>
+                </div>
+              </div>
             <h3>Cadence Control</h3>
             <p class="stack-copy">
               Schedule flexibility reduces waste, stockout risk, and supply mismatch while positioning the system as adaptive instead of static.
@@ -1422,29 +1482,22 @@
                     <span class="cat-tier-badge">Entry Point</span>
                   </div>
                   <div class="cat-tier-detail">Tissue · Rolls · Paper Towels · Wipes</div>
-                  <div class="cat-tier-bar">
-                    <div class="cat-tier-fill" style="width:100%"></div>
-                  </div>
                 </div>
+                <div class="arch-connector"><div class="arch-line"></div><div class="arch-arrow"></div></div>
                 <div class="cat-tier">
                   <div class="cat-tier-top">
                     <span class="cat-tier-name">Personal Care</span>
                     <span class="cat-tier-badge cat-tier-badge--soft">Expansion Layer</span>
                   </div>
                   <div class="cat-tier-detail">Soap · Body Wash · Sanitizer · Essentials</div>
-                  <div class="cat-tier-bar">
-                    <div class="cat-tier-fill cat-tier-fill--mid" style="width:70%"></div>
-                  </div>
                 </div>
+                <div class="arch-connector"><div class="arch-line"></div><div class="arch-arrow"></div></div>
                 <div class="cat-tier">
                   <div class="cat-tier-top">
                     <span class="cat-tier-name">Household Hygiene</span>
                     <span class="cat-tier-badge cat-tier-badge--dim">Full Category</span>
                   </div>
                   <div class="cat-tier-detail">Cleaning · Disinfecting · Home Essentials</div>
-                  <div class="cat-tier-bar">
-                    <div class="cat-tier-fill cat-tier-fill--low" style="width:46%"></div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -1455,11 +1508,29 @@
 
           <article class="dual-card glass">
             <h3 class="card-label">Operations Layer</h3>
-            <div class="visual-frame">
-              <img src="assets/images/dashboard.jpg" alt="Concept dashboard for shipment, schedule, and account continuity" />
-            </div>
+              <div class="visual-frame">
+                <div class="ui-card">
+                  <div class="ui-card-header">Concept Dashboard</div>
+                  <div class="ac-plan">
+                    <div>
+                      <div class="ac-plan-name">Household plan</div>
+                      <div class="ac-plan-sub">Every 4 weeks · Illustrative</div>
+                    </div>
+                  </div>
+                  <div class="ui-divider"></div>
+                  <div class="ac-item"><span>Upcoming cycle</span><span class="ac-badge ac-badge--on">In 18 days</span></div>
+                  <div class="ac-item"><span>Inventory signal</span><span class="ac-badge ac-badge--on">Running low</span></div>
+                  <div class="ac-item"><span>Delivery state</span><span class="ac-badge">Queued</span></div>
+                  <div class="ac-item"><span>Adjustment queue</span><span class="ac-badge">Skip requested</span></div>
+                  <div class="ui-divider"></div>
+                  <span class="ui-micro">Category mix</span>
+                  <div class="arch-layer-tags">
+                    <span>Paper</span><span>Personal care</span><span>Cleaning</span>
+                  </div>
+                </div>
+              </div>
             <p class="stack-copy">
-              A concept dashboard for shipment visibility, schedule control, and account continuity. It is the operational center of the illustrative model.
+              A concept dashboard for upcoming cycles, cadence status, and category mix. It shows how an operator would read the household relationship.
             </p>
           </article>
         </div>
@@ -1480,7 +1551,7 @@
           <article class="stack-card">
             <span class="stack-kicker">04</span>
             <div class="visual-frame">
-              <img src="assets/images/delivery-photo.jpg" alt="Illustration of a HygieneRoll box on a doorstep" />
+              <img src="assets/images/delivery-photo.jpg" alt="Deployment illustration of a branded HygieneRoll package at a household door" />
             </div>
             <h3>Branded Delivery</h3>
             <p class="stack-copy">
@@ -1493,7 +1564,7 @@
             <div class="visual-frame">
               <div class="ui-card">
                 <div class="ui-card-header">Next Delivery</div>
-                <div class="sv-eta">ETA: Nov 18 · 2:30 PM</div>
+                <div class="sv-eta">Next cycle · In 18 days</div>
                 <div class="sv-track">
                   <div class="sv-node">
                     <div class="sv-dot sv-dot--done"></div>
@@ -1515,7 +1586,7 @@
                     <span class="sv-node-label">Delivered</span>
                   </div>
                 </div>
-                <div class="sv-badge">In Transit · On Schedule</div>
+                <div class="sv-badge">Illustrative · In transit</div>
               </div>
             </div>
             <h3>Shipment Visibility</h3>
@@ -1531,8 +1602,8 @@
                 <div class="ui-card-header">Account Settings</div>
                 <div class="ac-plan">
                   <div>
-                    <div class="ac-plan-name">Premium Plan</div>
-                    <div class="ac-plan-sub">Renews Monthly · Active</div>
+                    <div class="ac-plan-name">Household Plan</div>
+                    <div class="ac-plan-sub">Every 4 weeks · Illustrative</div>
                   </div>
                   <span class="ac-manage">Manage</span>
                 </div>
