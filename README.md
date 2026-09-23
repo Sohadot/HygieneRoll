@@ -38,6 +38,7 @@ The public asset currently includes:
 - operating logic for a direct replenishment loop
 - household expansion logic from paper hygiene into personal care and home essentials
 - a public acquisition surface with a direct inquiry path
+- a browser-based household hygiene replenishment calculator using user-supplied usage, lead-time, buffer, and variability assumptions
 
 No customers, revenue, fulfillment operation, or live subscription product are claimed. Interface screens are concepts developed to show how an operator could deploy the model.
 
@@ -64,6 +65,7 @@ Public pages:
 
 - [Home](https://hygieneroll.com/) — the asset thesis, operating concepts, and acquisition availability
 - [Replenishment model](https://hygieneroll.com/replenishment-model.html) — the reference document for the operating logic
+- [Calculator](https://hygieneroll.com/calculator.html) — a local planning estimator driven by the visitor’s own usage, lead-time, buffer, and variability assumptions
 
 ## Strategic acquisition inquiries
 
@@ -84,8 +86,12 @@ HygieneRoll/
 ├── CNAME
 ├── index.html
 ├── replenishment-model.html
+├── calculator.html
+├── CALCULATOR_METHODOLOGY.md
 ├── assets/
-│   └── images/
+│   ├── images/
+│   └── js/
+├── tests/
 ├── robots.txt
 └── sitemap.xml
 ```
