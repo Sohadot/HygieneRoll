@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Household Hygiene Replenishment Calculator — HygieneRoll.com</title>
+  <meta name="description" content="Estimate household hygiene depletion and replenishment windows using your own usage, lead-time, and buffer assumptions." />
+  <link rel="canonical" href="https://hygieneroll.com/calculator.html" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#081a34" />
+
+  <meta property="og:title" content="Household Hygiene Replenishment Calculator — HygieneRoll.com" />
+  <meta property="og:description" content="Estimate household hygiene depletion and replenishment windows from your own usage, lead-time, and buffer assumptions." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hygieneroll.com/calculator.html" />
+  <meta property="og:image" content="https://hygieneroll.com/assets/images/hygieneroll-social.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="HygieneRoll social preview for recurring household hygiene replenishment, with paper, soap, towels, and personal care." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Household Hygiene Replenishment Calculator — HygieneRoll.com" />
+  <meta name="twitter:description" content="Estimate household hygiene depletion and replenishment windows from your own usage, lead-time, and buffer assumptions." />
+  <meta name="twitter:image" content="https://hygieneroll.com/assets/images/hygieneroll-social.jpg" />
+  <meta name="twitter:image:alt" content="HygieneRoll social preview for recurring household hygiene replenishment, with paper, soap, towels, and personal care." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://hygieneroll.com/calculator.html#webpage",
+    "url": "https://hygieneroll.com/calculator.html",
+    "name": "Household Hygiene Replenishment Calculator — HygieneRoll.com",
+    "description": "Estimate household hygiene depletion and replenishment windows using your own usage, lead-time, and buffer assumptions.",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "HygieneRoll.com",
+      "url": "https://hygieneroll.com/"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --text: #0b1f3b;
+      --muted: #566a84;
+      --blue: #2563eb;
+      --navy: #081a34;
+      --line: rgba(15, 35, 66, 0.08);
+      --shadow: 0 18px 50px rgba(12, 30, 61, 0.08);
+      --radius-xl: 34px;
+      --radius-md: 20px;
+      --container: 1100px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(95, 165, 255, 0.14), transparent 28%),
+        radial-gradient(circle at 100% 20%, rgba(37, 99, 235, 0.06), transparent 24%),
+        linear-gradient(180deg, #f7fbff 0%, #eef4fb 52%, #eaf1f8 100%);
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p { margin: 0; }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: -48px;
+      z-index: 2000;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #0d2344;
+      color: #fff;
+      font-weight: 700;
+    }
+    .skip-link:focus { top: 12px; }
+
+    .container {
+      width: min(calc(100% - 40px), var(--container));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(245, 249, 255, 0.84);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(15, 35, 66, 0.06);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 88px;
+      padding: 12px 0;
+    }
+
+    .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-logo { width: 44px; height: 44px; object-fit: contain; flex: 0 0 44px; }
+    .brand-mark { display: inline-flex; align-items: baseline; letter-spacing: -0.045em; font-weight: 800; white-space: nowrap; }
+    .brand-mark span:first-child { font-size: 2rem; color: #0f2342; }
+    .brand-mark .dotcom { margin-left: 2px; font-size: 1.18rem; color: var(--blue); font-weight: 800; }
+    .nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-link, .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 44px;
+      padding: 0 14px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #5e6f86;
+    }
+    .nav-link.active, .nav-link:hover { color: #0f2342; background: rgba(37, 99, 235, 0.05); }
+    .nav-cta {
+      min-width: 108px;
+      color: #0f2342;
+      font-weight: 700;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid rgba(15, 35, 66, 0.06);
+    }
+
+    .page { padding: 48px 0 28px; }
+    .eyebrow {
+      display: inline-flex;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,255,255,0.8);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin-top: 18px;
+      max-width: 16ch;
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      color: #0d2344;
+    }
+    .lead, .prose p, .field-hint, .result-aside, .result-note {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    .lead { margin-top: 18px; max-width: 68ch; }
+    .trust { margin-top: 14px; font-weight: 650; color: #24405f; }
+
+    .glass {
+      background: rgba(255,255,255,0.86);
+      border: 1px solid rgba(255,255,255,0.74);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+    }
+
+    .calculator { margin-top: 34px; }
+    .item-card { margin: 0 0 18px; padding: 22px; min-width: 0; border: 1px solid rgba(255,255,255,0.74); }
+    .item-legend, .usage-method legend, .planning h3 {
+      padding: 0;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #12325d;
+    }
+    .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin-top: 14px; }
+    .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    .field[hidden] { display: none; }
+    .field label, .choice { font-size: 0.92rem; font-weight: 650; color: #1c3558; }
+    input, select {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(15, 35, 66, 0.14);
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      font-size: 16px;
+    }
+    .usage-method { grid-column: 1 / -1; margin-top: 4px; padding: 0; border: 0; }
+    .choice { display: flex; align-items: flex-start; gap: 8px; margin: 8px 0; font-weight: 600; }
+    .choice input { width: auto; min-height: 0; margin-top: 3px; }
+    .planning { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .field-hint { margin-top: 12px; font-size: 0.95rem; }
+    .field-error {
+      margin: 0;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(37, 99, 235, 0.08);
+      color: #0b1f3b;
+      font-size: 0.92rem;
+      font-weight: 650;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 18px;
+      border-radius: 16px;
+      border: 0;
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    .btn-primary { color: #fff; background: linear-gradient(135deg, #2a67d8, #4387ff); }
+    .btn-secondary, .btn-quiet {
+      color: var(--navy);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(15, 35, 66, 0.1);
+    }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .remove-item { margin-top: 16px; }
+    .limit-note { margin: 8px 0 0; color: var(--muted); }
+    .privacy { margin-top: 14px; }
+
+    .results { margin-top: 28px; }
+    .result-card { padding: 22px 24px; margin-bottom: 16px; }
+    .result-card h2, .results-title, .prose h2 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: -0.04em;
+      color: #0d2344;
+    }
+    .results-title { margin: 8px 0 14px; }
+    .result-name { margin-top: 8px; font-size: 1.15rem; font-weight: 750; }
+    .result-row { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid rgba(15, 35, 66, 0.06); }
+    .result-row span { color: var(--muted); }
+    .result-aside, .result-note { margin-top: 8px; }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .prose { margin-top: 42px; }
+    .prose h2 { margin-bottom: 12px; }
+    .prose p, .prose li { color: var(--muted); font-size: 1.05rem; line-height: 1.7; }
+    .prose p + p, .prose ul { margin-top: 12px; }
+    .prose ul { padding-left: 1.2rem; }
+    .prose a, .footer a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+    details { margin-top: 16px; }
+    summary { cursor: pointer; font-weight: 750; color: #12325d; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+
+    .footer { padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(167, 188, 217, 0.18);
+      padding-top: 22px;
+    }
+
+    @media (max-width: 768px) {
+      .container { width: min(calc(100% - 24px), var(--container)); }
+      .nav { min-height: 0; flex-wrap: wrap; align-items: flex-start; }
+      .nav-actions { width: 100%; }
+      .brand-mark span:first-child { font-size: 1.6rem; }
+      .field-grid { grid-template-columns: 1fr; }
+      .actions, .btn { width: 100%; }
+      .result-row { flex-direction: column; gap: 2px; }
+      h1 { max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#top">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="HygieneRoll.com home">
+        <img src="assets/images/logo-hygieneroll.png" class="brand-logo" alt="HygieneRoll logo" />
+        <span class="brand-mark"><span>HygieneRoll</span><span class="dotcom">.com</span></span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link" href="replenishment-model.html">Model</a>
+        <a class="nav-link active" href="calculator.html" aria-current="page">Calculator</a>
+        <a class="nav-link" href="index.html#flow">System</a>
+        <a class="nav-link" href="index.html#interfaces">Interfaces</a>
+        <a class="nav-cta" href="index.html#acquire">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="page">
+    <div class="container">
+      <span class="eyebrow">Public Utility</span>
+      <h1>Household Hygiene Replenishment Calculator</h1>
+      <p class="lead">Estimate when recurring household hygiene supplies enter their replenishment window — using your own usage, lead-time, and buffer assumptions.</p>
+      <p class="trust">No hidden consumption benchmarks. No account required.</p>
+
+      <section class="calculator" aria-labelledby="calculator-heading">
+        <h2 id="calculator-heading" class="sr-only">Scenario</h2>
+        <noscript>
+          <p class="lead">This calculator requires JavaScript to perform local calculations. The method and the limits below still apply.</p>
+        </noscript>
+        <form id="calculator-form" action="#" method="post">
+          <div id="item-list"></div>
+          <p id="item-limit" class="limit-note" hidden>v0.1 supports up to 10 items per scenario.</p>
+          <div class="actions">
+            <button type="button" class="btn btn-secondary" id="add-item">Add item</button>
+            <button type="submit" class="btn btn-primary">Calculate replenishment window</button>
+            <button type="button" class="btn btn-secondary" id="reset-scenario">Reset scenario</button>
+          </div>
+          <p class="privacy">Calculator inputs are processed locally in your browser and are not stored by this tool.</p>
+        </form>
+        <div id="calculator-status" class="sr-only" aria-live="polite"></div>
+        <div id="calculator-results" class="results"></div>
+      </section>
+
+      <section class="prose" aria-labelledby="method-heading">
+        <h2 id="method-heading">How this estimate works</h2>
+        <p>Every number comes from what you enter. The calculator does not contain an average household, a hidden usage table, or a claim about how fast a product is actually used.</p>
+        <p>Current supply is divided by the usage you observed or estimated. That produces a weekly rate, whether you entered units per week or how long the current quantity usually lasts. Lead time and your safety buffer are then subtracted from that depletion timing. If you set a variability allowance, the window widens on both sides. At 0%, it stays a single estimate.</p>
+        <p>The result is a planning estimate. Actual consumption may differ. A subscription asks when something should ship again. This tool asks when the household is likely to need the item again, and it answers only from the assumptions you supply.</p>
+        <details>
+          <summary>Formulas</summary>
+          <p>Weekly method: <code>weekly_usage = units per week</code>.</p>
+          <p>Duration method: <code>weekly_usage = current_quantity / duration_weeks</code>.</p>
+          <p>Variability <code>v</code> is the entered percent divided by 100, from 0 to 0.50. Slow usage is <code>weekly_usage × (1 − v)</code>. Fast usage is <code>weekly_usage × (1 + v)</code>.</p>
+          <p>Depletion days are <code>(quantity / usage) × 7</code>. At 0% variability the day is rounded to the nearest whole day. Above 0%, the early bound is floored and the late bound is ceiled.</p>
+          <p>Planning trigger days are <code>depletion − lead time − buffer</code>, then clamped at 0. Illustrative cadence uses the same day rule with the replenishment quantity, or the current quantity if that field is blank.</p>
+        </details>
+      </section>
+
+      <section class="prose" aria-labelledby="limits-heading">
+        <h2 id="limits-heading">Limitations</h2>
+        <ul>
+          <li>Estimates depend on the inputs you provide.</li>
+          <li>Household behavior can change.</li>
+          <li>Product sizes and unit definitions vary.</li>
+          <li>The tool does not predict actual consumption.</li>
+          <li>The variability allowance is user-selected, not a statistical confidence interval.</li>
+          <li>The output is a planning aid, not medical or sanitation-safety guidance.</li>
+          <li>v0.1 contains no embedded consumption benchmarks.</li>
+        </ul>
+      </section>
+
+      <section class="prose" aria-labelledby="related-heading">
+        <h2 id="related-heading">Related</h2>
+        <p>The reference for this loop is the <a href="replenishment-model.html">replenishment model</a>. Different essentials can deplete on different clocks. This calculator makes those clocks legible. It does not turn them into one subscription.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>HygieneRoll.com — developed digital asset for recurring household hygiene replenishment</span>
+      <a href="replenishment-model.html">Replenishment model</a>
+      <span>Presented by Sohadot</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/replenishment-engine.js"></script>
+  <script src="assets/js/replenishment-calculator.js"></script>
+</body>
+</html>
