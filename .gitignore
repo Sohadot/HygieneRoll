@@ -1,0 +1,9 @@
+.claude/
+.cursor/
+.env
+.env.*
+*.local
+.DS_Store
+Thumbs.db
+__pycache__/
+node_modules/

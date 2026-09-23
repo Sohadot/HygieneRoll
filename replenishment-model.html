@@ -5,19 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>The D2C Hygiene Replenishment Model — HygieneRoll.com</title>
-  <meta name="description" content="A reference framework for direct-to-consumer hygiene replenishment: subscription logic, cadence control, usage visibility, fulfillment continuity, and the role of category-native consumer entry points." />
+  <meta name="description" content="A public reference for direct hygiene replenishment: subscription logic, cadence, usage visibility, fulfillment continuity, and category-native entry." />
+  <link rel="canonical" href="https://hygieneroll.com/replenishment-model.html" />
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#081a34" />
 
   <meta property="og:title" content="The D2C Hygiene Replenishment Model — HygieneRoll.com" />
-  <meta property="og:description" content="Why hygiene categories increasingly require owned consumer entry points, and what changes when replenishment becomes a direct, recurring relationship." />
+  <meta property="og:description" content="Why recurring hygiene needs an owned consumer entry point, and what changes when replenishment is a direct relationship." />
   <meta property="og:type" content="article" />
-  <meta property="og:image" content="assets/images/hygiene-roll.png" />
+  <meta property="og:url" content="https://hygieneroll.com/replenishment-model.html" />
+  <meta property="og:image" content="https://hygieneroll.com/assets/images/hygiene-roll.jpg" />
+  <meta property="og:image:alt" content="HygieneRoll concept still life with paper hygiene, soap, towels, and a toothbrush" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="The D2C Hygiene Replenishment Model — HygieneRoll.com" />
-  <meta name="twitter:description" content="A reference framework for category-native hygiene replenishment systems." />
-  <meta name="twitter:image" content="assets/images/hygiene-roll.png" />
+  <meta name="twitter:description" content="A public reference for category-native hygiene replenishment." />
+  <meta name="twitter:image" content="https://hygieneroll.com/assets/images/hygiene-roll.jpg" />
+  <meta name="twitter:image:alt" content="HygieneRoll concept still life with paper hygiene, soap, towels, and a toothbrush" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://hygieneroll.com/#website",
+        "name": "HygieneRoll.com",
+        "url": "https://hygieneroll.com/"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://hygieneroll.com/replenishment-model.html#webpage",
+        "url": "https://hygieneroll.com/replenishment-model.html",
+        "name": "The D2C Hygiene Replenishment Model",
+        "description": "A public reference for direct hygiene replenishment and category-native consumer entry.",
+        "isPartOf": { "@id": "https://hygieneroll.com/#website" }
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,8 +58,8 @@
       --line: rgba(15, 35, 66, 0.08);
       --line-soft: rgba(132, 160, 198, 0.16);
       --text: #0b1f3b;
-      --muted: #61728b;
-      --muted-2: #7a8aa1;
+      --muted: #566a84;
+      --muted-2: #526680;
       --blue: #2563eb;
       --blue-2: #5aa6ff;
       --navy: #081a34;
@@ -75,6 +101,36 @@
 
     img { display: block; max-width: 100%; }
     a { color: inherit; text-decoration: none; }
+
+    a:focus-visible,
+    .btn:focus-visible,
+    .nav-link:focus-visible,
+    .nav-cta:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: -48px;
+      z-index: 2000;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #0d2344;
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .skip-link:focus { top: 12px; }
+
+    .reference-prose a,
+    .stack-copy a,
+    .footer a {
+      color: var(--blue);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
 
     .container {
       width: min(calc(100% - 40px), var(--container));
@@ -340,12 +396,26 @@
       color: #0d2344;
     }
 
+    .card-label,
     .stack-card h4,
     .dual-card h4 {
       font-size: 13px;
+      font-weight: 800;
       color: var(--blue);
       text-transform: uppercase;
       letter-spacing: 0.08em;
+      margin-bottom: 14px;
+    }
+
+    .stack-card h3.card-label,
+    .dual-card h3.card-label {
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.3;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      text-transform: uppercase;
+      margin: 0 0 14px;
     }
 
     .stack-copy {
@@ -409,8 +479,11 @@
       }
 
       .nav {
-        min-height: 80px;
+        min-height: 0;
         gap: 10px;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        padding-bottom: 8px;
       }
 
       .brand-logo {
@@ -422,13 +495,25 @@
       .brand-mark span:first-child { font-size: 1.72rem; }
       .brand-mark .dotcom { font-size: 1rem; }
 
-      .nav-link { display: none; }
+      .nav-actions {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .nav-link {
+        display: inline-flex;
+        height: 36px;
+        padding: 0 10px;
+        font-size: 0.86rem;
+      }
 
       .nav-cta {
-        min-width: 108px;
-        height: 50px;
-        padding: 0 16px;
-        font-size: 0.92rem;
+        min-width: 0;
+        height: 36px;
+        padding: 0 12px;
+        font-size: 0.86rem;
+        border-radius: 999px;
       }
 
       .section,
@@ -474,11 +559,11 @@
       }
 
       .comparison-table td:first-child {
-        white-space: normal;
+        white-space: normal !important;
       }
 
       .buyer-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
       }
     }
 
@@ -489,6 +574,11 @@
       color: #0d2344;
       line-height: 1;
       margin: 4px 0 8px;
+    }
+
+    .stat-figure--label {
+      font-size: clamp(2rem, 3vw, 2.4rem);
+      letter-spacing: -0.04em;
     }
 
     .table-wrap {
@@ -557,6 +647,7 @@
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#top">Skip to content</a>
   <header class="site-header">
     <div class="container nav">
       <a href="index.html" class="brand" aria-label="HygieneRoll.com home">
@@ -663,7 +754,7 @@
 
         <div class="visual-grid-2">
           <article class="dual-card glass">
-            <h4>Force 01</h4>
+            <p class="card-label">Force 01</p>
             <h3>Subscription Logic</h3>
             <p class="stack-copy">
               Converts irregular purchase events into predictable recurring relationships. The household's behavior becomes legible to the operator for the first time.
@@ -671,7 +762,7 @@
           </article>
 
           <article class="dual-card glass">
-            <h4>Force 02</h4>
+            <p class="card-label">Force 02</p>
             <h3>Cadence Control</h3>
             <p class="stack-copy">
               Gives the household and the operator shared control over delivery rhythm. Reduces both stockouts and oversupply, and makes the relationship feel adaptive rather than rigid.
@@ -679,7 +770,7 @@
           </article>
 
           <article class="dual-card glass">
-            <h4>Force 03</h4>
+            <p class="card-label">Force 03</p>
             <h3>Usage Visibility</h3>
             <p class="stack-copy">
               Captures the rate at which a product is actually consumed, allowing the system to evolve from order-taking into demand-sensing. The platform improves with time, not against it.
@@ -687,7 +778,7 @@
           </article>
 
           <article class="dual-card glass">
-            <h4>Force 04</h4>
+            <p class="card-label">Force 04</p>
             <h3>Fulfillment Continuity</h3>
             <p class="stack-copy">
               Makes reliability part of the product. The household experiences uninterrupted supply rather than reactive reorder. Trust forms through repeatability, not through promotion.
@@ -748,7 +839,7 @@
             <span class="stack-kicker">T3</span>
             <h3>Household Hygiene</h3>
             <p class="stack-copy">
-              Cleaning products, disinfectants, recurring home essentials. Same relationship, broader basket. The platform deepens without losing focus on replenishment behavior.
+              Cleaning products, disinfectants, recurring home essentials. Same relationship, broader basket. The household relationship deepens without leaving replenishment behavior.
             </p>
           </article>
         </div>
@@ -758,45 +849,44 @@
     <section class="section section-tight">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">06 — Market Reality</span>
-          <h2 class="section-title">Three markets. One behavioral intersection.</h2>
+          <span class="eyebrow">06 — Market Context</span>
+          <h2 class="section-title">Reference markets. Not a revenue claim.</h2>
           <p class="section-intro">
-            HygieneRoll.com does not sit inside a single market. It sits at the intersection of three distinct but convergent ones — each organized around the same underlying consumer behavior: predictable, habitual, and operationally underserved by direct ownership.
+            The model sits beside recurring subscription behavior and household cleaning and hygiene demand. The figures below are published context for that behavior. They are not HygieneRoll revenue, and they are not a valuation.
           </p>
         </div>
 
         <div class="visual-grid-3">
           <article class="stack-card">
-            <h4>Subscription Economy</h4>
-            <div class="stat-figure">$1.5T</div>
+            <h3 class="card-label">Subscription Economy</h3>
+            <div class="stat-figure">$1.51T</div>
             <p class="stack-copy">
-              Global subscription economy valued at $492.34B in 2024, projected to reach $1.512T by 2033. The structural shift toward recurring consumer relationships is already underway.
+              2033 forecast. Grand View Research estimates the global subscription economy at $492.34 billion in 2024 and $1,512.14 billion by 2033. The series covers subscription businesses across industries, not household hygiene.
             </p>
-            <p class="stack-copy" style="font-size:0.88em;color:var(--muted-2);margin-top:4px;">Source: Grand View Research</p>
+            <p class="stack-copy"><a href="https://www.grandviewresearch.com/industry-analysis/subscription-economy-market-report">Grand View Research</a></p>
           </article>
 
           <article class="stack-card">
-            <h4>Hygiene Category Scale</h4>
-            <div class="stat-figure">$43B</div>
+            <h3 class="card-label">Cleaning and Hygiene Products</h3>
+            <div class="stat-figure">$43.3B</div>
             <p class="stack-copy">
-              Global cleaning and hygiene products market valued at $32.123B in 2024, projected to reach $43.314B by 2033. The category is large, growing, and demand is structural.
+              2033 forecast. The same publisher’s cleaning and hygiene products series estimates $32,123.1 million in 2024 and $43,313.8 million by 2033. It covers cleaning tools, personal care, kitchen care, and fabric care.
             </p>
-            <p class="stack-copy" style="font-size:0.88em;color:var(--muted-2);margin-top:4px;">Source: Grand View Research</p>
+            <p class="stack-copy"><a href="https://www.grandviewresearch.com/industry-analysis/cleaning-hygiene-products-market-report">Grand View Research</a></p>
           </article>
 
           <article class="stack-card">
-            <h4>Paper-Based Foundation</h4>
-            <div class="stat-figure">$281B</div>
+            <h3 class="card-label">Paper Hygiene Entry</h3>
+            <div class="stat-figure stat-figure--label">Entry</div>
             <p class="stack-copy">
-              Global paper products market valued at $270.23B in 2024, projected to reach $281.23B by 2030 — the highest-frequency, most habitual layer of household replenishment behavior.
+              Tissue, rolls, towels, and wipes are the clearest household entry point. A global paper-products total is not used here. Published series mix packaging and graphic paper with sanitary paper, so that headline does not measure household hygiene.
             </p>
-            <p class="stack-copy" style="font-size:0.88em;color:var(--muted-2);margin-top:4px;">Source: Grand View Research</p>
           </article>
         </div>
 
         <div class="reference-prose" style="margin-top: 28px;">
           <p>
-            These figures are not cited to suggest HygieneRoll.com captures them directly. They are cited because the consumer behavior that organizes each of them — recurring, habitual, category-first — is precisely what a category-native replenishment surface is designed to intercept.
+            These figures describe markets an operator would recognize. They do not describe what HygieneRoll earns. The relevant question is who owns the moment a household replenishes, not how large an adjacent market can be made to sound.
           </p>
         </div>
       </div>
@@ -844,15 +934,15 @@
               <tr>
                 <td>Own a category-native entry layer</td>
                 <td>The category surface is already legible and aligned with recurring hygiene behavior.</td>
-                <td>Immediate activation potential</td>
-                <td>Owned surface.</td>
+                <td>Naming time is already spent. Fulfillment is not.</td>
+                <td>The surface is developed. Operating it still belongs to the acquirer.</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <p class="market-note" style="margin-top: 28px;">
-          Few assets combine category clarity, recurring-use logic, and a clean .com surface in one deployable name.
+          Few names combine category clarity, recurring-use logic, and a developed public model on one .com surface. That is a description of the asset, not evidence of commercial traction.
         </p>
       </div>
     </section>
@@ -860,10 +950,10 @@
     <section class="section section-tight">
       <div class="container">
         <div class="section-head">
-          <span class="eyebrow">08 — Who This Is For</span>
-          <h2 class="section-title">Three buyer profiles. One logical fit.</h2>
+          <span class="eyebrow">08 — Operator Archetypes</span>
+          <h2 class="section-title">Three deployment contexts. One logical fit.</h2>
           <p class="section-intro">
-            The asset is not positioned as available to anyone. It is structured for a specific set of operators — each of whom has a distinct reason to value category-native consumer infrastructure over generic alternatives.
+            The model is legible to three kinds of operator. Each has a different reason to value a category-native consumer layer. These are archetypes, not a named buyer list.
           </p>
         </div>
 
@@ -903,10 +993,10 @@
         </div>
         <div class="reference-prose">
           <p>
-            The replenishment model described here is not theoretical. It is the operating logic that any serious D2C hygiene initiative must eventually adopt. The remaining question is not whether the model works, but which surface holds it.
+            The replenishment model described here is an operating concept, not a claim of live commercial activity. It is the logic a direct hygiene initiative has to adopt. The remaining question is which surface holds it.
           </p>
           <p>
-            <a href="index.html">HygieneRoll.com</a> was structured as the category-native consumer entry layer for this model — anchored in paper-based hygiene, designed to extend across the full household category, and presented as a deployable surface rather than a speculative name.
+            <a href="index.html">HygieneRoll.com</a> was developed as the category-native consumer entry layer for this model — anchored in paper hygiene, designed to extend across the household, and presented as a deployable concept rather than an operating company.
           </p>
         </div>
       </div>
@@ -916,7 +1006,8 @@
 
   <footer class="footer">
     <div class="container footer-inner">
-      <span>HygieneRoll.com — Category-Native Consumer Entry Layer for Recurring Hygiene Replenishment</span>
+      <span>HygieneRoll.com — developed digital asset for recurring household hygiene replenishment</span>
+      <a href="index.html">Home</a>
       <span>Presented by Sohadot</span>
     </div>
   </footer>
