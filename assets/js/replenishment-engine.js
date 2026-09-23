@@ -79,6 +79,30 @@
     return "every " + formatDepletion(window);
   }
 
+  var PRESET_UNIT_FORMS = {
+    rolls: ["roll", "rolls"],
+    packs: ["pack", "packs"],
+    bottles: ["bottle", "bottles"],
+    tubes: ["tube", "tubes"],
+    "bottles/refills": ["bottle or refill", "bottles or refills"],
+    "packs/bottles": ["pack or bottle", "packs or bottles"]
+  };
+
+  function formatQuantityNumber(value) {
+    if (Number.isInteger(value)) return String(value);
+    return String(Math.round(value * 100) / 100);
+  }
+
+  function formatSupply(quantity, unit, kind) {
+    var label = typeof unit === "string" ? unit.trim() : "";
+    if (kind === "preset" && Object.prototype.hasOwnProperty.call(PRESET_UNIT_FORMS, label)) {
+      var forms = PRESET_UNIT_FORMS[label];
+      label = quantity === 1 ? forms[0] : forms[1];
+    }
+    if (!label) return formatQuantityNumber(quantity);
+    return formatQuantityNumber(quantity) + " " + label;
+  }
+
   function usageWindow(quantity, fastUsage, slowUsage, variability) {
     if (variability === 0) {
       var day = roundHalfUp((quantity / fastUsage) * 7);
@@ -179,6 +203,7 @@
 
     var name = input.name.trim();
     var unit = typeof input.unit === "string" ? input.unit.trim() : "";
+    var unitKind = input.unitKind === "preset" ? "preset" : "custom";
     var quantity = input.quantity;
     var usage = normalizeUsage(input);
     var weeklyUsage = usage.weeklyUsage;
@@ -194,6 +219,7 @@
     return {
       name: name,
       unit: unit,
+      unitKind: unitKind,
       quantity: quantity,
       usageMode: input.usageMode,
       weeklyUsage: weeklyUsage,
@@ -235,6 +261,9 @@
     var tied = results.filter(function (item) {
       return item.trigger.earliest === soonest;
     });
+    var shared = tied.every(function (item) {
+      return item.trigger.latest === tied[0].trigger.latest;
+    });
 
     var nextDistinct = null;
     results.forEach(function (item) {
@@ -247,12 +276,12 @@
       items: results,
       nextReturn: {
         names: tied.map(function (item) { return item.name; }),
-        trigger: {
+        items: tied,
+        trigger: shared ? {
           earliest: tied[0].trigger.earliest,
           latest: tied[0].trigger.latest,
           single: tied[0].trigger.single
-        },
-        items: tied
+        } : null
       },
       anotherSoon: nextDistinct !== null && nextDistinct - soonest <= 7,
       clocksDiffer: results.some(function (item) {
@@ -270,6 +299,7 @@
     formatDepletion: formatDepletion,
     formatTrigger: formatTrigger,
     formatCadence: formatCadence,
-    formatWeekAside: formatWeekAside
+    formatWeekAside: formatWeekAside,
+    formatSupply: formatSupply
   };
 });

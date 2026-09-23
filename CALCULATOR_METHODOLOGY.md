@@ -17,7 +17,7 @@ Each item is an independent clock. The engine accepts:
 | Input | Meaning | Rule |
 | --- | --- | --- |
 | Item name | Preset label or custom name | Required, after trimming whitespace |
-| Unit label | Display unit only | Not used in the math |
+| Unit label | Display unit only | Not used in the math. Preset units are inflected for display. A custom unit is shown as entered |
 | Current quantity | Supply on hand | Must be a finite number greater than 0. Decimals are allowed |
 | Usage method | `weekly` or `duration` | Required |
 | Weekly use | Units used per week | Required and greater than 0 when the method is `weekly` |
@@ -30,6 +30,8 @@ Each item is an independent clock. The engine accepts:
 Household size is not an input. It does not determine consumption.
 
 Preset names supply a display name and a default unit label only. They do not supply a usage rate.
+
+Unit wording is display-only and does not change a result. Governed preset units use a singular form at exactly 1 and a plural form otherwise: roll/rolls, pack/packs, bottle/bottles, tube/tubes. Compound preset units use an explicit phrase rather than a broken plural: “bottle or refill” / “bottles or refills”, and “pack or bottle” / “packs or bottles”. A custom unit, including a preset unit the visitor rewrites, is an opaque label and is not pluralized.
 
 ## Usage normalization
 
@@ -137,6 +139,18 @@ Each calculated item keeps its own window. The household summary does not averag
 
 `Next household return` is the item whose `planning_trigger_earliest` is smallest. If several items share that earliest day, every tied name is kept, in input order, and each tied item keeps its own full trigger window.
 
+The machine summary is:
+
+```
+nextReturn.names    tied names, in input order
+nextReturn.items    those calculated items, each with its own trigger
+nextReturn.trigger  { earliest, latest, single } only when every tied item
+                    has the same earliest day and the same latest day;
+                    otherwise null
+```
+
+`trigger` is not copied from the first tied item to stand for the others. It is not an average, and it is not a merged span. When it is `null`, each entry in `items` is the window for that item.
+
 A separate sentence may note that another item’s planning window begins within 7 days. That sentence does not recommend combining shipments.
 
 When two or more items produce different trigger windows, the page can state that different household essentials can enter their replenishment windows at different times. That observation is descriptive.
@@ -159,6 +173,10 @@ A week phrase is display only. Days are divided by 7 and rounded to the nearest 
 ## Validation law
 
 Invalid input produces no estimate. The engine does not coerce a bad value into a plausible result.
+
+The page also applies native constraints before an estimate is drawn: quantity, lead time, buffer, and variability are required; weekly use is required only in weekly mode; duration is required only in duration mode; the inactive usage field is disabled so it cannot remain required; variability is limited to 0–50; replenishment quantity is optional and, when supplied, cannot be negative. Those checks do not replace the engine. The engine still rejects zero quantity and zero usage, and it remains the source of validation truth.
+
+A rendered result is cleared as soon as the visible scenario changes. The previous window is not left on screen beside new inputs.
 
 Rejected cases include:
 

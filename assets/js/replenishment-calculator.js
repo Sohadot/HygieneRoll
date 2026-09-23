@@ -40,12 +40,20 @@
     results = document.getElementById("calculator-results");
     status = document.getElementById("calculator-status");
 
-    document.getElementById("calculator-form").addEventListener("submit", function (event) {
+    var form = document.getElementById("calculator-form");
+    form.addEventListener("submit", function (event) {
       event.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
       calculate();
     });
+    form.addEventListener("input", onScenarioEdit);
+    form.addEventListener("change", onScenarioEdit);
     addButton.addEventListener("click", function () {
       if (list.children.length >= MAX_ITEMS) return;
+      invalidateResults();
       var card = addItem();
       var select = card.querySelector("select");
       if (select) select.focus();
@@ -95,7 +103,7 @@
     unit.input.value = "rolls";
     grid.appendChild(unit.wrap);
 
-    var quantity = numberField(id, "quantity", "Current quantity", "e.g. 6", "0");
+    var quantity = numberField(id, "quantity", "Current quantity", "e.g. 6", "0", true);
     grid.appendChild(quantity.wrap);
 
     grid.appendChild(usageFields(id));
@@ -109,9 +117,9 @@
 
     var planningGrid = document.createElement("div");
     planningGrid.className = "field-grid";
-    planningGrid.appendChild(numberField(id, "lead", "Lead time (days)", "e.g. 4", "0").wrap);
-    planningGrid.appendChild(numberField(id, "buffer", "Safety buffer (days)", "e.g. 3", "0").wrap);
-    var variability = numberField(id, "variability", "Usage variability (%)", "0", "0");
+    planningGrid.appendChild(numberField(id, "lead", "Lead time (days)", "e.g. 4", "0", true).wrap);
+    planningGrid.appendChild(numberField(id, "buffer", "Safety buffer (days)", "e.g. 3", "0", true).wrap);
+    var variability = numberField(id, "variability", "Usage variability (%)", "0", "0", true);
     variability.input.value = "0";
     variability.input.max = "50";
     planningGrid.appendChild(variability.wrap);
@@ -131,14 +139,14 @@
       if (list.children.length === 1) {
         list.removeChild(card);
         var fresh = addItem();
-        clearResults();
+        invalidateResults();
         var focusTarget = fresh.querySelector("select");
         if (focusTarget) focusTarget.focus();
         return;
       }
       list.removeChild(card);
       syncLimit();
-      clearResults();
+      invalidateResults();
     });
     card.appendChild(remove);
 
@@ -184,9 +192,8 @@
     wrap.appendChild(weekly.label);
     wrap.appendChild(duration.label);
 
-    var weeklyField = numberField(id, "weekly", "Units per week", "e.g. 2", "0");
-    var durationField = numberField(id, "duration", "Typical duration (weeks)", "e.g. 3", "0");
-    durationField.wrap.hidden = true;
+    var weeklyField = numberField(id, "weekly", "Units per week", "e.g. 2", "0", true);
+    var durationField = numberField(id, "duration", "Typical duration (weeks)", "e.g. 3", "0", false);
     wrap.appendChild(weeklyField.wrap);
     wrap.appendChild(durationField.wrap);
 
@@ -194,9 +201,14 @@
       var useWeekly = weekly.input.checked;
       weeklyField.wrap.hidden = !useWeekly;
       durationField.wrap.hidden = useWeekly;
+      weeklyField.input.required = useWeekly;
+      weeklyField.input.disabled = !useWeekly;
+      durationField.input.required = !useWeekly;
+      durationField.input.disabled = useWeekly;
     }
     weekly.input.addEventListener("change", sync);
     duration.input.addEventListener("change", sync);
+    sync();
     return wrap;
   }
 
@@ -255,7 +267,7 @@
     return { wrap: built.wrap, input: built.control };
   }
 
-  function numberField(id, key, labelText, placeholder, min) {
+  function numberField(id, key, labelText, placeholder, min, required) {
     var built = labeledControl(id, key, labelText, "input");
     built.control.type = "number";
     built.control.inputMode = "decimal";
@@ -263,6 +275,7 @@
     built.control.min = min;
     built.control.placeholder = placeholder;
     built.control.autocomplete = "off";
+    built.control.required = required;
     return { wrap: built.wrap, input: built.control };
   }
 
@@ -340,6 +353,7 @@
       input: {
         name: preset.id === "custom" ? custom : preset.name,
         unit: valueOf(card, "unit").trim(),
+        unitKind: preset.id !== "custom" && element(card, "unit").dataset.touched !== "true" ? "preset" : "custom",
         quantity: quantity.empty || quantity.invalid ? Number.NaN : quantity.value,
         usageMode: mode,
         weeklyUsage: mode === "weekly" ? (weekly.empty || weekly.invalid ? Number.NaN : weekly.value) : null,
@@ -391,6 +405,29 @@
     });
   }
 
+  function onScenarioEdit(event) {
+    var target = event.target;
+    if (!target || !list.contains(target)) return;
+    clearControlError(target);
+    invalidateResults();
+  }
+
+  function clearControlError(input) {
+    if (!input.id) return;
+    var message = document.getElementById(input.id + "-error");
+    if (!message || message.hidden) return;
+    input.removeAttribute("aria-invalid");
+    input.removeAttribute("aria-describedby");
+    message.textContent = "";
+    message.hidden = true;
+  }
+
+  function invalidateResults() {
+    if (!results.childNodes.length) return;
+    clearResults();
+    status.textContent = "Inputs changed. Recalculate to update the planning window.";
+  }
+
   function clearFieldErrors() {
     Array.prototype.forEach.call(list.querySelectorAll("[aria-invalid]"), function (input) {
       input.removeAttribute("aria-invalid");
@@ -427,7 +464,7 @@
     nameLine.textContent = summary.nextReturn.names.join(", ");
     summaryCard.appendChild(nameLine);
 
-    if (windowsMatch(summary.nextReturn.items)) {
+    if (summary.nextReturn.trigger) {
       appendPair(summaryCard, "Planning trigger", summary.nextReturn.items[0].text.trigger);
       appendAside(summaryCard, summary.nextReturn.items[0].text.triggerWeeks);
       appendAside(summaryCard, summary.nextReturn.items[0].text.triggerNote);
@@ -455,16 +492,10 @@
     });
 
     var first = summary.nextReturn.names.join(", ");
-    var triggerText = windowsMatch(summary.nextReturn.items)
+    var triggerText = summary.nextReturn.trigger
       ? summary.nextReturn.items[0].text.trigger
       : "see tied items";
     status.textContent = "Next household return: " + first + ". Planning trigger: " + triggerText + ".";
-  }
-
-  function windowsMatch(items) {
-    return items.every(function (item) {
-      return item.trigger.earliest === items[0].trigger.earliest && item.trigger.latest === items[0].trigger.latest;
-    });
   }
 
   function itemCard(item) {
@@ -473,7 +504,7 @@
     var title = document.createElement("h3");
     title.textContent = item.name;
     card.appendChild(title);
-    appendPair(card, "Current supply", quantityText(item.quantity, item.unit));
+    appendPair(card, "Current supply", quantityText(item.quantity, item.unit, item.unitKind));
     appendPair(card, "Observed usage", usageText(item));
     appendPair(card, "Estimated depletion", item.text.depletion);
     appendAside(card, item.text.depletionWeeks);
@@ -489,15 +520,14 @@
   }
 
   function usageText(item) {
-    var unit = item.unit ? " " + item.unit : "";
     if (item.usageMode === "duration") {
-      return quantityText(item.quantity, item.unit) + (item.quantity === 1 ? " usually lasts " : " usually last ") + formatNumber(item.durationWeeks) + (item.durationWeeks === 1 ? " week" : " weeks");
+      return quantityText(item.quantity, item.unit, item.unitKind) + (item.quantity === 1 ? " usually lasts " : " usually last ") + formatNumber(item.durationWeeks) + (item.durationWeeks === 1 ? " week" : " weeks");
     }
-    return formatNumber(item.weeklyUsage) + unit + "/week";
+    return quantityText(item.weeklyUsage, item.unit, item.unitKind) + "/week";
   }
 
-  function quantityText(quantity, unit) {
-    return formatNumber(quantity) + (unit ? " " + unit : "");
+  function quantityText(quantity, unit, unitKind) {
+    return engine.formatSupply(quantity, unit, unitKind);
   }
 
   function dayLabel(value) {

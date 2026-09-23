@@ -209,6 +209,42 @@ test("household summary selects the soonest trigger and does not average", funct
   assert.strictEqual(summary.clocksDiffer, true);
 });
 
+test("negative safety buffer is rejected", function () {
+  assertThrows(function () { engine.calculateItem(item({ bufferDays: -2 })); }, "bufferDays");
+});
+
+test("missing lead time and safety buffer are rejected", function () {
+  var missingLead = item();
+  delete missingLead.leadTimeDays;
+  assertThrows(function () { engine.calculateItem(missingLead); }, "leadTimeDays");
+  assertThrows(function () { engine.calculateItem(item({ bufferDays: undefined })); }, "bufferDays");
+});
+
+test("empty-string replenishment quantity defaults to current quantity", function () {
+  var result = engine.calculateItem(item({ replenishmentQuantity: "" }));
+  assert.strictEqual(result.replenishmentDefaulted, true);
+  assert.strictEqual(result.replenishmentQuantity, 6);
+  assert.strictEqual(result.cadence.earliest, 21);
+});
+
+test("preset supply wording uses singular and plural forms", function () {
+  assert.strictEqual(engine.formatSupply(1, "rolls", "preset"), "1 roll");
+  assert.strictEqual(engine.formatSupply(2, "rolls", "preset"), "2 rolls");
+  assert.strictEqual(engine.formatSupply(1, "packs", "preset"), "1 pack");
+  assert.strictEqual(engine.formatSupply(2, "packs", "preset"), "2 packs");
+  assert.strictEqual(engine.formatSupply(1, "bottles", "preset"), "1 bottle");
+  assert.strictEqual(engine.formatSupply(2, "bottles", "preset"), "2 bottles");
+  assert.strictEqual(engine.formatSupply(1, "tubes", "preset"), "1 tube");
+  assert.strictEqual(engine.formatSupply(2, "tubes", "preset"), "2 tubes");
+  assert.strictEqual(engine.formatSupply(1, "bottles/refills", "preset"), "1 bottle or refill");
+  assert.strictEqual(engine.formatSupply(2, "bottles/refills", "preset"), "2 bottles or refills");
+  assert.strictEqual(engine.formatSupply(1, "packs/bottles", "preset"), "1 pack or bottle");
+  assert.strictEqual(engine.formatSupply(2, "packs/bottles", "preset"), "2 packs or bottles");
+  assert.strictEqual(engine.formatSupply(1.5, "bottles", "preset"), "1.5 bottles");
+  assert.strictEqual(engine.formatSupply(1, "pads", "custom"), "1 pads");
+  assert.strictEqual(engine.formatSupply(1, "rolls", "custom"), "1 rolls");
+});
+
 test("tied soonest triggers keep every tied name in input order", function () {
   var summary = engine.calculateHousehold([
     item({ name: "Paper towels" }),
@@ -218,6 +254,23 @@ test("tied soonest triggers keep every tied name in input order", function () {
   assert.deepStrictEqual(summary.nextReturn.names, ["Paper towels", "Wipes"]);
   assert.strictEqual(summary.nextReturn.trigger.earliest, 14);
   assert.strictEqual(summary.nextReturn.trigger.latest, 14);
+});
+
+test("tied trigger starts with different ends do not share one window", function () {
+  var summary = engine.calculateHousehold([
+    item({ name: "Paper towels" }),
+    item({
+      name: "Wipes",
+      variabilityPercent: 20,
+      leadTimeDays: 3,
+      bufferDays: 0
+    })
+  ]);
+  assert.deepStrictEqual(summary.nextReturn.names, ["Paper towels", "Wipes"]);
+  assert.strictEqual(summary.nextReturn.trigger, null);
+  assert.deepStrictEqual(summary.nextReturn.items[0].trigger, { earliest: 14, latest: 14, single: true });
+  assert.deepStrictEqual(summary.nextReturn.items[1].trigger, { earliest: 14, latest: 24, single: false });
+  assert.notStrictEqual(summary.nextReturn.items[0].text.trigger, summary.nextReturn.items[1].text.trigger);
 });
 
 test("deterministic repeat execution returns identical output", function () {
