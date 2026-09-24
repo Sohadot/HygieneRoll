@@ -24,6 +24,8 @@ var CLASSES = [
   "ILLUSTRATIVE_MODEL"
 ];
 
+var ADMISSION = ["ADMITTED", "REVIEW_REQUIRED", "BLOCKED"];
+
 function sourceIndex(register) {
   var index = {};
   (register.sources || []).forEach(function (source) {
@@ -38,16 +40,42 @@ function admissionErrors(claim, sources) {
     errors.push("class");
   }
   var ids = claim.source_ids || [];
+  var origins = claim.origin_refs || [];
+  if (claim.class === "PROJECT_DEFINITION") {
+    if (ids.length !== 0) errors.push("project-definition-with-source");
+    if (origins.length === 0) errors.push("project-definition-without-origin");
+  }
   if (claim.class === "OBSERVED_EVIDENCE" && ids.length === 0) {
     errors.push("observed-without-source");
   }
-  if (claim.class === "DERIVED_INTERPRETATION" && claim.externalPremises && ids.length === 0) {
+  if (claim.class === "DERIVED_INTERPRETATION" && ids.length === 0) {
     errors.push("derived-without-source");
   }
+  var needsAdmission = claim.class === "OBSERVED_EVIDENCE" || claim.class === "DERIVED_INTERPRETATION";
   ids.forEach(function (id) {
-    if (!sources[id]) errors.push("unresolved-source:" + id);
+    var source = sources[id];
+    if (!source) {
+      errors.push("unresolved-source:" + id);
+      return;
+    }
+    if (needsAdmission && source.admission_status !== "ADMITTED") {
+      errors.push("source-not-admitted:" + id);
+    }
   });
   return errors;
+}
+
+function sourceRecord(status) {
+  return {
+    "SRC-HR-9001": {
+      id: "SRC-HR-9001",
+      title: "Synthetic fixture",
+      publisher: "Test",
+      url: "https://example.invalid/src",
+      source_type: "fixture",
+      admission_status: status
+    }
+  };
 }
 
 var knowledge = JSON.parse(read("reference/knowledge-objects.json"));
@@ -185,6 +213,7 @@ test("source register parses", function () {
     ["id", "title", "publisher", "url", "source_type", "admission_status"].forEach(function (field) {
       assert.ok(source[field], field);
     });
+    assert.ok(ADMISSION.indexOf(source.admission_status) !== -1, source.admission_status);
   });
 });
 
@@ -207,16 +236,128 @@ test("reference page contains Replenishment Model link", function () {
 test("unresolved derived interpretation fails closed", function () {
   var errors = admissionErrors({
     class: "DERIVED_INTERPRETATION",
-    externalPremises: true,
     source_ids: ["SRC-HR-9999"]
   }, indexedSources);
   assert.ok(errors.indexOf("unresolved-source:SRC-HR-9999") !== -1);
   var missing = admissionErrors({
     class: "DERIVED_INTERPRETATION",
-    externalPremises: true,
     source_ids: []
   }, indexedSources);
   assert.ok(missing.indexOf("derived-without-source") !== -1);
+});
+
+test("allowed admission statuses", function () {
+  assert.deepStrictEqual(ADMISSION, ["ADMITTED", "REVIEW_REQUIRED", "BLOCKED"]);
+  var unknown = { admission_status: "QUALIFIED" };
+  assert.ok(ADMISSION.indexOf(unknown.admission_status) === -1);
+});
+
+test("observed claim with unresolved source fails", function () {
+  var errors = admissionErrors({
+    class: "OBSERVED_EVIDENCE",
+    source_ids: ["SRC-HR-4040"]
+  }, {});
+  assert.ok(errors.indexOf("unresolved-source:SRC-HR-4040") !== -1);
+});
+
+test("blocked source cannot support observed claim", function () {
+  var errors = admissionErrors({
+    class: "OBSERVED_EVIDENCE",
+    source_ids: ["SRC-HR-9001"]
+  }, sourceRecord("BLOCKED"));
+  assert.ok(errors.indexOf("source-not-admitted:SRC-HR-9001") !== -1);
+});
+
+test("review-required source cannot support observed claim", function () {
+  var errors = admissionErrors({
+    class: "OBSERVED_EVIDENCE",
+    source_ids: ["SRC-HR-9001"]
+  }, sourceRecord("REVIEW_REQUIRED"));
+  assert.ok(errors.indexOf("source-not-admitted:SRC-HR-9001") !== -1);
+});
+
+test("admitted source supports observed claim", function () {
+  var errors = admissionErrors({
+    class: "OBSERVED_EVIDENCE",
+    source_ids: ["SRC-HR-9001"]
+  }, sourceRecord("ADMITTED"));
+  assert.deepStrictEqual(errors, []);
+});
+
+test("derived interpretation requires a source", function () {
+  var errors = admissionErrors({
+    class: "DERIVED_INTERPRETATION",
+    source_ids: []
+  }, {});
+  assert.ok(errors.indexOf("derived-without-source") !== -1);
+});
+
+test("derived interpretation requires an admitted source", function () {
+  var blocked = admissionErrors({
+    class: "DERIVED_INTERPRETATION",
+    source_ids: ["SRC-HR-9001"]
+  }, sourceRecord("BLOCKED"));
+  assert.ok(blocked.indexOf("source-not-admitted:SRC-HR-9001") !== -1);
+  var pending = admissionErrors({
+    class: "DERIVED_INTERPRETATION",
+    source_ids: ["SRC-HR-9001"]
+  }, sourceRecord("REVIEW_REQUIRED"));
+  assert.ok(pending.indexOf("source-not-admitted:SRC-HR-9001") !== -1);
+  var admitted = admissionErrors({
+    class: "DERIVED_INTERPRETATION",
+    source_ids: ["SRC-HR-9001"]
+  }, sourceRecord("ADMITTED"));
+  assert.deepStrictEqual(admitted, []);
+});
+
+test("project definition rejects source_ids", function () {
+  var errors = admissionErrors({
+    class: "PROJECT_DEFINITION",
+    source_ids: ["SRC-HR-9001"],
+    origin_refs: ["calculator.html"]
+  }, sourceRecord("ADMITTED"));
+  assert.ok(errors.indexOf("project-definition-with-source") !== -1);
+});
+
+test("project definition requires origin_refs", function () {
+  var errors = admissionErrors({
+    class: "PROJECT_DEFINITION",
+    source_ids: [],
+    origin_refs: []
+  }, {});
+  assert.ok(errors.indexOf("project-definition-without-origin") !== -1);
+  knowledge.objects.forEach(function (object) {
+    object.claims.forEach(function (claim) {
+      if (claim.class === "PROJECT_DEFINITION") {
+        assert.deepStrictEqual(admissionErrors(claim, indexedSources), []);
+      }
+    });
+  });
+});
+
+test("every claim ID maps to exactly one HTML claim element", function () {
+  var rendered = page.match(/data-claim-id="(HRC-\d+)"/g) || [];
+  var ids = rendered.map(function (token) { return token.slice('data-claim-id="'.length, -1); });
+  assert.strictEqual(new Set(ids).size, ids.length);
+  var registered = [];
+  knowledge.objects.forEach(function (object) {
+    object.claims.forEach(function (claim) { registered.push(claim.id); });
+  });
+  assert.deepStrictEqual(ids.slice().sort(), registered.slice().sort());
+  ids.forEach(function (id) {
+    assert.ok(registered.indexOf(id) !== -1, id);
+  });
+});
+
+test("every claim text matches its rendered claim element", function () {
+  knowledge.objects.forEach(function (object) {
+    object.claims.forEach(function (claim) {
+      var pattern = new RegExp('<p data-claim-id="' + claim.id + '">([\\s\\S]*?)</p>');
+      var match = page.match(pattern);
+      assert.ok(match, claim.id);
+      assert.strictEqual(match[1], claim.text);
+    });
+  });
 });
 
 console.log(passed + " passed");

@@ -186,7 +186,7 @@
       <section class="section prose" aria-labelledby="read-heading">
         <h2 id="read-heading">How to read this reference</h2>
         <p>These entries are HygieneRoll working definitions. They say how this model uses a term. They are not empirical market facts, and they are not a claim that the wording is an industry standard, an official taxonomy, or a scientifically validated law.</p>
-        <p>Foundation v0.1 admits no external observations. A statement about markets, households, or companies would need an admitted source before it could appear here. An example used only to show the logic would be marked illustrative, and would not be described as measured behavior.</p>
+        <p>Foundation v0.1 admits no external observations. A factual observation about actual markets, households, or companies requires an admitted external source before publication. An example used only to show the logic would be marked illustrative, and would not be described as measured behavior.</p>
         <ul class="legend">
           <li><strong>Project definition</strong><span>A distinction HygieneRoll chooses and names. It points to the public page or method where the concept is used.</span></li>
           <li><strong>Observed evidence</strong><span>A factual statement about the external world. It is published only with an admitted source. None are admitted in v0.1.</span></li>
@@ -213,9 +213,9 @@
           <p class="badge">HygieneRoll working definition</p>
           <h3>Replenishment vs Subscription</h3>
           <h4>Definition</h4>
-          <p>Within the HygieneRoll model, a subscription describes a recurring commerce arrangement, and replenishment describes planning around an item approaching renewed need or depletion.</p>
+          <p data-claim-id="HRC-001">Within the HygieneRoll model, a subscription describes a recurring commerce arrangement, and replenishment describes planning around an item approaching renewed need or depletion.</p>
           <h4>Key distinction</h4>
-          <p>A subscription can be one mechanism for recurring commerce. Replenishment logic is concerned with the timing of need. The two can coincide, and they can also come apart: a fixed shipping interval does not, by itself, describe when a particular item in a household is running low.</p>
+          <p>Within the model, a subscription can be one mechanism for recurring commerce, and replenishment logic is concerned with the timing of need. The two can coincide, and they can also come apart: a fixed shipping interval does not, by itself, stand in for the timing of need on a particular item.</p>
           <h4>Why it matters inside the model</h4>
           <p>The model asks when the household is likely to need the item again, using the assumptions the visitor supplies. It does not treat a billing cycle as the definition of need.</p>
           <h4>Related artifact</h4>
@@ -229,9 +229,9 @@
           <p class="badge">HygieneRoll working definition</p>
           <h3>Household Depletion Clock</h3>
           <h4>Definition</h4>
-          <p>The HygieneRoll model represents a household as containing multiple recurring essentials whose supply can deplete on different timelines, and it treats each item as an independent replenishment clock.</p>
+          <p data-claim-id="HRC-002">The HygieneRoll model represents a household as containing multiple recurring essentials whose supply can deplete on different timelines, and it treats each item as an independent replenishment clock.</p>
           <h4>Key distinction</h4>
-          <p>The household is one customer relationship. Its consumption is not one clock. Paper, soap, and cleaner can reach a planning threshold on different days. The model does not collapse those clocks into a single monthly schedule.</p>
+          <p>Within the model, the household is one customer relationship and its consumption is not one clock. Each item keeps its own replenishment clock, so different item inputs can produce different planning-trigger dates. The model does not collapse those clocks into one schedule.</p>
           <h4>Why it matters inside the model</h4>
           <p>The calculator operationalizes this by estimating each item on its own and then identifying the soonest planning trigger. That household summary does not average unlike items. This is a representation chosen by the model, not a research finding about how many cycles households have.</p>
           <h4>Related artifact</h4>
@@ -245,7 +245,7 @@
           <p class="badge">HygieneRoll working definition</p>
           <h3>Planning Trigger</h3>
           <h4>Definition</h4>
-          <p>In HygieneRoll calculator v0.1, the planning trigger is the rounded depletion timing minus lead time minus safety buffer, clamped at zero. It is a scenario-derived planning threshold.</p>
+          <p data-claim-id="HRC-003">In HygieneRoll calculator v0.1, the planning trigger is the rounded depletion timing minus lead time minus safety buffer, clamped at zero. It is a scenario-derived planning threshold.</p>
           <h4>Key distinction</h4>
           <p>The trigger is the day the planning window opens under the visitor’s assumptions. It is not an optimal reorder point, a scientific reorder date, or a recommended purchase date. A result at or below zero is shown as now, not as a negative day.</p>
           <h4>Why it matters inside the model</h4>
@@ -261,8 +261,8 @@
           <p class="badge">HygieneRoll working definition</p>
           <h3>Lead Time and Safety Buffer</h3>
           <h4>Definition</h4>
-          <p>Within HygieneRoll calculator v0.1, lead time is the time assumed between initiating replenishment and availability or arrival.</p>
-          <p>Within HygieneRoll calculator v0.1, the safety buffer is a user-selected additional time before estimated depletion. It is not a medically safe stock level, an industry optimum, or a statistical confidence interval.</p>
+          <p data-claim-id="HRC-004">Within HygieneRoll calculator v0.1, lead time is the time assumed between initiating replenishment and availability or arrival.</p>
+          <p data-claim-id="HRC-005">Within HygieneRoll calculator v0.1, the safety buffer is a user-selected additional time before estimated depletion. It is not a medically safe stock level, an industry optimum, or a statistical confidence interval.</p>
           <h4>Key distinction</h4>
           <p>Lead time is about arrival. The buffer is extra time the visitor wants before the estimated depletion. They are separate inputs. Either may be zero. Neither is supplied by a hidden default, and neither is a health or sanitation standard.</p>
           <h4>Why it matters inside the model</h4>
@@ -278,11 +278,11 @@
           <p class="badge">HygieneRoll working definition</p>
           <h3>Illustrative Cadence</h3>
           <h4>Definition</h4>
-          <p>Within HygieneRoll calculator v0.1, illustrative cadence estimates how long a replenishment quantity would cover under the supplied usage assumptions. It is not an optimal subscription frequency, an automatic shipping recommendation, or a guaranteed usage interval.</p>
+          <p data-claim-id="HRC-006">Within HygieneRoll calculator v0.1, illustrative cadence estimates how long a replenishment quantity would cover under the supplied usage assumptions. It is not an optimal subscription frequency, an automatic shipping recommendation, or a guaranteed usage interval.</p>
           <h4>Key distinction</h4>
           <p>Cadence here is coverage under a stated quantity and a stated usage rate. If the replenishment quantity is left blank, the calculator uses the current quantity for that illustration. The result is a planning picture, not a schedule the household is expected to keep.</p>
           <h4>Why it matters inside the model</h4>
-          <p>It shows why a single shipping interval can fit one item and miss another. The label stays “illustrative” so the figure is not read as a recommended subscription.</p>
+          <p>Within the model, coverage follows the quantity and usage supplied for that item, so one interval need not fit every item. The label stays “illustrative” so the figure is not read as a recommended subscription.</p>
           <h4>Related artifact</h4>
           <p>Specified in <a href="CALCULATOR_METHODOLOGY.md">CALCULATOR_METHODOLOGY.md</a> and shown on the <a href="calculator.html">calculator</a>. Related entry: <a href="#replenishment-vs-subscription">Replenishment vs Subscription</a>.</p>
           <h4>Evidence posture</h4>
@@ -294,9 +294,9 @@
           <p class="badge">HygieneRoll working definition</p>
           <h3>Ownership of Return</h3>
           <h4>Definition</h4>
-          <p>Within HygieneRoll, ownership of return describes controlling or directly operating the consumer-facing re-entry surface through which recurring household demand can come back. It does not mean legal ownership of consumers, ownership of their behavior, proven retention, or guaranteed recurring revenue.</p>
+          <p data-claim-id="HRC-007">Within HygieneRoll, ownership of return describes controlling or directly operating the consumer-facing re-entry surface through which recurring household demand can come back. It does not mean legal ownership of consumers, ownership of their behavior, proven retention, or guaranteed recurring revenue.</p>
           <h4>Key distinction</h4>
-          <p>Retail can distribute a product and still leave the next purchase outside the operator’s direct relationship. Ownership of return, in this model, is about that re-entry surface: the place a household can come back to when the need approaches again. It is a strategic and commercial concept, not a claim that demand has already been captured.</p>
+          <p>Within the HygieneRoll model, product distribution and control of the consumer re-entry surface are separate concepts. Ownership of return names the latter. It is a strategic and commercial concept, not a claim that demand has already been captured.</p>
           <h4>Why it matters inside the model</h4>
           <p>The asset is built around the idea that recurring hygiene is valuable when the return path is direct. The reference states the idea. It does not report retention, revenue, or an operating history.</p>
           <h4>Related artifact</h4>
@@ -310,7 +310,7 @@
           <p class="badge">HygieneRoll working definition</p>
           <h3>Re-entry</h3>
           <h4>Definition</h4>
-          <p>Within the HygieneRoll model, re-entry is the point at which a household returns to a consumer surface because a recurring need is approaching again. It is distinct from a first purchase.</p>
+          <p data-claim-id="HRC-008">Within the HygieneRoll model, re-entry is the point at which a household returns to a consumer surface because a recurring need is approaching again. It is distinct from a first purchase.</p>
           <h4>Key distinction</h4>
           <p>A first purchase opens the relationship. Re-entry is the later interaction the model is built to represent: need, use, replenishment, and return. The model does not claim that every household behaves this way. It names the event the loop is organized around.</p>
           <h4>Why it matters inside the model</h4>
@@ -326,9 +326,9 @@
           <p class="badge">HygieneRoll working definition</p>
           <h3>Category Expansion</h3>
           <h4>Definition</h4>
-          <p>The HygieneRoll category model treats paper hygiene as the clearest entry anchor, then personal care, then broader household hygiene. Paper hygiene is not the category ceiling. This sequence is a strategic model, not a claim that it is the empirically best expansion path.</p>
+          <p data-claim-id="HRC-009">The HygieneRoll category model treats paper hygiene as the clearest entry anchor, then personal care, then broader household hygiene. Paper hygiene is not the category ceiling. This sequence is a strategic model, not a claim that it is the empirically best expansion path.</p>
           <h4>Key distinction</h4>
-          <p>Paper hygiene — tissue, rolls, towels, wipes — is where the household language is already specific. Personal care and household cleaning are the expansion the model is built to hold. The order is an architecture choice. It is not a market-leadership claim and not a finding about the most profitable sequence.</p>
+          <p>HygieneRoll uses paper hygiene — tissue, rolls, towels, and wipes — as its entry anchor. Personal care and household cleaning are modeled as expansion layers. The order is an architecture choice. It is not a market-leadership claim and not a finding about the empirically best sequence.</p>
           <h4>Why it matters inside the model</h4>
           <p>The same replenishment relationship can cover more than one clock. Expansion, in this reference, means the surface is designed to hold those further essentials, not that a household has been observed to adopt them in this order.</p>
           <h4>Related artifact</h4>
@@ -341,7 +341,7 @@
       <section class="section prose" aria-labelledby="evidence-heading">
         <h2 id="evidence-heading">How evidence enters the reference</h2>
         <p>An external fact is admitted only when a source exists, the source supports that exact sentence, and the scope, period, geography, population, and metric match. If any of those fail, the claim is blocked. It is not published in weaker wording that still asserts the fact.</p>
-        <p>Project pages are provenance for definitions. They are not evidence about the outside world. Interpretation, when it eventually appears, will name its sources and stay in interpretive language. Illustrative scenarios will stay labeled as illustrations.</p>
+        <p>Project pages are provenance for definitions. They are not evidence about the outside world. A derived interpretation is published only with admitted sources, and it stays in interpretive language. Illustrative scenarios will stay labeled as illustrations.</p>
         <p>The source register for v0.1 is empty on purpose. Authority in this foundation is the refusal to blur a definition into an observation.</p>
       </section>
 

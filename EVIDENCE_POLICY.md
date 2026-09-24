@@ -16,9 +16,9 @@ Every public reference claim uses exactly one class.
 
 A concept or distinction intentionally defined by HygieneRoll.
 
-A project definition does not need an external source in order to exist. It must be framed as a HygieneRoll definition, not as a universal empirical fact. It should identify the public artifact where the concept originated or is operationalized, using `origin_refs`.
+A project definition does not need an external source in order to exist. It must be framed as a HygieneRoll definition, not as a universal empirical fact. It identifies the public artifact where the concept originated or is operationalized, using `origin_refs`.
 
-`source_ids` stays empty unless a later sprint separately admits external evidence for a different claim.
+`source_ids` must be empty. `origin_refs` must contain at least one project provenance reference. External evidence belongs on an observed or derived claim, not inside the definition.
 
 ### OBSERVED_EVIDENCE
 
@@ -26,13 +26,15 @@ A factual statement about the external world.
 
 Examples include market size, household or consumer behavior, subscription adoption, logistics performance, consumption rates, retailer behavior, company operations, and published research findings.
 
-This class requires admissible external evidence. No source means no admission.
+This class requires admissible external evidence. `source_ids` must contain at least one id. Every id must resolve in the source register. Every supporting source must have `admission_status` `ADMITTED`. A missing, unresolved, `REVIEW_REQUIRED`, or `BLOCKED` source does not admit the claim.
 
 ### DERIVED_INTERPRETATION
 
 An interpretation produced from one or more premises.
 
-When the interpretation depends on external facts, `source_ids` must identify those admitted sources. The wording must stay interpretive: “this suggests,” “one operational implication is,” or “the evidence is consistent with.” The interpretation must not be presented as a sentence the source itself stated.
+In v0.1 a derived interpretation must contain at least one `source_id`. Every id must resolve in the source register. Every supporting source must have `admission_status` `ADMITTED`. There is no source-free interpretation mode and no optional flag that turns the requirement off. A later phase that needs project-only reasoning would require an explicit governance decision.
+
+The wording must stay interpretive: “this suggests,” “one operational implication is,” or “the evidence is consistent with.” The interpretation must not be presented as a sentence the source itself stated.
 
 ### ILLUSTRATIVE_MODEL
 
@@ -53,6 +55,16 @@ Tier C: reputable trade publications and high-quality secondary reporting.
 These are not foundational evidence: affiliate blogs, generic SEO pages, anonymous statistics sites, scraped content, AI-generated pages, unsourced infographics, and copied market-statistic aggregators.
 
 A weaker source may help someone discover a document. Discovery is not admission.
+
+## Source admission status
+
+Every source in the register uses one status. The allowed values are:
+
+- `ADMITTED` — the source may support an observed claim or a derived interpretation.
+- `REVIEW_REQUIRED` — the source is recorded and not yet qualified. It does not support a claim.
+- `BLOCKED` — the source is disqualified. It does not support a claim.
+
+Anything outside that set is invalid. Only `ADMITTED` satisfies an external evidence dependency. The empty source register remains valid.
 
 ## Admission rules
 
@@ -98,9 +110,25 @@ Primary evidence is the document or dataset that established the figure or findi
 
 The repository stores citation metadata, not a library of other people’s documents. Do not commit downloaded source PDFs or full third-party texts merely because they are publicly reachable.
 
-A source record may hold: id, title, publisher, url, source type, publication date, accessed date, geography, population, scope, a rights note, admission status, and notes.
+A future source object uses these fields:
 
-Suggested identifier: `SRC-HR-0001`.
+- `id`
+- `title`
+- `publisher`
+- `url`
+- `source_type`
+- `publication_date`
+- `accessed_date`
+- `geography`
+- `population`
+- `scope`
+- `rights_note`
+- `admission_status`
+- `notes`
+
+`admission_status` is exactly one of `ADMITTED`, `REVIEW_REQUIRED`, or `BLOCKED`.
+
+Suggested identifier: `SRC-HR-0001`. No source is registered in v0.1. Speculative sources and research wishlists are not entered to fill the file.
 
 Long excerpts are not reproduced. Paraphrase. A quotation is minimal and only when the exact words are necessary.
 

@@ -30,11 +30,11 @@ Claims use `HRC-` identifiers. Each claim has one class: `PROJECT_DEFINITION`, `
 
 ## Claim classes
 
-`PROJECT_DEFINITION` is a HygieneRoll working definition. It points at project artifacts through `origin_refs`.
+`PROJECT_DEFINITION` is a HygieneRoll working definition. It points at project artifacts through `origin_refs`, and `origin_refs` must name at least one artifact. Its `source_ids` stay empty.
 
-`OBSERVED_EVIDENCE` is a statement about the external world. It requires `source_ids` that resolve in the source register.
+`OBSERVED_EVIDENCE` is a statement about the external world. It requires at least one `source_id`. Each id must resolve, and each supporting source must be `ADMITTED`.
 
-`DERIVED_INTERPRETATION` is an inference. When it depends on external facts, those facts must already be admitted sources. The sentence stays interpretive.
+`DERIVED_INTERPRETATION` is an inference. It requires at least one `source_id`. Each id must resolve, and each supporting source must be `ADMITTED`. The sentence stays interpretive. v0.1 has no source-free interpretation mode.
 
 `ILLUSTRATIVE_MODEL` is an example or diagram used to explain logic. It is marked as illustrative and is not treated as observed behavior.
 
@@ -42,7 +42,7 @@ Claims use `HRC-` identifiers. Each claim has one class: `PROJECT_DEFINITION`, `
 
 `origin_refs` record where a project concept lives: a page, the methodology, or the calculator engine.
 
-`source_ids` record admitted external sources only.
+`source_ids` record external sources only, and only a source with `admission_status` `ADMITTED` can support a published observed or derived claim.
 
 A HygieneRoll page cannot be used as evidence that a market, a household, or a company behaves in a stated way. That would be circular.
 
@@ -51,6 +51,8 @@ A HygieneRoll page cannot be used as evidence that a market, a household, or a c
 `reference/source-register.json` version 0.1 may contain an empty `sources` array. Empty is valid. Sources are not added to make the register look active.
 
 A future source object uses: id, title, publisher, url, source_type, publication_date, accessed_date, geography, population, scope, rights_note, admission_status, and notes. The identifier form is `SRC-HR-0001`.
+
+`admission_status` is one of `ADMITTED`, `REVIEW_REQUIRED`, or `BLOCKED`. Only `ADMITTED` can satisfy an evidence dependency. `REVIEW_REQUIRED` and `BLOCKED` do not.
 
 ## Admission rule
 
@@ -62,7 +64,7 @@ Evidence supports understanding. It does not, by itself, become a prediction tha
 
 ## Public rendering
 
-`reference.html` is the human-readable rendering of the register. Identifiers, titles, slugs, and claim classes on the page match the JSON. The page explains the four classes, states the evidence posture of each object, and links to the calculator and the replenishment model.
+`reference.html` is the human-readable rendering of the register. Identifiers, titles, slugs, and claim classes on the page match the JSON. Each formal claim is rendered in one paragraph marked `data-claim-id`, and that paragraph’s text matches `claim.text`. The page explains the four classes, states the evidence posture of each object, and links to the calculator and the replenishment model. Claim identifiers stay in that attribute. They are not shown as a visible score or label.
 
 The page does not display a count of verified claims, an evidence score, a trust score, or a verification percentage.
 
