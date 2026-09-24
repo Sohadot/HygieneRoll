@@ -499,22 +499,24 @@
 
       .nav-actions {
         width: 100%;
+        margin-left: 0;
         flex-wrap: wrap;
-        gap: 6px;
+        justify-content: flex-start;
+        gap: 8px;
       }
 
       .nav-link {
         display: inline-flex;
-        height: 36px;
-        padding: 0 10px;
-        font-size: 0.86rem;
+        height: 40px;
+        padding: 0 12px;
+        font-size: 0.95rem;
       }
 
       .nav-cta {
         min-width: 0;
-        height: 36px;
+        height: 40px;
         padding: 0 12px;
-        font-size: 0.86rem;
+        font-size: 0.95rem;
         border-radius: 999px;
       }
 
@@ -567,6 +569,10 @@
       .buyer-grid {
         grid-template-columns: 1fr !important;
       }
+    }
+
+    @media (max-width: 640px) {
+      .site-header { position: static; }
     }
 
     .stat-figure {

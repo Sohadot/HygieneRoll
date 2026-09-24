@@ -208,8 +208,8 @@
       font-size: 16px;
     }
     .usage-method { grid-column: 1 / -1; margin-top: 4px; padding: 0; border: 0; }
-    .choice { display: flex; align-items: flex-start; gap: 8px; margin: 8px 0; font-weight: 600; }
-    .choice input { width: auto; min-height: 0; margin-top: 3px; }
+    .choice { display: flex; align-items: center; gap: 10px; margin: 4px 0; min-height: 44px; font-weight: 600; }
+    .choice input { width: 1.25rem; height: 1.25rem; min-height: 1.25rem; margin: 0; flex: 0 0 auto; }
     .planning { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
     .field-hint { margin-top: 12px; font-size: 0.95rem; }
     .field-error {
@@ -288,15 +288,26 @@
       padding-top: 22px;
     }
 
+    @media (max-width: 879px) {
+      .nav { min-height: 0; flex-wrap: wrap; align-items: flex-start; gap: 8px; }
+      .nav-actions { width: 100%; margin-left: 0; justify-content: flex-start; gap: 8px; }
+    }
+
     @media (max-width: 768px) {
       .container { width: min(calc(100% - 24px), var(--container)); }
-      .nav { min-height: 0; flex-wrap: wrap; align-items: flex-start; }
-      .nav-actions { width: 100%; }
       .brand-mark span:first-child { font-size: 1.6rem; }
-      .field-grid { grid-template-columns: 1fr; }
-      .actions, .btn { width: 100%; }
       .result-row { flex-direction: column; gap: 2px; }
       h1 { max-width: none; }
+      input, select, button, summary { scroll-margin-top: 200px; }
+    }
+
+    @media (max-width: 640px) {
+      .site-header { position: static; }
+      .field-grid { grid-template-columns: 1fr; }
+      .actions { flex-direction: column; align-items: stretch; }
+      .actions .btn { width: 100%; }
+      .item-card, .result-card { padding: 18px 16px; }
+      input, select, button, summary { scroll-margin-top: 12px; }
     }
   </style>
 </head>
@@ -334,8 +345,8 @@
           <div id="item-list"></div>
           <p id="item-limit" class="limit-note" hidden>v0.1 supports up to 10 items per scenario.</p>
           <div class="actions">
-            <button type="button" class="btn btn-secondary" id="add-item">Add item</button>
             <button type="submit" class="btn btn-primary">Calculate replenishment window</button>
+            <button type="button" class="btn btn-secondary" id="add-item">Add item</button>
             <button type="button" class="btn btn-secondary" id="reset-scenario">Reset scenario</button>
           </div>
           <p class="privacy">Calculator inputs are processed locally in your browser and are not stored by this tool.</p>
