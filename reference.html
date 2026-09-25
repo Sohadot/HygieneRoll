@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Household Hygiene Replenishment Reference — HygieneRoll.com</title>
+  <meta name="description" content="Definitions and evidence rules for replenishment, depletion, cadence, return, and recurring household hygiene within the HygieneRoll model." />
+  <link rel="canonical" href="https://hygieneroll.com/reference.html" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#081a34" />
+
+  <meta property="og:title" content="Household Hygiene Replenishment Reference — HygieneRoll.com" />
+  <meta property="og:description" content="Definitions and evidence rules for replenishment, depletion, cadence, return, and recurring household hygiene within the HygieneRoll model." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hygieneroll.com/reference.html" />
+  <meta property="og:image" content="https://hygieneroll.com/assets/images/hygieneroll-social.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="HygieneRoll social preview for recurring household hygiene replenishment, with paper, soap, towels, and personal care." />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Household Hygiene Replenishment Reference — HygieneRoll.com" />
+  <meta name="twitter:description" content="Definitions and evidence rules for replenishment, depletion, cadence, return, and recurring household hygiene within the HygieneRoll model." />
+  <meta name="twitter:image" content="https://hygieneroll.com/assets/images/hygieneroll-social.jpg" />
+  <meta name="twitter:image:alt" content="HygieneRoll social preview for recurring household hygiene replenishment, with paper, soap, towels, and personal care." />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": "https://hygieneroll.com/reference.html#webpage",
+    "url": "https://hygieneroll.com/reference.html",
+    "name": "Household Hygiene Replenishment Reference — HygieneRoll.com",
+    "description": "Definitions and evidence rules for replenishment, depletion, cadence, return, and recurring household hygiene within the HygieneRoll model.",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "HygieneRoll.com",
+      "url": "https://hygieneroll.com/"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #edf4fb;
+      --text: #0b1f3b;
+      --muted: #566a84;
+      --blue: #2563eb;
+      --navy: #081a34;
+      --line: rgba(15, 35, 66, 0.08);
+      --container: 1100px;
+      --radius-xl: 28px;
+      --shadow: 0 18px 50px rgba(15, 35, 66, 0.08);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(37, 99, 235, 0.16), transparent 60%),
+        linear-gradient(180deg, #f7fbff 0%, var(--bg) 42%, #e7eef8 100%);
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .skip-link {
+      position: absolute; left: 12px; top: -40px; background: #fff; color: var(--navy);
+      padding: 8px 12px; border-radius: 8px; z-index: 1100;
+    }
+    .skip-link:focus { top: 12px; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+    .container { width: min(calc(100% - 40px), var(--container)); margin: 0 auto; }
+    .site-header {
+      position: sticky; top: 0; z-index: 1000;
+      background: rgba(245, 249, 255, 0.84);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(15, 35, 66, 0.06);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 88px; padding: 12px 0; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-logo { width: 44px; height: 44px; object-fit: contain; flex: 0 0 44px; }
+    .brand-mark { display: inline-flex; align-items: baseline; letter-spacing: -0.045em; font-weight: 800; white-space: nowrap; }
+    .brand-mark span:first-child { font-size: 2rem; color: #0f2342; }
+    .brand-mark .dotcom { margin-left: 2px; font-size: 1.18rem; color: var(--blue); font-weight: 800; }
+    .nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-link, .nav-cta {
+      display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 14px;
+      border-radius: 999px; font-size: 0.95rem; font-weight: 600; color: #5e6f86;
+    }
+    .nav-link.active, .nav-link:hover { color: #0f2342; background: rgba(37, 99, 235, 0.05); }
+    .nav-cta {
+      min-width: 108px; color: #0f2342; font-weight: 700;
+      background: rgba(255,255,255,0.94); border: 1px solid rgba(15, 35, 66, 0.06);
+    }
+    .page { padding: 48px 0 28px; }
+    .eyebrow {
+      display: inline-flex; padding: 10px 16px; border-radius: 999px;
+      background: rgba(255,255,255,0.72); border: 1px solid rgba(255,255,255,0.8);
+      color: var(--blue); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    h1 {
+      margin-top: 18px; max-width: 16ch; font-size: clamp(2.4rem, 5vw, 4.2rem);
+      line-height: 0.98; letter-spacing: -0.05em; color: #0d2344;
+    }
+    .lead { margin-top: 18px; max-width: 68ch; color: var(--muted); font-size: 1.05rem; line-height: 1.7; }
+    .trust { margin-top: 14px; font-weight: 650; color: #24405f; }
+    .glass {
+      background: rgba(255,255,255,0.86); border: 1px solid rgba(255,255,255,0.74);
+      border-radius: var(--radius-xl); box-shadow: var(--shadow);
+    }
+    .section { margin-top: 42px; }
+    .section h2 { margin: 0 0 12px; font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -0.04em; color: #0d2344; }
+    .prose p, .prose li { color: var(--muted); font-size: 1.05rem; line-height: 1.7; }
+    .prose p + p, .prose ul, .toc { margin-top: 12px; }
+    .prose a, .footer a, .object a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+    .legend, .toc { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .legend li, .toc a {
+      padding: 16px 18px; border-radius: 18px; background: rgba(255,255,255,0.72); border: 1px solid rgba(255,255,255,0.8);
+    }
+    .legend strong, .toc a { display: block; color: #12325d; font-weight: 750; }
+    .legend span, .kicker { display: block; margin-top: 4px; color: var(--muted); font-weight: 500; font-size: 0.95rem; line-height: 1.5; }
+    .toc a { text-decoration: none; }
+    .toc a:hover { background: rgba(37, 99, 235, 0.05); }
+    .object { margin: 0 0 18px; padding: 22px 24px; scroll-margin-top: 120px; }
+    .object-id { margin: 0; font-size: 0.82rem; font-weight: 800; letter-spacing: 0.08em; color: var(--blue); }
+    .badge {
+      display: inline-flex; margin-top: 10px; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid rgba(37, 99, 235, 0.18); background: rgba(37, 99, 235, 0.06);
+      color: #12325d; font-size: 0.82rem; font-weight: 750;
+    }
+    .object h3 { margin: 12px 0 0; font-size: clamp(1.45rem, 2.5vw, 1.9rem); letter-spacing: -0.04em; color: #0d2344; }
+    .object h4 { margin: 18px 0 6px; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: #12325d; }
+    .object p { margin: 0; color: var(--muted); font-size: 1.02rem; line-height: 1.7; }
+    .footer { padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+    .footer-inner {
+      display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+      border-top: 1px solid rgba(167, 188, 217, 0.18); padding-top: 22px;
+    }
+    @media (max-width: 879px) {
+      .nav { min-height: 0; flex-wrap: wrap; align-items: flex-start; gap: 8px; }
+      .nav-actions { width: 100%; margin-left: 0; justify-content: flex-start; gap: 8px; }
+    }
+    @media (max-width: 768px) {
+      .container { width: min(calc(100% - 24px), var(--container)); }
+      .brand-mark span:first-child { font-size: 1.6rem; }
+      h1 { max-width: none; }
+      .legend, .toc { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .site-header { position: static; }
+      .object { padding: 18px 16px; scroll-margin-top: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#top">Skip to content</a>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand" aria-label="HygieneRoll.com home">
+        <img src="assets/images/logo-hygieneroll.png" class="brand-logo" alt="HygieneRoll logo" />
+        <span class="brand-mark"><span>HygieneRoll</span><span class="dotcom">.com</span></span>
+      </a>
+      <div class="nav-actions">
+        <a class="nav-link" href="replenishment-model.html">Model</a>
+        <a class="nav-link" href="calculator.html">Calculator</a>
+        <a class="nav-link" href="index.html#flow">System</a>
+        <a class="nav-link" href="index.html#interfaces">Interfaces</a>
+        <a class="nav-cta" href="index.html#acquire">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top" class="page">
+    <div class="container">
+      <span class="eyebrow">Reference Layer</span>
+      <h1>Household Hygiene Replenishment Reference</h1>
+      <p class="lead">A governed vocabulary for depletion, planning, cadence, return, and recurring household hygiene.</p>
+      <p class="trust">Definitions, evidence, interpretation, and illustrative models are labeled separately.</p>
+
+      <section class="section prose" aria-labelledby="read-heading">
+        <h2 id="read-heading">How to read this reference</h2>
+        <p>These entries are HygieneRoll working definitions. They say how this model uses a term. They are not empirical market facts, and they are not a claim that the wording is an industry standard, an official taxonomy, or a scientifically validated law.</p>
+        <p>Foundation v0.1 admits no external observations. A factual observation about actual markets, households, or companies requires an admitted external source before publication. An example used only to show the logic would be marked illustrative, and would not be described as measured behavior.</p>
+        <ul class="legend">
+          <li><strong>Project definition</strong><span>A distinction HygieneRoll chooses and names. It points to the public page or method where the concept is used.</span></li>
+          <li><strong>Observed evidence</strong><span>A factual statement about the external world. It is published only with an admitted source. None are admitted in v0.1.</span></li>
+          <li><strong>Derived interpretation</strong><span>A reading of admitted evidence. It stays in interpretive language and does not pretend the source stated the conclusion.</span></li>
+          <li><strong>Illustrative model</strong><span>A scenario or diagram used to explain logic. It is not a measured household or an average.</span></li>
+        </ul>
+        <ul class="toc">
+          <li><a href="#replenishment-vs-subscription">Replenishment vs Subscription</a></li>
+          <li><a href="#household-depletion-clock">Household Depletion Clock</a></li>
+          <li><a href="#planning-trigger">Planning Trigger</a></li>
+          <li><a href="#lead-time-and-safety-buffer">Lead Time and Safety Buffer</a></li>
+          <li><a href="#illustrative-cadence">Illustrative Cadence</a></li>
+          <li><a href="#ownership-of-return">Ownership of Return</a></li>
+          <li><a href="#re-entry">Re-entry</a></li>
+          <li><a href="#category-expansion">Category Expansion</a></li>
+        </ul>
+      </section>
+
+      <section class="section" aria-labelledby="objects-heading">
+        <h2 id="objects-heading">Core reference objects</h2>
+
+        <article class="object glass" id="replenishment-vs-subscription">
+          <p class="object-id">HRK-001</p>
+          <p class="badge">HygieneRoll working definition</p>
+          <h3>Replenishment vs Subscription</h3>
+          <h4>Definition</h4>
+          <p data-claim-id="HRC-001">Within the HygieneRoll model, a subscription describes a recurring commerce arrangement, and replenishment describes planning around an item approaching renewed need or depletion.</p>
+          <h4>Key distinction</h4>
+          <p>Within the model, a subscription can be one mechanism for recurring commerce, and replenishment logic is concerned with the timing of need. The two can coincide, and they can also come apart: a fixed shipping interval does not, by itself, stand in for the timing of need on a particular item.</p>
+          <h4>Why it matters inside the model</h4>
+          <p>The model asks when the household is likely to need the item again, using the assumptions the visitor supplies. It does not treat a billing cycle as the definition of need.</p>
+          <h4>Related artifact</h4>
+          <p>Operationalized on the <a href="calculator.html">calculator</a> and described in the <a href="replenishment-model.html">replenishment model</a>. Related entries: <a href="#planning-trigger">Planning Trigger</a> and <a href="#illustrative-cadence">Illustrative Cadence</a>.</p>
+          <h4>Evidence posture</h4>
+          <p>Project-defined. Defined within the HygieneRoll model. No external evidence is attached.</p>
+        </article>
+
+        <article class="object glass" id="household-depletion-clock">
+          <p class="object-id">HRK-002</p>
+          <p class="badge">HygieneRoll working definition</p>
+          <h3>Household Depletion Clock</h3>
+          <h4>Definition</h4>
+          <p data-claim-id="HRC-002">The HygieneRoll model represents a household as containing multiple recurring essentials whose supply can deplete on different timelines, and it treats each item as an independent replenishment clock.</p>
+          <h4>Key distinction</h4>
+          <p>Within the model, the household is one customer relationship and its consumption is not one clock. Each item keeps its own replenishment clock, so different item inputs can produce different planning-trigger dates. The model does not collapse those clocks into one schedule.</p>
+          <h4>Why it matters inside the model</h4>
+          <p>The calculator operationalizes this by estimating each item on its own and then identifying the soonest planning trigger. That household summary does not average unlike items. This is a representation chosen by the model, not a research finding about how many cycles households have.</p>
+          <h4>Related artifact</h4>
+          <p>Operationalized by <code>calculateHousehold()</code> in the calculator engine, and visible when more than one item is estimated on the <a href="calculator.html">calculator</a>. Related entries: <a href="#planning-trigger">Planning Trigger</a> and <a href="#re-entry">Re-entry</a>.</p>
+          <h4>Evidence posture</h4>
+          <p>Project-defined. Defined within the HygieneRoll model. No external evidence is attached.</p>
+        </article>
+
+        <article class="object glass" id="planning-trigger">
+          <p class="object-id">HRK-003</p>
+          <p class="badge">HygieneRoll working definition</p>
+          <h3>Planning Trigger</h3>
+          <h4>Definition</h4>
+          <p data-claim-id="HRC-003">In HygieneRoll calculator v0.1, the planning trigger is the rounded depletion timing minus lead time minus safety buffer, clamped at zero. It is a scenario-derived planning threshold.</p>
+          <h4>Key distinction</h4>
+          <p>The trigger is the day the planning window opens under the visitor’s assumptions. It is not an optimal reorder point, a scientific reorder date, or a recommended purchase date. A result at or below zero is shown as now, not as a negative day.</p>
+          <h4>Why it matters inside the model</h4>
+          <p>Depletion timing alone does not say when a replenishment would need to be underway. Lead time and buffer are subtracted so the threshold sits earlier than the estimated depletion. The rounding rule is the one specified in the calculator methodology.</p>
+          <h4>Related artifact</h4>
+          <p>Specified in <a href="CALCULATOR_METHODOLOGY.md">CALCULATOR_METHODOLOGY.md</a> and calculated on the <a href="calculator.html">calculator</a>. Related entry: <a href="#lead-time-and-safety-buffer">Lead Time and Safety Buffer</a>.</p>
+          <h4>Evidence posture</h4>
+          <p>Project-defined. Defined within the HygieneRoll model. No external evidence is attached.</p>
+        </article>
+
+        <article class="object glass" id="lead-time-and-safety-buffer">
+          <p class="object-id">HRK-004</p>
+          <p class="badge">HygieneRoll working definition</p>
+          <h3>Lead Time and Safety Buffer</h3>
+          <h4>Definition</h4>
+          <p data-claim-id="HRC-004">Within HygieneRoll calculator v0.1, lead time is the time assumed between initiating replenishment and availability or arrival.</p>
+          <p data-claim-id="HRC-005">Within HygieneRoll calculator v0.1, the safety buffer is a user-selected additional time before estimated depletion. It is not a medically safe stock level, an industry optimum, or a statistical confidence interval.</p>
+          <h4>Key distinction</h4>
+          <p>Lead time is about arrival. The buffer is extra time the visitor wants before the estimated depletion. They are separate inputs. Either may be zero. Neither is supplied by a hidden default, and neither is a health or sanitation standard.</p>
+          <h4>Why it matters inside the model</h4>
+          <p>Both are subtracted from depletion timing to form the planning trigger. Changing either one changes the threshold without changing the usage rate. The model does not infer a correct buffer from household size or from a category average.</p>
+          <h4>Related artifact</h4>
+          <p>Entered on the <a href="calculator.html">calculator</a> and specified in <a href="CALCULATOR_METHODOLOGY.md">CALCULATOR_METHODOLOGY.md</a>. Related entry: <a href="#planning-trigger">Planning Trigger</a>.</p>
+          <h4>Evidence posture</h4>
+          <p>Project-defined. Defined within the HygieneRoll model. No external evidence is attached.</p>
+        </article>
+
+        <article class="object glass" id="illustrative-cadence">
+          <p class="object-id">HRK-005</p>
+          <p class="badge">HygieneRoll working definition</p>
+          <h3>Illustrative Cadence</h3>
+          <h4>Definition</h4>
+          <p data-claim-id="HRC-006">Within HygieneRoll calculator v0.1, illustrative cadence estimates how long a replenishment quantity would cover under the supplied usage assumptions. It is not an optimal subscription frequency, an automatic shipping recommendation, or a guaranteed usage interval.</p>
+          <h4>Key distinction</h4>
+          <p>Cadence here is coverage under a stated quantity and a stated usage rate. If the replenishment quantity is left blank, the calculator uses the current quantity for that illustration. The result is a planning picture, not a schedule the household is expected to keep.</p>
+          <h4>Why it matters inside the model</h4>
+          <p>Within the model, coverage follows the quantity and usage supplied for that item, so one interval need not fit every item. The label stays “illustrative” so the figure is not read as a recommended subscription.</p>
+          <h4>Related artifact</h4>
+          <p>Specified in <a href="CALCULATOR_METHODOLOGY.md">CALCULATOR_METHODOLOGY.md</a> and shown on the <a href="calculator.html">calculator</a>. Related entry: <a href="#replenishment-vs-subscription">Replenishment vs Subscription</a>.</p>
+          <h4>Evidence posture</h4>
+          <p>Project-defined. Defined within the HygieneRoll model. No external evidence is attached. A numerical walkthrough, if one is shown elsewhere, is an illustrative model rather than observed usage.</p>
+        </article>
+
+        <article class="object glass" id="ownership-of-return">
+          <p class="object-id">HRK-006</p>
+          <p class="badge">HygieneRoll working definition</p>
+          <h3>Ownership of Return</h3>
+          <h4>Definition</h4>
+          <p data-claim-id="HRC-007">Within HygieneRoll, ownership of return describes controlling or directly operating the consumer-facing re-entry surface through which recurring household demand can come back. It does not mean legal ownership of consumers, ownership of their behavior, proven retention, or guaranteed recurring revenue.</p>
+          <h4>Key distinction</h4>
+          <p>Within the HygieneRoll model, product distribution and control of the consumer re-entry surface are separate concepts. Ownership of return names the latter. It is a strategic and commercial concept, not a claim that demand has already been captured.</p>
+          <h4>Why it matters inside the model</h4>
+          <p>The asset is built around the idea that recurring hygiene is valuable when the return path is direct. The reference states the idea. It does not report retention, revenue, or an operating history.</p>
+          <h4>Related artifact</h4>
+          <p>Stated on the <a href="index.html">homepage</a> and carried through the <a href="replenishment-model.html">replenishment model</a>. Related entries: <a href="#re-entry">Re-entry</a> and <a href="#category-expansion">Category Expansion</a>.</p>
+          <h4>Evidence posture</h4>
+          <p>Project-defined. Defined within the HygieneRoll model. No external evidence is attached.</p>
+        </article>
+
+        <article class="object glass" id="re-entry">
+          <p class="object-id">HRK-007</p>
+          <p class="badge">HygieneRoll working definition</p>
+          <h3>Re-entry</h3>
+          <h4>Definition</h4>
+          <p data-claim-id="HRC-008">Within the HygieneRoll model, re-entry is the point at which a household returns to a consumer surface because a recurring need is approaching again. It is distinct from a first purchase.</p>
+          <h4>Key distinction</h4>
+          <p>A first purchase opens the relationship. Re-entry is the later interaction the model is built to represent: need, use, replenishment, and return. The model does not claim that every household behaves this way. It names the event the loop is organized around.</p>
+          <h4>Why it matters inside the model</h4>
+          <p>Without a distinct return event, replenishment collapses into a storefront that waits for the next unrelated visit. Re-entry keeps the next cycle attached to the same household need.</p>
+          <h4>Related artifact</h4>
+          <p>Described on the <a href="index.html">homepage</a> and in the <a href="replenishment-model.html">replenishment model</a>. Related entries: <a href="#household-depletion-clock">Household Depletion Clock</a> and <a href="#ownership-of-return">Ownership of Return</a>.</p>
+          <h4>Evidence posture</h4>
+          <p>Project-defined. Defined within the HygieneRoll model. No external evidence is attached.</p>
+        </article>
+
+        <article class="object glass" id="category-expansion">
+          <p class="object-id">HRK-008</p>
+          <p class="badge">HygieneRoll working definition</p>
+          <h3>Category Expansion</h3>
+          <h4>Definition</h4>
+          <p data-claim-id="HRC-009">The HygieneRoll category model treats paper hygiene as the clearest entry anchor, then personal care, then broader household hygiene. Paper hygiene is not the category ceiling. This sequence is a strategic model, not a claim that it is the empirically best expansion path.</p>
+          <h4>Key distinction</h4>
+          <p>HygieneRoll uses paper hygiene — tissue, rolls, towels, and wipes — as its entry anchor. Personal care and household cleaning are modeled as expansion layers. The order is an architecture choice. It is not a market-leadership claim and not a finding about the empirically best sequence.</p>
+          <h4>Why it matters inside the model</h4>
+          <p>The same replenishment relationship can cover more than one clock. Expansion, in this reference, means the surface is designed to hold those further essentials, not that a household has been observed to adopt them in this order.</p>
+          <h4>Related artifact</h4>
+          <p>Stated on the <a href="index.html">homepage</a> and in the <a href="replenishment-model.html">replenishment model</a>. Related entry: <a href="#ownership-of-return">Ownership of Return</a>.</p>
+          <h4>Evidence posture</h4>
+          <p>Project-defined. Defined within the HygieneRoll model. No external evidence is attached.</p>
+        </article>
+      </section>
+
+      <section class="section prose" aria-labelledby="evidence-heading">
+        <h2 id="evidence-heading">How evidence enters the reference</h2>
+        <p>An external fact is admitted only when a source exists, the source supports that exact sentence, and the scope, period, geography, population, and metric match. If any of those fail, the claim is blocked. It is not published in weaker wording that still asserts the fact.</p>
+        <p>Project pages are provenance for definitions. They are not evidence about the outside world. A derived interpretation is published only with admitted sources, and it stays in interpretive language. Illustrative scenarios will stay labeled as illustrations.</p>
+        <p>The source register for v0.1 is empty on purpose. Authority in this foundation is the refusal to blur a definition into an observation.</p>
+      </section>
+
+      <section class="section prose" aria-labelledby="apply-heading">
+        <h2 id="apply-heading">Apply the model</h2>
+        <p>The <a href="calculator.html">calculator</a> turns these definitions into a planning window from the visitor’s own inputs. The <a href="replenishment-model.html">replenishment model</a> is the operating reference the calculator implements. The <a href="index.html">homepage</a> states the asset thesis those tools belong to.</p>
+      </section>
+
+      <section class="section prose" aria-labelledby="governance-heading">
+        <h2 id="governance-heading">Methodology and governance</h2>
+        <ul>
+          <li><a href="CALCULATOR_METHODOLOGY.md">Calculator methodology</a></li>
+          <li><a href="REFERENCE_ARCHITECTURE.md">Reference architecture</a></li>
+          <li><a href="EVIDENCE_POLICY.md">Evidence policy</a></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>HygieneRoll.com — developed digital asset for recurring household hygiene replenishment</span>
+      <a href="index.html">Home</a>
+      <a href="replenishment-model.html">Replenishment model</a>
+      <a href="calculator.html">Calculator</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,263 @@
+{
+  "version": "0.1",
+  "objects": [
+    {
+      "id": "HRK-001",
+      "slug": "replenishment-vs-subscription",
+      "title": "Replenishment vs Subscription",
+      "status": "ACTIVE",
+      "definition_scope": "HygieneRoll working definition",
+      "summary": "Within the HygieneRoll model, a subscription is a recurring commerce arrangement, while replenishment is planning around an item approaching renewed need.",
+      "claims": [
+        {
+          "id": "HRC-001",
+          "class": "PROJECT_DEFINITION",
+          "text": "Within the HygieneRoll model, a subscription describes a recurring commerce arrangement, and replenishment describes planning around an item approaching renewed need or depletion.",
+          "source_ids": [],
+          "origin_refs": [
+            "replenishment-model.html",
+            "calculator.html"
+          ]
+        }
+      ],
+      "origin_refs": [
+        "replenishment-model.html",
+        "calculator.html"
+      ],
+      "related_objects": [
+        "HRK-003",
+        "HRK-005"
+      ],
+      "related_routes": [
+        "replenishment-model.html",
+        "calculator.html"
+      ]
+    },
+    {
+      "id": "HRK-002",
+      "slug": "household-depletion-clock",
+      "title": "Household Depletion Clock",
+      "status": "ACTIVE",
+      "definition_scope": "HygieneRoll working definition",
+      "summary": "The HygieneRoll model represents each household essential as an independent replenishment clock.",
+      "claims": [
+        {
+          "id": "HRC-002",
+          "class": "PROJECT_DEFINITION",
+          "text": "The HygieneRoll model represents a household as containing multiple recurring essentials whose supply can deplete on different timelines, and it treats each item as an independent replenishment clock.",
+          "source_ids": [],
+          "origin_refs": [
+            "calculator.html",
+            "assets/js/replenishment-engine.js"
+          ]
+        }
+      ],
+      "origin_refs": [
+        "calculator.html",
+        "assets/js/replenishment-engine.js"
+      ],
+      "related_objects": [
+        "HRK-003",
+        "HRK-007"
+      ],
+      "related_routes": [
+        "calculator.html",
+        "replenishment-model.html"
+      ]
+    },
+    {
+      "id": "HRK-003",
+      "slug": "planning-trigger",
+      "title": "Planning Trigger",
+      "status": "ACTIVE",
+      "definition_scope": "HygieneRoll working definition",
+      "summary": "In calculator v0.1, the planning trigger is rounded depletion timing minus lead time and safety buffer, clamped at zero.",
+      "claims": [
+        {
+          "id": "HRC-003",
+          "class": "PROJECT_DEFINITION",
+          "text": "In HygieneRoll calculator v0.1, the planning trigger is the rounded depletion timing minus lead time minus safety buffer, clamped at zero. It is a scenario-derived planning threshold.",
+          "source_ids": [],
+          "origin_refs": [
+            "CALCULATOR_METHODOLOGY.md"
+          ]
+        }
+      ],
+      "origin_refs": [
+        "CALCULATOR_METHODOLOGY.md",
+        "calculator.html"
+      ],
+      "related_objects": [
+        "HRK-004"
+      ],
+      "related_routes": [
+        "calculator.html",
+        "CALCULATOR_METHODOLOGY.md"
+      ]
+    },
+    {
+      "id": "HRK-004",
+      "slug": "lead-time-and-safety-buffer",
+      "title": "Lead Time and Safety Buffer",
+      "status": "ACTIVE",
+      "definition_scope": "HygieneRoll working definition",
+      "summary": "Lead time and safety buffer are separate user-supplied planning inputs in calculator v0.1.",
+      "claims": [
+        {
+          "id": "HRC-004",
+          "class": "PROJECT_DEFINITION",
+          "text": "Within HygieneRoll calculator v0.1, lead time is the time assumed between initiating replenishment and availability or arrival.",
+          "source_ids": [],
+          "origin_refs": [
+            "CALCULATOR_METHODOLOGY.md"
+          ]
+        },
+        {
+          "id": "HRC-005",
+          "class": "PROJECT_DEFINITION",
+          "text": "Within HygieneRoll calculator v0.1, the safety buffer is a user-selected additional time before estimated depletion. It is not a medically safe stock level, an industry optimum, or a statistical confidence interval.",
+          "source_ids": [],
+          "origin_refs": [
+            "CALCULATOR_METHODOLOGY.md"
+          ]
+        }
+      ],
+      "origin_refs": [
+        "CALCULATOR_METHODOLOGY.md",
+        "calculator.html"
+      ],
+      "related_objects": [
+        "HRK-003"
+      ],
+      "related_routes": [
+        "calculator.html",
+        "CALCULATOR_METHODOLOGY.md"
+      ]
+    },
+    {
+      "id": "HRK-005",
+      "slug": "illustrative-cadence",
+      "title": "Illustrative Cadence",
+      "status": "ACTIVE",
+      "definition_scope": "HygieneRoll working definition",
+      "summary": "Illustrative cadence estimates how long a replenishment quantity would cover under the visitor's own usage assumptions.",
+      "claims": [
+        {
+          "id": "HRC-006",
+          "class": "PROJECT_DEFINITION",
+          "text": "Within HygieneRoll calculator v0.1, illustrative cadence estimates how long a replenishment quantity would cover under the supplied usage assumptions. It is not an optimal subscription frequency, an automatic shipping recommendation, or a guaranteed usage interval.",
+          "source_ids": [],
+          "origin_refs": [
+            "CALCULATOR_METHODOLOGY.md"
+          ]
+        }
+      ],
+      "origin_refs": [
+        "CALCULATOR_METHODOLOGY.md",
+        "calculator.html"
+      ],
+      "related_objects": [
+        "HRK-001"
+      ],
+      "related_routes": [
+        "calculator.html",
+        "CALCULATOR_METHODOLOGY.md"
+      ]
+    },
+    {
+      "id": "HRK-006",
+      "slug": "ownership-of-return",
+      "title": "Ownership of Return",
+      "status": "ACTIVE",
+      "definition_scope": "HygieneRoll working definition",
+      "summary": "Ownership of return describes control of the consumer-facing re-entry surface through which recurring household demand can come back.",
+      "claims": [
+        {
+          "id": "HRC-007",
+          "class": "PROJECT_DEFINITION",
+          "text": "Within HygieneRoll, ownership of return describes controlling or directly operating the consumer-facing re-entry surface through which recurring household demand can come back. It does not mean legal ownership of consumers, ownership of their behavior, proven retention, or guaranteed recurring revenue.",
+          "source_ids": [],
+          "origin_refs": [
+            "index.html",
+            "replenishment-model.html"
+          ]
+        }
+      ],
+      "origin_refs": [
+        "index.html",
+        "replenishment-model.html"
+      ],
+      "related_objects": [
+        "HRK-007",
+        "HRK-008"
+      ],
+      "related_routes": [
+        "index.html",
+        "replenishment-model.html"
+      ]
+    },
+    {
+      "id": "HRK-007",
+      "slug": "re-entry",
+      "title": "Re-entry",
+      "status": "ACTIVE",
+      "definition_scope": "HygieneRoll working definition",
+      "summary": "Re-entry is the conceptual return to a consumer surface as a recurring need approaches again.",
+      "claims": [
+        {
+          "id": "HRC-008",
+          "class": "PROJECT_DEFINITION",
+          "text": "Within the HygieneRoll model, re-entry is the point at which a household returns to a consumer surface because a recurring need is approaching again. It is distinct from a first purchase.",
+          "source_ids": [],
+          "origin_refs": [
+            "index.html",
+            "replenishment-model.html"
+          ]
+        }
+      ],
+      "origin_refs": [
+        "index.html",
+        "replenishment-model.html"
+      ],
+      "related_objects": [
+        "HRK-002",
+        "HRK-006"
+      ],
+      "related_routes": [
+        "index.html",
+        "replenishment-model.html"
+      ]
+    },
+    {
+      "id": "HRK-008",
+      "slug": "category-expansion",
+      "title": "Category Expansion",
+      "status": "ACTIVE",
+      "definition_scope": "HygieneRoll working definition",
+      "summary": "HygieneRoll's category model starts with paper hygiene as the entry anchor and extends toward personal care and household hygiene.",
+      "claims": [
+        {
+          "id": "HRC-009",
+          "class": "PROJECT_DEFINITION",
+          "text": "The HygieneRoll category model treats paper hygiene as the clearest entry anchor, then personal care, then broader household hygiene. Paper hygiene is not the category ceiling. This sequence is a strategic model, not a claim that it is the empirically best expansion path.",
+          "source_ids": [],
+          "origin_refs": [
+            "index.html",
+            "replenishment-model.html"
+          ]
+        }
+      ],
+      "origin_refs": [
+        "index.html",
+        "replenishment-model.html"
+      ],
+      "related_objects": [
+        "HRK-006"
+      ],
+      "related_routes": [
+        "index.html",
+        "replenishment-model.html"
+      ]
+    }
+  ]
+}
