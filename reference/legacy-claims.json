@@ -1,0 +1,44 @@
+{
+  "version": "0.2",
+  "migration_due": "0.3",
+  "claims": [
+    {
+      "id": "HRL-001",
+      "title": "Subscription Economy figures",
+      "class": "OBSERVED_EVIDENCE",
+      "migration_status": "PENDING_MIGRATION",
+      "governed_claim_id": null,
+      "surfaces": [
+        "index.html",
+        "replenishment-model.html"
+      ],
+      "fragments": [
+        "<div class=\"stat-figure\">$1.51T</div>",
+        "2033 forecast. Grand View Research estimates the global subscription economy at about USD 492.3 billion in 2024 and about USD 1,512.1 billion by 2033. The series covers subscription businesses across industries. It is adjacent context, not a HygieneRoll market."
+      ],
+      "cited_publisher": "Grand View Research",
+      "cited_url": "https://www.grandviewresearch.com/industry-analysis/subscription-economy-market-report",
+      "source_ids": [],
+      "notes": "Published before DEC-HR-006. Global, cross-industry subscription-economy series with a 2024 estimate and a 2033 forecast. Not yet qualified: no source record, no claim-source qualification. Not admissible while pending."
+    },
+    {
+      "id": "HRL-002",
+      "title": "Broad Cleaning & Hygiene Products Market figures",
+      "class": "OBSERVED_EVIDENCE",
+      "migration_status": "PENDING_MIGRATION",
+      "governed_claim_id": null,
+      "surfaces": [
+        "index.html",
+        "replenishment-model.html"
+      ],
+      "fragments": [
+        "<div class=\"stat-figure\">$43.3B</div>",
+        "2033 forecast. Grand View Research estimates this broad market at about USD 33.0 billion in 2025, about USD 34.0 billion in 2026, and about USD 43.3 billion by 2033. Applications include cleaning tools, personal care, infection prevention, floor and building care, kitchen care, and fabric care, across household and commercial or institutional end users. This is adjacent-market context. It is not a HygieneRoll TAM, a household-hygiene-only market size, a revenue figure, or valuation evidence."
+      ],
+      "cited_publisher": "Grand View Research",
+      "cited_url": "https://www.grandviewresearch.com/industry-analysis/cleaning-hygiene-products-market-report",
+      "source_ids": [],
+      "notes": "Published before DEC-HR-006. Broad market series spanning household and commercial or institutional end users, with 2025 and 2026 estimates and a 2033 forecast. Not yet qualified: no source record, no claim-source qualification. Not admissible while pending."
+    }
+  ]
+}

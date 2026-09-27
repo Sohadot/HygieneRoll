@@ -41,6 +41,7 @@ The public asset currently includes:
 - a browser-based household hygiene replenishment calculator using user-supplied usage, lead-time, buffer, and variability assumptions
 - a governed household hygiene replenishment reference layer
 - a public evidence policy separating definitions, observations, interpretations, and illustrative models
+- an evidence governance engine that admits an external claim only when each cited source is admitted and qualified for that exact claim
 
 No customers, revenue, fulfillment operation, or live subscription product are claimed. Interface screens are concepts developed to show how an operator could deploy the model.
 
@@ -94,6 +95,7 @@ HygieneRoll/
 ├── CALCULATOR_METHODOLOGY.md
 ├── REFERENCE_ARCHITECTURE.md
 ├── EVIDENCE_POLICY.md
+├── EVIDENCE_GOVERNANCE.md
 ├── DECISION_LOG.md
 ├── reference/
 ├── assets/
