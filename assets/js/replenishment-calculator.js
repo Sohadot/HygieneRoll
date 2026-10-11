@@ -19,6 +19,24 @@
     { id: "custom", group: "Other", name: "Custom item", unit: "" }
   ];
 
+  var CATEGORY_BY_GROUP = {
+    "Paper hygiene": "PAPER_HYGIENE",
+    "Personal hygiene": "PERSONAL_HYGIENE",
+    "Household hygiene": "HOUSEHOLD_HYGIENE",
+    "Other": "OTHER"
+  };
+
+  var EXPOSURE_TEXT = {
+    BUFFER_INTACT: "Buffer stays intact",
+    BUFFER_DRAWN: "Buffer absorbs it"
+  };
+
+  var FIT_TEXT = {
+    WITHIN_WINDOW: "Within the cadence window",
+    EARLIER_THAN_WINDOW: "Earlier than the cadence window",
+    LATER_THAN_WINDOW: "Later than the cadence window"
+  };
+
   var list;
   var addButton;
   var limitNote;
@@ -124,11 +142,12 @@
     variability.input.max = "50";
     planningGrid.appendChild(variability.wrap);
     planningGrid.appendChild(numberField(id, "replenishment", "Replenishment quantity", "e.g. 6", "0").wrap);
+    planningGrid.appendChild(numberField(id, "interval", "Fixed delivery interval to compare (days)", "optional", "0").wrap);
     planning.appendChild(planningGrid);
 
     var hint = document.createElement("p");
     hint.className = "field-hint";
-    hint.textContent = "Variability widens the planning window; it is not a confidence interval. Leave replenishment quantity blank to use the current quantity.";
+    hint.textContent = "Variability widens the planning window; it is not a confidence interval. Leave replenishment quantity blank to use the current quantity. A fixed delivery interval is optional: enter a subscription schedule you hold or are considering to compare it with this item's cadence.";
     planning.appendChild(hint);
     card.appendChild(planning);
 
@@ -333,7 +352,7 @@
     }
 
     var summary = engine.calculateHousehold(inputs);
-    render(summary);
+    render(summary, engine.buildScenarioRecord(inputs));
   }
 
   function readCard(card) {
@@ -348,6 +367,7 @@
     var buffer = readNumber(element(card, "buffer"));
     var variability = readNumber(element(card, "variability"));
     var replenishment = readNumber(element(card, "replenishment"));
+    var interval = readNumber(element(card, "interval"));
 
     return {
       input: {
@@ -361,7 +381,9 @@
         leadTimeDays: lead.empty || lead.invalid ? Number.NaN : lead.value,
         bufferDays: buffer.empty || buffer.invalid ? Number.NaN : buffer.value,
         variabilityPercent: variability.empty || variability.invalid ? Number.NaN : variability.value,
-        replenishmentQuantity: replenishment.empty ? "" : (replenishment.invalid ? Number.NaN : replenishment.value)
+        replenishmentQuantity: replenishment.empty ? "" : (replenishment.invalid ? Number.NaN : replenishment.value),
+        intervalDays: interval.empty ? "" : (interval.invalid ? Number.NaN : interval.value),
+        category: CATEGORY_BY_GROUP[preset.group] || "OTHER"
       }
     };
   }
@@ -388,6 +410,7 @@
     if (field === "bufferDays") key = "buffer";
     if (field === "variabilityPercent") key = "variability";
     if (field === "replenishmentQuantity") key = "replenishment";
+    if (field === "intervalDays") key = "interval";
     if (field === "name") key = "name";
     if (field === "quantity") key = "quantity";
     return element(card, key);
@@ -453,7 +476,7 @@
     if (select) select.focus();
   }
 
-  function render(summary) {
+  function render(summary, record) {
     results.textContent = "";
     var summaryCard = document.createElement("article");
     summaryCard.className = "result-card glass";
@@ -491,6 +514,8 @@
       results.appendChild(itemCard(item));
     });
 
+    results.appendChild(recordPanel(record));
+
     var first = summary.nextReturn.names.join(", ");
     var triggerText = summary.nextReturn.trigger
       ? summary.nextReturn.items[0].text.trigger
@@ -515,8 +540,73 @@
     appendAside(card, item.text.triggerNote);
     appendPair(card, "Illustrative cadence", item.text.cadence);
     appendAside(card, item.text.cadenceWeeks);
+    appendPair(card, "Reorder threshold", quantityText(item.reorder.thresholdUnits, item.unit, item.unitKind));
+    appendAside(card, "Lead-time demand " + formatNumber(item.reorder.leadTimeDemandUnits) + " + reserve " + formatNumber(item.reorder.reserveUnits) + ", at the fast usage bound.");
+    if (item.reorder.atOrBelowThreshold) appendAside(card, "Current supply is at or below this threshold.");
+    if (item.intervalFit) {
+      appendPair(card, formatNumber(item.intervalFit.intervalDays) + "-day fixed interval", FIT_TEXT[item.intervalFit.fit]);
+      appendAside(card, driftText(item.intervalFit.driftDaysPerCycle));
+    }
+    engine.leadTimeSlip(item).forEach(function (row) {
+      appendPair(card, "If delivery takes " + dayLabel(row.slipDays) + " longer", exposureText(row.exposureIfOrderedAtTrigger));
+      appendAside(card, "Ordered at the planning trigger. Re-planned trigger: " + engine.formatTrigger(row.replannedTrigger) + ".");
+    });
     appendPair(card, "Variability allowance", formatNumber(item.variabilityPercent) + "%");
     return card;
+  }
+
+  function exposureText(exposure) {
+    if (EXPOSURE_TEXT[exposure.status]) return EXPOSURE_TEXT[exposure.status];
+    var gap = exposure.gapDays;
+    if (gap.min === gap.max) return dayLabel(gap.max) + " without supply";
+    if (gap.min === 0) return "Up to " + dayLabel(gap.max) + " without supply";
+    return gap.min + "–" + dayLabel(gap.max) + " without supply";
+  }
+
+  function driftText(drift) {
+    function phrase(days) {
+      if (days === 0) return "on time";
+      return (days > 0 ? "+" : "−") + dayLabel(Math.abs(days));
+    }
+    var span = drift.min === drift.max ? phrase(drift.min) : phrase(drift.min) + " to " + phrase(drift.max);
+    var effect = "";
+    if (drift.min > 0) effect = " Supply shrinks each delivery.";
+    if (drift.max < 0) effect = " Stock builds up each delivery.";
+    return "Drift per delivery: " + span + "." + effect;
+  }
+
+  function recordPanel(record) {
+    var details = document.createElement("details");
+    details.className = "result-card glass record-panel";
+    var summary = document.createElement("summary");
+    summary.textContent = "Machine-readable scenario (JSON)";
+    details.appendChild(summary);
+    var note = document.createElement("p");
+    note.className = "result-aside";
+    note.textContent = "Every input and derived value, named by the replenishment ontology. Inputs are your assumptions; outputs are calculations from them. Identical inputs produce an identical record.";
+    details.appendChild(note);
+    var json = JSON.stringify(record, null, 2);
+    var pre = document.createElement("pre");
+    pre.tabIndex = 0;
+    pre.setAttribute("aria-label", "Scenario record JSON");
+    pre.textContent = json;
+    details.appendChild(pre);
+    var save = document.createElement("button");
+    save.type = "button";
+    save.className = "btn btn-secondary";
+    save.textContent = "Save JSON file";
+    save.addEventListener("click", function () {
+      var url = URL.createObjectURL(new Blob([json], { type: "application/json" }));
+      var link = document.createElement("a");
+      link.href = url;
+      link.download = "hygieneroll-scenario.json";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    });
+    details.appendChild(save);
+    return details;
   }
 
   function usageText(item) {

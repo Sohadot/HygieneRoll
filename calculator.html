@@ -275,6 +275,11 @@
     .prose ul { padding-left: 1.2rem; }
     .prose a, .footer a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
     details { margin-top: 16px; }
+    .record-panel summary { cursor: pointer; font-weight: 750; color: #0d2344; }
+    .record-panel pre {
+      margin: 12px 0; max-height: 360px; overflow: auto; padding: 14px; border-radius: 14px;
+      background: #0b1f3b; color: #e7eef8; font-size: 0.82rem; line-height: 1.5; white-space: pre;
+    }
     summary { cursor: pointer; font-weight: 750; color: #12325d; }
     code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
 
@@ -324,7 +329,7 @@
         <a class="nav-link active" href="calculator.html" aria-current="page">Calculator</a>
         <a class="nav-link" href="index.html#flow">System</a>
         <a class="nav-link" href="index.html#interfaces">Interfaces</a>
-        <a class="nav-cta" href="index.html#acquire">Contact</a>
+        <a class="nav-cta" href="acquisition/">Acquisition</a>
       </div>
     </div>
   </header>
@@ -343,13 +348,13 @@
         </noscript>
         <form id="calculator-form" action="#" method="post">
           <div id="item-list"></div>
-          <p id="item-limit" class="limit-note" hidden>v0.1 supports up to 10 items per scenario.</p>
+          <p id="item-limit" class="limit-note" hidden>The calculator supports up to 10 items per scenario.</p>
           <div class="actions">
             <button type="submit" class="btn btn-primary">Calculate replenishment window</button>
             <button type="button" class="btn btn-secondary" id="add-item">Add item</button>
             <button type="button" class="btn btn-secondary" id="reset-scenario">Reset scenario</button>
           </div>
-          <p class="privacy">Calculator inputs are processed locally in your browser and are not stored by this tool.</p>
+          <p class="privacy">Calculator inputs are processed locally in your browser and are not stored by this tool. The optional JSON file is created in your browser and saved only if you choose to save it.</p>
         </form>
         <div id="calculator-status" class="sr-only" aria-live="polite"></div>
         <div id="calculator-results" class="results"></div>
@@ -367,6 +372,9 @@
           <p>Variability <code>v</code> is the entered percent divided by 100, from 0 to 0.50. Slow usage is <code>weekly_usage × (1 − v)</code>. Fast usage is <code>weekly_usage × (1 + v)</code>.</p>
           <p>Depletion days are <code>(quantity / usage) × 7</code>. At 0% variability the day is rounded to the nearest whole day. Above 0%, the early bound is floored and the late bound is ceiled.</p>
           <p>Planning trigger days are <code>depletion − lead time − buffer</code>, then clamped at 0. Illustrative cadence uses the same day rule with the replenishment quantity, or the current quantity if that field is blank.</p>
+          <p>Reorder threshold is <code>lead-time demand + reserve stock</code>, where lead-time demand is <code>lead time × fast usage / 7</code> and reserve stock is <code>buffer × fast usage / 7</code>, each rounded up to 0.01 units. It is the stock level that matches the earliest planning trigger.</p>
+          <p>A fixed delivery interval is compared with the cadence window. Drift per delivery is <code>interval − cadence</code>. Positive drift means each delivery arrives after the previous quantity would run out.</p>
+          <p>Lead-time slip assumes the order is placed at the earliest planning trigger and arrives 3 or 7 days later than entered. Days without supply are <code>arrival − depletion</code>, at the fast and slow bounds, never below 0. The offsets are fixed checks, not forecasts of delay.</p>
         </details>
       </section>
 
@@ -379,13 +387,14 @@
           <li>The tool does not predict actual consumption.</li>
           <li>The variability allowance is user-selected, not a statistical confidence interval.</li>
           <li>The output is a planning aid, not medical or sanitation-safety guidance.</li>
-          <li>v0.1 contains no embedded consumption benchmarks.</li>
+          <li>The engine contains no embedded consumption benchmarks.</li>
+          <li>Stockout exposure is arithmetic on your assumptions, not a probability of running out.</li>
         </ul>
       </section>
 
       <section class="prose" aria-labelledby="related-heading">
         <h2 id="related-heading">Related</h2>
-        <p>The reference for this loop is the <a href="replenishment-model.html">replenishment model</a>. Different essentials can deplete on different clocks. This calculator makes those clocks legible. It does not turn them into one subscription. <a href="reference.html">Reference definitions</a> name the working terms this estimate uses.</p>
+        <p>The reference for this loop is the <a href="replenishment-model.html">replenishment model</a>. Every field in the JSON record is defined in the <a href="reference.html#ontology">replenishment ontology</a>, and the full method is in the <a href="CALCULATOR_METHODOLOGY.md">calculator methodology</a>. Different essentials can deplete on different clocks. This calculator makes those clocks legible. It does not turn them into one subscription. <a href="reference.html">Reference definitions</a> name the working terms this estimate uses.</p>
       </section>
     </div>
   </main>
@@ -395,6 +404,7 @@
       <span>HygieneRoll.com — developed digital asset for recurring household hygiene replenishment</span>
       <a href="replenishment-model.html">Replenishment model</a>
       <a href="reference.html">Reference</a>
+      <a href="acquisition/">Acquisition</a>
       <span>Presented by Sohadot</span>
     </div>
   </footer>
