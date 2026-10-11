@@ -2,7 +2,7 @@
   "id": "https://hygieneroll.com/reference/replenishment-ontology.json",
   "title": "HygieneRoll Replenishment Ontology",
   "version": "0.1",
-  "engine_version": "v0.2",
+  "engine_version": "v0.2.1",
   "scope": "A controlled HygieneRoll vocabulary for recurring household hygiene consumption and replenishment planning. It is a project vocabulary, not an industry standard or an official taxonomy.",
   "layers": [
     {

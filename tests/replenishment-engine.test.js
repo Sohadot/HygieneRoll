@@ -377,7 +377,7 @@ test("scenario record is deterministic, versioned, and traceable to inputs", fun
   var first = engine.buildScenarioRecord(inputs);
   var second = engine.buildScenarioRecord(inputs);
   assert.strictEqual(JSON.stringify(first), JSON.stringify(second));
-  assert.strictEqual(first.engine_version, "v0.2");
+  assert.strictEqual(first.engine_version, "v0.2.1");
   assert.strictEqual(first.items.length, 2);
   assert.strictEqual(first.items[0].inputs.current_quantity, 6);
   assert.strictEqual(first.items[0].inputs.replenishment_quantity, null);

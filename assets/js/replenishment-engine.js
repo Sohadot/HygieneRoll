@@ -1,8 +1,10 @@
 /*
- * HygieneRoll replenishment engine v0.2
+ * HygieneRoll replenishment engine v0.2.1
  *
  * v0.2 adds reorder-threshold, lead-time slip, stockout exposure, fixed-interval fit,
  * and a machine-readable scenario record. Every v0.1 output field is unchanged.
+ * v0.2.1 snaps binary rounding noise before each whole-day decision, so a value that is
+ * exactly a whole or half day in decimal arithmetic rounds as the methodology states.
  *
  * Human-readable specification: CALCULATOR_METHODOLOGY.md
  * This file is the machine source of truth. The page must not reimplement these formulas.
@@ -17,7 +19,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
-  var VERSION = "v0.2";
+  var VERSION = "v0.2.1";
   var ONTOLOGY_VERSION = "0.1";
   var RECORD_VERSION = "0.2";
   var DEFAULT_SLIP_DAYS = [3, 7];
@@ -40,6 +42,13 @@
 
   function push(errors, field, message) {
     errors.push({ field: field, message: message });
+  }
+
+  // Binary doubles cannot represent most decimal inputs, so 1.1 / 0.35 × 7 evaluates to
+  // 22.000000000000004 instead of 22. Rounding to 9 decimals first removes that noise
+  // before a floor, ceiling, half-up rounding, or comparison decides a whole day.
+  function snap(value) {
+    return Number(value.toFixed(9));
   }
 
   function roundHalfUp(value) {
@@ -122,17 +131,17 @@
 
   function usageWindow(quantity, fastUsage, slowUsage, variability) {
     if (variability === 0) {
-      var day = roundHalfUp((quantity / fastUsage) * 7);
+      var day = roundHalfUp(snap((quantity / fastUsage) * 7));
       return { earliest: day, latest: day, single: true };
     }
-    var earliest = Math.floor((quantity / fastUsage) * 7);
-    var latest = Math.ceil((quantity / slowUsage) * 7);
+    var earliest = Math.floor(snap((quantity / fastUsage) * 7));
+    var latest = Math.ceil(snap((quantity / slowUsage) * 7));
     return { earliest: earliest, latest: latest, single: earliest === latest };
   }
 
   function triggerWindow(depletion, leadTimeDays, bufferDays) {
-    var rawEarliest = depletion.earliest - leadTimeDays - bufferDays;
-    var rawLatest = depletion.latest - leadTimeDays - bufferDays;
+    var rawEarliest = snap(depletion.earliest - leadTimeDays - bufferDays);
+    var rawLatest = snap(depletion.latest - leadTimeDays - bufferDays);
     var earliest;
     var latest;
     if (depletion.single) {
@@ -268,12 +277,12 @@
     }
     if (errors.length) throw validationError(errors);
 
-    var arrival = orderDay + lead;
-    var worst = Math.max(0, Math.ceil(arrival - item.depletion.earliest));
-    var best = Math.max(0, Math.ceil(arrival - item.depletion.latest));
+    var arrival = snap(orderDay + lead);
+    var worst = Math.max(0, Math.ceil(snap(arrival - item.depletion.earliest)));
+    var best = Math.max(0, Math.ceil(snap(arrival - item.depletion.latest)));
     var status;
     if (worst === 0) {
-      status = arrival <= item.depletion.earliest - item.bufferDays ? "BUFFER_INTACT" : "BUFFER_DRAWN";
+      status = arrival <= snap(item.depletion.earliest - item.bufferDays) ? "BUFFER_INTACT" : "BUFFER_DRAWN";
     } else {
       status = best === 0 ? "STOCKOUT_POSSIBLE" : "STOCKOUT_AT_BOTH_BOUNDS";
     }
