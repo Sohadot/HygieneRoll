@@ -90,7 +90,7 @@ test("registry JSON parses", function () {
 
 test("version exists", function () {
   assert.strictEqual(knowledge.version, "0.1");
-  assert.strictEqual(sources.version, "0.1");
+  assert.strictEqual(sources.version, "0.2");
 });
 
 test("exactly 8 foundation objects", function () {

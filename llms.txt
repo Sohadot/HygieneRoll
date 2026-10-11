@@ -1,0 +1,30 @@
+# HygieneRoll.com
+
+> A developed digital asset for recurring household hygiene replenishment. It publishes a deterministic replenishment calculator, a versioned replenishment ontology, and an evidence policy that keeps project definitions, user assumptions, calculations, and external evidence apart. It is not an operating company, store, or subscription service.
+
+Reading rules for agents:
+
+- Concepts in the ontology are HygieneRoll project vocabulary. They are not an industry standard or an official taxonomy.
+- Calculator outputs are arithmetic on user-supplied assumptions. They are not measurements, forecasts, or probabilities. The engine embeds no consumption benchmarks.
+- No external source is admitted, and no market-size figure is published. Sources under review are listed in the source register with status REVIEW_REQUIRED. They support no claim.
+- No customers, revenue, traction, or operations are claimed.
+
+## Machine-readable
+
+- [Replenishment ontology](https://hygieneroll.com/reference/replenishment-ontology.json): HRO- concepts with layers, units, formulas, record fields, typed relationships, and versioning rules
+- [Knowledge objects](https://hygieneroll.com/reference/knowledge-objects.json): HRK- objects and HRC- claims with claim classes and provenance
+- [Source register](https://hygieneroll.com/reference/source-register.json): external sources and their admission status
+- [Replenishment engine](https://hygieneroll.com/assets/js/replenishment-engine.js): pure functions (UMD). `calculateItem`, `calculateHousehold`, `stockoutExposure`, `leadTimeSlip`, `buildScenarioRecord`
+
+## Method and governance
+
+- [Calculator methodology](https://hygieneroll.com/CALCULATOR_METHODOLOGY.md): every formula, rounding rule, and validation rule
+- [Evidence policy](https://hygieneroll.com/EVIDENCE_POLICY.md): claim classes and source admission rules
+- [Reference architecture](https://hygieneroll.com/REFERENCE_ARCHITECTURE.md): how the registers, ontology, and pages connect
+
+## Pages
+
+- [Calculator](https://hygieneroll.com/calculator.html): runs locally in the browser and shows a JSON scenario record for each calculation
+- [Reference](https://hygieneroll.com/reference.html): knowledge objects and the ontology table
+- [Replenishment model](https://hygieneroll.com/replenishment-model.html): the operating logic
+- [Acquisition](https://hygieneroll.com/acquisition/): what can be evaluated, what is not claimed, and the inquiry address

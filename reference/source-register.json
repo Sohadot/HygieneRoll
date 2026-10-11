@@ -1,4 +1,37 @@
 {
-  "version": "0.1",
-  "sources": []
+  "version": "0.2",
+  "sources": [
+    {
+      "id": "SRC-HR-0001",
+      "title": "Subscription Economy Market Size Report, 2025-2033",
+      "publisher": "Grand View Research",
+      "url": "https://www.grandviewresearch.com/industry-analysis/subscription-economy-market-report",
+      "source_type": "commercial market research report (public summary page)",
+      "publication_date": null,
+      "accessed_date": "2026-10-11",
+      "geography": "Global",
+      "population": "Subscription businesses across industries",
+      "scope": "Global subscription economy revenue: USD 492.3 billion in 2024, USD 628.2 billion in 2026, USD 1,512.1 billion forecast for 2033",
+      "rights_note": "Citation metadata only. Report content is proprietary to the publisher and is not stored here.",
+      "admission_status": "REVIEW_REQUIRED",
+      "cited_on": [],
+      "notes": "Figures from this source were displayed on index.html and replenishment-model.html until 2026-10-11 and matched the publisher's public summary page when accessed. They were removed from public pages because the source is not admitted. The full report was not reviewed, and the summary page states no publication date. The record is kept so the review stays traceable. It supports no public claim unless it is admitted under EVIDENCE_POLICY.md."
+    },
+    {
+      "id": "SRC-HR-0002",
+      "title": "Cleaning And Hygiene Products Market Report, 2026 - 2033",
+      "publisher": "Grand View Research",
+      "url": "https://www.grandviewresearch.com/industry-analysis/cleaning-hygiene-products-market-report",
+      "source_type": "commercial market research report (public summary page)",
+      "publication_date": null,
+      "accessed_date": "2026-10-11",
+      "geography": "Global",
+      "population": "Cleaning and hygiene products across household and commercial or institutional end users",
+      "scope": "Broad cleaning and hygiene products market: USD 33.0 billion in 2025, USD 34.0 billion in 2026, USD 43.3 billion forecast for 2033. Not a household-hygiene-only total",
+      "rights_note": "Citation metadata only. Report content is proprietary to the publisher and is not stored here.",
+      "admission_status": "REVIEW_REQUIRED",
+      "cited_on": [],
+      "notes": "Figures from this source were displayed on index.html and replenishment-model.html until 2026-10-11 and matched the publisher's public summary page when accessed. They were removed from public pages because the source is not admitted. The full report was not reviewed, and the summary page states no publication date. The record is kept so the review stays traceable. It supports no public claim unless it is admitted under EVIDENCE_POLICY.md."
+    }
+  ]
 }

@@ -28,16 +28,53 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": "https://hygieneroll.com/reference.html#webpage",
-    "url": "https://hygieneroll.com/reference.html",
-    "name": "Household Hygiene Replenishment Reference — HygieneRoll.com",
-    "description": "Definitions and evidence rules for replenishment, depletion, cadence, return, and recurring household hygiene within the HygieneRoll model.",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "HygieneRoll.com",
-      "url": "https://hygieneroll.com/"
-    }
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://hygieneroll.com/reference.html#webpage",
+        "url": "https://hygieneroll.com/reference.html",
+        "name": "Household Hygiene Replenishment Reference — HygieneRoll.com",
+        "description": "Definitions and evidence rules for replenishment, depletion, cadence, return, and recurring household hygiene within the HygieneRoll model.",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "HygieneRoll.com",
+          "url": "https://hygieneroll.com/"
+        }
+      },
+      {
+        "@type": "DefinedTermSet",
+        "@id": "https://hygieneroll.com/reference.html#ontology",
+        "name": "HygieneRoll Replenishment Ontology",
+        "version": "0.1",
+        "url": "https://hygieneroll.com/reference/replenishment-ontology.json",
+        "description": "A HygieneRoll project vocabulary for household hygiene replenishment planning. Not an industry standard.",
+        "hasDefinedTerm": [
+        { "@type": "DefinedTerm", "termCode": "HRO-001", "name": "Product category", "url": "https://hygieneroll.com/reference.html#term-product-category" },
+        { "@type": "DefinedTerm", "termCode": "HRO-002", "name": "Consumption unit", "url": "https://hygieneroll.com/reference.html#term-consumption-unit" },
+        { "@type": "DefinedTerm", "termCode": "HRO-003", "name": "Household demand profile", "url": "https://hygieneroll.com/reference.html#term-household-demand-profile" },
+        { "@type": "DefinedTerm", "termCode": "HRO-004", "name": "Current supply", "url": "https://hygieneroll.com/reference.html#term-current-supply" },
+        { "@type": "DefinedTerm", "termCode": "HRO-005", "name": "Consumption rate", "url": "https://hygieneroll.com/reference.html#term-consumption-rate" },
+        { "@type": "DefinedTerm", "termCode": "HRO-006", "name": "Usage assumption", "url": "https://hygieneroll.com/reference.html#term-usage-assumption" },
+        { "@type": "DefinedTerm", "termCode": "HRO-007", "name": "Variability allowance", "url": "https://hygieneroll.com/reference.html#term-variability-allowance" },
+        { "@type": "DefinedTerm", "termCode": "HRO-008", "name": "Usage bounds", "url": "https://hygieneroll.com/reference.html#term-usage-bounds" },
+        { "@type": "DefinedTerm", "termCode": "HRO-009", "name": "Depletion interval", "url": "https://hygieneroll.com/reference.html#term-depletion-interval" },
+        { "@type": "DefinedTerm", "termCode": "HRO-010", "name": "Fulfillment lead time", "url": "https://hygieneroll.com/reference.html#term-fulfillment-lead-time" },
+        { "@type": "DefinedTerm", "termCode": "HRO-011", "name": "Safety buffer", "url": "https://hygieneroll.com/reference.html#term-safety-buffer" },
+        { "@type": "DefinedTerm", "termCode": "HRO-012", "name": "Lead-time demand", "url": "https://hygieneroll.com/reference.html#term-lead-time-demand" },
+        { "@type": "DefinedTerm", "termCode": "HRO-013", "name": "Reserve stock", "url": "https://hygieneroll.com/reference.html#term-reserve-stock" },
+        { "@type": "DefinedTerm", "termCode": "HRO-014", "name": "Reorder threshold", "url": "https://hygieneroll.com/reference.html#term-reorder-threshold" },
+        { "@type": "DefinedTerm", "termCode": "HRO-015", "name": "Planning trigger", "url": "https://hygieneroll.com/reference.html#term-planning-trigger" },
+        { "@type": "DefinedTerm", "termCode": "HRO-016", "name": "Replenishment quantity", "url": "https://hygieneroll.com/reference.html#term-replenishment-quantity" },
+        { "@type": "DefinedTerm", "termCode": "HRO-017", "name": "Replenishment cadence", "url": "https://hygieneroll.com/reference.html#term-replenishment-cadence" },
+        { "@type": "DefinedTerm", "termCode": "HRO-018", "name": "Fixed delivery interval", "url": "https://hygieneroll.com/reference.html#term-fixed-delivery-interval" },
+        { "@type": "DefinedTerm", "termCode": "HRO-019", "name": "Subscription compatibility", "url": "https://hygieneroll.com/reference.html#term-subscription-compatibility" },
+        { "@type": "DefinedTerm", "termCode": "HRO-020", "name": "Stockout exposure", "url": "https://hygieneroll.com/reference.html#term-stockout-exposure" },
+        { "@type": "DefinedTerm", "termCode": "HRO-021", "name": "Lead-time slip", "url": "https://hygieneroll.com/reference.html#term-lead-time-slip" },
+        { "@type": "DefinedTerm", "termCode": "HRO-022", "name": "Next household return", "url": "https://hygieneroll.com/reference.html#term-next-household-return" },
+        { "@type": "DefinedTerm", "termCode": "HRO-023", "name": "Scenario record", "url": "https://hygieneroll.com/reference.html#term-scenario-record" }
+        ]
+      }
+    ]
   }
   </script>
 
@@ -137,6 +174,14 @@
     .object h3 { margin: 12px 0 0; font-size: clamp(1.45rem, 2.5vw, 1.9rem); letter-spacing: -0.04em; color: #0d2344; }
     .object h4 { margin: 18px 0 6px; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: #12325d; }
     .object p { margin: 0; color: var(--muted); font-size: 1.02rem; line-height: 1.7; }
+    .ontology-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.95rem; }
+    .ontology-table th, .ontology-table td { padding: 12px 10px; text-align: left; vertical-align: top; border-bottom: 1px solid rgba(15, 35, 66, 0.08); color: var(--muted); line-height: 1.55; }
+    .ontology-table thead th { color: #12325d; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .ontology-table tbody th { color: #0d2344; font-weight: 750; }
+    .ontology-table td:first-child { font-weight: 800; color: var(--blue); white-space: nowrap; }
+    .ontology-table tr { scroll-margin-top: 120px; }
+    .ontology-table code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.85em; display: block; margin-top: 6px; color: #24405f; overflow-wrap: anywhere; }
+    .table-wrap { padding: 8px 16px 12px; border-radius: var(--radius-xl); background: rgba(255,255,255,0.86); box-shadow: var(--shadow); }
     .footer { padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
     .footer-inner {
       display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
@@ -155,6 +200,12 @@
     @media (max-width: 640px) {
       .site-header { position: static; }
       .object { padding: 18px 16px; scroll-margin-top: 16px; }
+      .ontology-table thead { display: none; }
+      .ontology-table, .ontology-table tbody, .ontology-table tr, .ontology-table th, .ontology-table td { display: block; width: 100%; }
+      .ontology-table tr { padding: 12px 0; border-bottom: 1px solid rgba(15, 35, 66, 0.08); scroll-margin-top: 16px; }
+      .ontology-table th, .ontology-table td { padding: 2px 0; border: 0; }
+      .ontology-table td:nth-child(3)::before { content: "Layer: "; font-weight: 700; color: #12325d; }
+      .ontology-table td:nth-child(4)::before { content: "Unit: "; font-weight: 700; color: #12325d; }
     }
   </style>
 </head>
@@ -171,7 +222,7 @@
         <a class="nav-link" href="calculator.html">Calculator</a>
         <a class="nav-link" href="index.html#flow">System</a>
         <a class="nav-link" href="index.html#interfaces">Interfaces</a>
-        <a class="nav-cta" href="index.html#acquire">Contact</a>
+        <a class="nav-cta" href="acquisition/">Acquisition</a>
       </div>
     </div>
   </header>
@@ -202,6 +253,7 @@
           <li><a href="#ownership-of-return">Ownership of Return</a></li>
           <li><a href="#re-entry">Re-entry</a></li>
           <li><a href="#category-expansion">Category Expansion</a></li>
+          <li><a href="#ontology">Replenishment Ontology</a></li>
         </ul>
       </section>
 
@@ -338,11 +390,202 @@
         </article>
       </section>
 
+      <section class="section" id="ontology" aria-labelledby="ontology-heading">
+        <h2 id="ontology-heading">Replenishment ontology v0.1</h2>
+        <div class="prose">
+          <p>The ontology names every input and every calculated value the <a href="calculator.html">calculator</a> uses, so a person or a machine can trace a result back to its inputs. Each term sits in one layer:</p>
+          <ul class="legend">
+            <li><strong>Project definition</strong><span>A concept HygieneRoll defines, such as a product category or the scenario record.</span></li>
+            <li><strong>Scenario assumption</strong><span>A value you supply about your own household. It is not a measurement or an average.</span></li>
+            <li><strong>Derived calculation</strong><span>Arithmetic the engine performs on your assumptions. Each has a published formula.</span></li>
+            <li><strong>Observed evidence</strong><span>An external measurement. Published only with an admitted source. None is admitted, and the engine never substitutes one for your input.</span></li>
+          </ul>
+          <p>Identifiers are never reused. A change in meaning, unit, or formula issues a new identifier. The machine-readable version, with typed relationships and versioning rules, is <a href="reference/replenishment-ontology.json">reference/replenishment-ontology.json</a>.</p>
+        </div>
+        <div class="table-wrap">
+          <table class="ontology-table">
+            <thead>
+              <tr><th scope="col">ID</th><th scope="col">Term</th><th scope="col">Layer</th><th scope="col">Unit</th><th scope="col">Definition</th></tr>
+            </thead>
+            <tbody>
+            <tr id="term-product-category" data-concept-id="HRO-001" data-layer="PROJECT_DEFINITION">
+              <td>HRO-001</td>
+              <th scope="row">Product category</th>
+              <td>Project definition</td>
+              <td>code</td>
+              <td>A HygieneRoll grouping of recurring household hygiene items: paper hygiene, personal hygiene, household hygiene, or other. A category labels an item. It does not carry a usage rate.</td>
+            </tr>
+            <tr id="term-consumption-unit" data-concept-id="HRO-002" data-layer="PROJECT_DEFINITION">
+              <td>HRO-002</td>
+              <th scope="row">Consumption unit</th>
+              <td>Project definition</td>
+              <td>text</td>
+              <td>The label a user gives to one counted unit of an item, such as a roll, a pack, or a bottle. It is display only. Units are not converted and are not compared across items or products.</td>
+            </tr>
+            <tr id="term-household-demand-profile" data-concept-id="HRO-003" data-layer="HYPOTHETICAL_SCENARIO">
+              <td>HRO-003</td>
+              <th scope="row">Household demand profile</th>
+              <td>Scenario assumption</td>
+              <td>record</td>
+              <td>The set of items, and the per-item assumptions, that one user enters for one household scenario. It has no household-size input and no archetype. Each item keeps an independent clock.</td>
+            </tr>
+            <tr id="term-current-supply" data-concept-id="HRO-004" data-layer="HYPOTHETICAL_SCENARIO">
+              <td>HRO-004</td>
+              <th scope="row">Current supply</th>
+              <td>Scenario assumption</td>
+              <td>item units</td>
+              <td>Units of an item on hand when the scenario is entered. It must be greater than zero.</td>
+            </tr>
+            <tr id="term-consumption-rate" data-concept-id="HRO-005" data-layer="DERIVED_CALCULATION">
+              <td>HRO-005</td>
+              <th scope="row">Consumption rate</th>
+              <td>Derived calculation</td>
+              <td>item units per week</td>
+              <td>Units used per week, normalized from the user's weekly usage or from how long the current supply usually lasts. It restates the user's assumption. It is not a measured rate. <code>weekly method: r = weekly_usage; duration method: r = current_quantity / duration_weeks</code></td>
+            </tr>
+            <tr id="term-usage-assumption" data-concept-id="HRO-006" data-layer="HYPOTHETICAL_SCENARIO">
+              <td>HRO-006</td>
+              <th scope="row">Usage assumption</th>
+              <td>Scenario assumption</td>
+              <td>record</td>
+              <td>What the user enters about use: a usage method, and either weekly usage in item units or typical duration in weeks.</td>
+            </tr>
+            <tr id="term-variability-allowance" data-concept-id="HRO-007" data-layer="HYPOTHETICAL_SCENARIO">
+              <td>HRO-007</td>
+              <th scope="row">Variability allowance</th>
+              <td>Scenario assumption</td>
+              <td>percent</td>
+              <td>A user-selected percentage, from 0 to 50, that widens usage into a slow and a fast bound. It is a planning allowance. It is not a probability, a confidence interval, or a measured spread.</td>
+            </tr>
+            <tr id="term-usage-bounds" data-concept-id="HRO-008" data-layer="DERIVED_CALCULATION">
+              <td>HRO-008</td>
+              <th scope="row">Usage bounds</th>
+              <td>Derived calculation</td>
+              <td>item units per week</td>
+              <td>The slow and fast consumption rates produced by applying the variability allowance to the consumption rate. <code>slow = r × (1 − v); fast = r × (1 + v); v = variability_percent / 100</code></td>
+            </tr>
+            <tr id="term-depletion-interval" data-concept-id="HRO-009" data-layer="DERIVED_CALCULATION">
+              <td>HRO-009</td>
+              <th scope="row">Depletion interval</th>
+              <td>Derived calculation</td>
+              <td>days</td>
+              <td>The whole-day window in which current supply runs out under the fast and slow usage bounds. <code>earliest = floor((q / fast) × 7); latest = ceil((q / slow) × 7); at v = 0 both equal round_half_up((q / r) × 7)</code></td>
+            </tr>
+            <tr id="term-fulfillment-lead-time" data-concept-id="HRO-010" data-layer="HYPOTHETICAL_SCENARIO">
+              <td>HRO-010</td>
+              <th scope="row">Fulfillment lead time</th>
+              <td>Scenario assumption</td>
+              <td>days</td>
+              <td>The user's assumption of how many days a replenishment takes to arrive after it is ordered. Zero or more. There is no hidden default.</td>
+            </tr>
+            <tr id="term-safety-buffer" data-concept-id="HRO-011" data-layer="HYPOTHETICAL_SCENARIO">
+              <td>HRO-011</td>
+              <th scope="row">Safety buffer</th>
+              <td>Scenario assumption</td>
+              <td>days</td>
+              <td>The extra days of supply the user wants to still have when a replenishment arrives. Zero or more. It is a preference, not an optimal stock level.</td>
+            </tr>
+            <tr id="term-lead-time-demand" data-concept-id="HRO-012" data-layer="DERIVED_CALCULATION">
+              <td>HRO-012</td>
+              <th scope="row">Lead-time demand</th>
+              <td>Derived calculation</td>
+              <td>item units</td>
+              <td>The units consumed during the fulfillment lead time at the fast usage bound, rounded up to 0.01. <code>ceil_0.01(lead_time_days × fast / 7)</code></td>
+            </tr>
+            <tr id="term-reserve-stock" data-concept-id="HRO-013" data-layer="DERIVED_CALCULATION">
+              <td>HRO-013</td>
+              <th scope="row">Reserve stock</th>
+              <td>Derived calculation</td>
+              <td>item units</td>
+              <td>The safety buffer expressed in item units at the fast usage bound, rounded up to 0.01. <code>ceil_0.01(safety_buffer_days × fast / 7)</code></td>
+            </tr>
+            <tr id="term-reorder-threshold" data-concept-id="HRO-014" data-layer="DERIVED_CALCULATION">
+              <td>HRO-014</td>
+              <th scope="row">Reorder threshold</th>
+              <td>Derived calculation</td>
+              <td>item units</td>
+              <td>The stock level at which ordering keeps the safety buffer intact under the fast usage bound. It is the stock-level expression of the planning trigger. <code>lead_time_demand + reserve_stock</code></td>
+            </tr>
+            <tr id="term-planning-trigger" data-concept-id="HRO-015" data-layer="DERIVED_CALCULATION">
+              <td>HRO-015</td>
+              <th scope="row">Planning trigger</th>
+              <td>Derived calculation</td>
+              <td>days</td>
+              <td>The reorder window in days: the depletion interval minus lead time and safety buffer, clamped at zero. <code>max(0, depletion − lead_time_days − safety_buffer_days), each end separately</code></td>
+            </tr>
+            <tr id="term-replenishment-quantity" data-concept-id="HRO-016" data-layer="HYPOTHETICAL_SCENARIO">
+              <td>HRO-016</td>
+              <th scope="row">Replenishment quantity</th>
+              <td>Scenario assumption</td>
+              <td>item units</td>
+              <td>Units the user usually adds at each replenishment. When left blank, the current supply is used.</td>
+            </tr>
+            <tr id="term-replenishment-cadence" data-concept-id="HRO-017" data-layer="DERIVED_CALCULATION">
+              <td>HRO-017</td>
+              <th scope="row">Replenishment cadence</th>
+              <td>Derived calculation</td>
+              <td>days</td>
+              <td>The illustrative interval between replenishments: how long one replenishment quantity lasts under the usage bounds. It is not a recommended subscription frequency. <code>same day-window rule as the depletion interval, with replenishment_quantity in place of q</code></td>
+            </tr>
+            <tr id="term-fixed-delivery-interval" data-concept-id="HRO-018" data-layer="HYPOTHETICAL_SCENARIO">
+              <td>HRO-018</td>
+              <th scope="row">Fixed delivery interval</th>
+              <td>Scenario assumption</td>
+              <td>days</td>
+              <td>An optional fixed interval, in days, that the user wants to compare against the item's replenishment cadence, such as a subscription schedule they hold or are considering.</td>
+            </tr>
+            <tr id="term-subscription-compatibility" data-concept-id="HRO-019" data-layer="DERIVED_CALCULATION">
+              <td>HRO-019</td>
+              <th scope="row">Subscription compatibility</th>
+              <td>Derived calculation</td>
+              <td>code</td>
+              <td>Whether a fixed delivery interval falls inside the replenishment cadence window, and by how many days per cycle it drifts from it. A positive drift means supply shrinks each cycle. A negative drift means stock accumulates. <code>EARLIER_THAN_WINDOW if interval &lt; cadence.earliest; LATER_THAN_WINDOW if interval &gt; cadence.latest; otherwise WITHIN_WINDOW; drift = interval − cadence, from latest (min) to earliest (max)</code></td>
+            </tr>
+            <tr id="term-stockout-exposure" data-concept-id="HRO-020" data-layer="DERIVED_CALCULATION">
+              <td>HRO-020</td>
+              <th scope="row">Stockout exposure</th>
+              <td>Derived calculation</td>
+              <td>days</td>
+              <td>For a given order day and lead time, the days an item would be without supply before the replenishment arrives, at the slow (min) and fast (max) usage bounds. It is scenario arithmetic, not a probability of stockout. <code>arrival = order_day + lead_time; max = max(0, ceil(arrival − depletion.earliest)); min = max(0, ceil(arrival − depletion.latest))</code></td>
+            </tr>
+            <tr id="term-lead-time-slip" data-concept-id="HRO-021" data-layer="DERIVED_CALCULATION">
+              <td>HRO-021</td>
+              <th scope="row">Lead-time slip</th>
+              <td>Derived calculation</td>
+              <td>days</td>
+              <td>A sensitivity check: the planning trigger re-planned for a longer lead time, and the stockout exposure if the order was placed at the original trigger but arrived late. Offsets are fixed presentation values, not forecasts of delay. <code>for each offset s: trigger(depletion, lead_time + s, buffer); stockout_exposure(order_day = trigger.earliest, lead_time + s)</code></td>
+            </tr>
+            <tr id="term-next-household-return" data-concept-id="HRO-022" data-layer="DERIVED_CALCULATION">
+              <td>HRO-022</td>
+              <th scope="row">Next household return</th>
+              <td>Derived calculation</td>
+              <td>record</td>
+              <td>The item or tied items whose planning trigger begins soonest. Items are not averaged. <code>items with minimum planning_trigger.earliest, in input order</code></td>
+            </tr>
+            <tr id="term-scenario-record" data-concept-id="HRO-023" data-layer="PROJECT_DEFINITION">
+              <td>HRO-023</td>
+              <th scope="row">Scenario record</th>
+              <td>Project definition</td>
+              <td>record</td>
+              <td>The machine-readable output of one scenario. It holds every input and every derived value under the field names listed in this ontology, with the engine and ontology versions. It has no timestamp, so identical inputs produce an identical record.</td>
+            </tr>
+            <tr id="term-observed-consumption-rate" data-concept-id="HRO-024" data-layer="OBSERVED_EVIDENCE">
+              <td>HRO-024</td>
+              <th scope="row">Observed consumption rate</th>
+              <td>Observed evidence — reserved, no value admitted</td>
+              <td>item units per week</td>
+              <td>A consumption rate measured for a stated population, geography, product, and period by an admitted external source. No value is admitted in this version. The engine never substitutes one for a user assumption.</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="section prose" aria-labelledby="evidence-heading">
         <h2 id="evidence-heading">How evidence enters the reference</h2>
         <p>An external fact is admitted only when a source exists, the source supports that exact sentence, and the scope, period, geography, population, and metric match. If any of those fail, the claim is blocked. It is not published in weaker wording that still asserts the fact.</p>
         <p>Project pages are provenance for definitions. They are not evidence about the outside world. A derived interpretation is published only with admitted sources, and it stays in interpretive language. Illustrative scenarios will stay labeled as illustrations.</p>
-        <p>The source register for v0.1 is empty on purpose. Authority in this foundation is the refusal to blur a definition into an observation.</p>
+        <p>The <a href="reference/source-register.json">source register</a> admits no source. It keeps two market-research summaries under review. Their figures were removed from public pages until a source is admitted. Authority in this foundation is the refusal to blur a definition into an observation.</p>
       </section>
 
       <section class="section prose" aria-labelledby="apply-heading">
@@ -356,6 +599,10 @@
           <li><a href="CALCULATOR_METHODOLOGY.md">Calculator methodology</a></li>
           <li><a href="REFERENCE_ARCHITECTURE.md">Reference architecture</a></li>
           <li><a href="EVIDENCE_POLICY.md">Evidence policy</a></li>
+          <li><a href="reference/replenishment-ontology.json">Replenishment ontology (JSON)</a></li>
+          <li><a href="reference/knowledge-objects.json">Knowledge objects (JSON)</a></li>
+          <li><a href="reference/source-register.json">Source register (JSON)</a></li>
+          <li><a href="llms.txt">Agent-readable guide (llms.txt)</a></li>
         </ul>
       </section>
     </div>
@@ -367,6 +614,7 @@
       <a href="index.html">Home</a>
       <a href="replenishment-model.html">Replenishment model</a>
       <a href="calculator.html">Calculator</a>
+      <a href="acquisition/">Acquisition</a>
     </div>
   </footer>
 </body>
