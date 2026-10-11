@@ -66,7 +66,7 @@ Market-condition statements on public pages are either project theses, marked as
 
 Date: 2026-10-11
 
-Engine v0.2.1 rounds each value to 9 decimal places before a whole-day floor, ceiling, half-up rounding, or comparison. The exact-arithmetic oracle showed that binary floating-point noise made v0.1 and v0.2 disagree with the published methodology for about 3% of the verification grid. The methodology defines the formulas on decimal inputs, so the engine was corrected to match it. The record field contract is unchanged. Tests require every changed result to match the oracle.
+Before a whole-day floor, ceiling, half-up rounding, or comparison, engine v0.2.1 moves a value onto the nearest whole or half day only if it is within 2⁻⁴⁷ of it, relative to the largest operand. That bound is about seven times the worst-case binary rounding error of the calculation. Unit rounding uses the same bound. The exact-arithmetic oracle showed that binary floating-point noise made v0.1 and v0.2 disagree with the published methodology for about 3% of the verification grid. A first draft of this fix rounded values to 9 decimals. Review showed that it hid genuine offsets of up to 5 × 10⁻¹⁰ days and truncated published arrival days, so it was replaced before merge. The methodology defines the formulas on decimal inputs, so the engine was corrected to match it. The record field contract is unchanged. Tests require every changed result to match the oracle.
 
 ## DEC-HR-012
 

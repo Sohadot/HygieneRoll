@@ -251,9 +251,18 @@ No result displays a fraction of a day.
 
 This document's formulas are defined on the decimal values the user enters. A browser stores most decimals as the nearest binary double, so arithmetic can land just above or below a whole day. For example, 1.1 / 0.35 × 7 is exactly 22, but evaluates to 22.000000000000004. Taking the ceiling of that gives 23, which is wrong.
 
-From v0.2.1, each value is rounded to 9 decimal places before a floor, ceiling, half-up rounding, or comparison decides a whole day. This applies to depletion and cadence days, planning-trigger days, arrival day, and supply-gap days. Unit quantities already strip noise before rounding up to 0.01.
+From v0.2.1, a value is treated as noise only when it sits within 2⁻⁴⁷ (about 7.1 × 10⁻¹⁵) of a whole or half day, relative to the largest operand. In that case it is moved onto that day before a floor, ceiling, half-up rounding, or comparison decides the result. One day calculation carries at most nine binary roundings: three decimal inputs and six operations. That is about 2⁻⁴⁹·⁸ relative error in the worst case, so the bound leaves a sevenfold margin. Any larger offset is genuine and is rounded as written. A true 22.000000001 still rounds up to 23, and a true 3.4999999999 still rounds half-up to 3.
 
-An independent exact-arithmetic oracle (`verification/oracle.js`) checks this rule. On the verification grid of 42,240 inputs, v0.1 published 1,224 wrong depletion, trigger, or cadence windows, and v0.2 published 1,455 wrong outputs. v0.2.1 publishes none. Every result that changed from v0.1 or v0.2 now matches the oracle.
+The guard applies to depletion and cadence days, planning-trigger days, supply-gap days, and the buffer comparison. Unit quantities use the same bound before rounding up to 0.01, so a genuine excess as small as 7 × 10⁻¹⁰ units still rounds up. The adjusted value is used only for the decision. Published values such as the arrival day are never altered.
+
+Offsets smaller than the bound, about 1.4 × 10⁻¹² days at a 200-day magnitude, cannot be told apart from binary noise in double precision. They arise only from inputs with roughly 13 or more significant digits.
+
+An independent exact-arithmetic oracle (`verification/oracle.js`) checks this rule.
+
+- On the verification grid of 42,240 inputs, v0.1 published 1,224 wrong depletion, trigger, or cadence windows, and v0.2 published 1,455 wrong outputs. v0.2.1 publishes none.
+- On a separate sweep of 2,880 inputs moved 10⁻⁶ to 10⁻¹¹ days off a boundary, v0.2.1 also matches the oracle.
+- Every result that changed from v0.1 or v0.2 now matches the oracle.
+- The changes are limited to depletion, planning-trigger, and cadence windows, and to the interval fit, lead-time slip, and next return that follow from them. Rates, unit quantities, and thresholds are unchanged on the grid.
 
 A week phrase is display only. Days are divided by 7 and rounded to the nearest half week. Examples: 21 days is “about 3 weeks”; 25 days is “about 3½ weeks”; a 17–27 day window is “about 2½–4 weeks”. The week phrase does not replace the day count. A trigger of `Now`, or a window that starts at `Now`, does not receive a week phrase.
 

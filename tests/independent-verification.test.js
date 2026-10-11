@@ -47,7 +47,7 @@ function outputs(item, slipDays) {
   return engine.buildScenarioRecord([item], slipDays ? { slipDays: slipDays } : undefined).items[0].outputs;
 }
 
-// Continuous values are compared after rounding to 9 decimals; everything else exactly.
+// Used only to compare engine versions with each other; continuous values to 9 decimals.
 function normalized(value) {
   return JSON.stringify(value, function (key, v) { return typeof v === "number" ? Number(v.toFixed(9)) : v; });
 }
@@ -112,9 +112,8 @@ test("oracle reproduces hand-computed values exactly", function () {
 test("engine agrees with the exact-arithmetic oracle across " + GRID.length + " grid inputs", function () {
   var mismatches = [];
   GRID.forEach(function (item) {
-    var e = normalized(outputs(item, [0, 0.3, 3, 7]));
-    var o = normalized(oracle.deriveItem(item, [0, 0.3, 3, 7]).outputs);
-    if (e !== o && mismatches.length < 5) mismatches.push({ input: item, engine: JSON.parse(e), oracle: JSON.parse(o) });
+    var diffs = typedDiffs(outputs(item, [0, 0.3, 3, 7]), oracle.deriveItem(item, [0, 0.3, 3, 7]).outputs, "");
+    if (diffs.length && mismatches.length < 5) mismatches.push({ input: item, diffs: diffs });
   });
   assert.deepStrictEqual(mismatches, []);
 });
@@ -153,6 +152,93 @@ test("boundary conditions follow the methodology", function () {
   assert.strictEqual(engine.stockoutExposure(item, 14).status, "BUFFER_INTACT");
   assert.strictEqual(engine.stockoutExposure(item, 14.1).status, "BUFFER_DRAWN");
   assert.strictEqual(engine.stockoutExposure(item, 4.7, 13.3).status, "BUFFER_INTACT", "4.7 + 13.3 = 18 = 21 − 3 exactly");
+});
+
+// Integers, codes, and hundredths must match exactly; continuous values to 1e-12 relative.
+function typedDiffs(a, b, prefix, out) {
+  out = out || [];
+  if (typeof a === "number" && typeof b === "number") {
+    var ok = Number.isInteger(a) && Number.isInteger(b) ? a === b : Math.abs(a - b) <= 1e-12 * Math.max(1, Math.abs(b));
+    if (!ok) out.push(prefix + ": " + a + " vs " + b);
+  } else if (a && typeof a === "object" && b && typeof b === "object") {
+    Object.keys(a).forEach(function (key) { typedDiffs(a[key], b[key], prefix + "." + key, out); });
+  } else if (a !== b) {
+    out.push(prefix + ": " + a + " vs " + b);
+  }
+  return out;
+}
+
+test("values just above and below each rounding threshold match exact arithmetic", function () {
+  var probes = [
+    // ceiling: 2.2 / 0.7 × 7 = 22 exactly; 1e-10 more must give 23, 1e-10 less stays 22
+    [{ quantity: 2.20000000001, weeklyUsage: 1.4, variabilityPercent: 50, leadTimeDays: 0, bufferDays: 0 }, "depletion_interval_days", { earliest: 7, latest: 23 }],
+    [{ quantity: 2.19999999999, weeklyUsage: 1.4, variabilityPercent: 50, leadTimeDays: 0, bufferDays: 0 }, "depletion_interval_days", { earliest: 7, latest: 22 }],
+    // floor: a trigger of 19 − 1e-10 must floor to 18
+    [{ leadTimeDays: 1e-10, bufferDays: 0, variabilityPercent: 10 }, "planning_trigger_days", { earliest: 18, latest: 24 }],
+    // half-up at 0% variability: 3.5 − 1e-10 → 3, 3.5 exactly → 4
+    [{ quantity: 0.99999999997, weeklyUsage: 2, leadTimeDays: 0, bufferDays: 0 }, "depletion_interval_days", { earliest: 3, latest: 3 }],
+    [{ quantity: 1, weeklyUsage: 2, leadTimeDays: 0, bufferDays: 0 }, "depletion_interval_days", { earliest: 4, latest: 4 }],
+    // duration mode: 2.2 over 1.5714… weeks is the same 22-day boundary
+    [{ quantity: 2.20000000001, usageMode: "duration", weeklyUsage: null, durationWeeks: 1.5, variabilityPercent: 50, leadTimeDays: 0, bufferDays: 0 }, "depletion_interval_days", null],
+    // fractional lead time: 196 − 2.99999999999 = 193.00000000001 must ceil to 194
+    [{ quantity: 7, weeklyUsage: 0.5, variabilityPercent: 50, leadTimeDays: 0, bufferDays: 2.99999999999 }, "planning_trigger_days", { earliest: 62, latest: 194 }]
+  ];
+  probes.forEach(function (probe) {
+    var item = input(probe[0]);
+    var engineValue = outputs(item)[probe[1]];
+    var oracleValue = oracle.deriveItem(item).outputs[probe[1]];
+    assert.deepStrictEqual(engineValue, oracleValue, JSON.stringify(probe[0]));
+    if (probe[2]) assert.deepStrictEqual(engineValue, probe[2], JSON.stringify(probe[0]));
+  });
+  // Rounding up must not drop a genuine excess: 1e-8 days of lead time is 7.1e-10 units → 0.01.
+  assert.strictEqual(outputs(input({ quantity: 1, weeklyUsage: 0.5, leadTimeDays: 1e-8 })).lead_time_demand_units, 0.01);
+  // Noise is still removed: 1.1 × 100 is 110.00000000000001 in binary but 1.10 exactly.
+  assert.strictEqual(outputs(input({ weeklyUsage: 7.7, leadTimeDays: 1, bufferDays: 0 })).lead_time_demand_units, 1.1);
+  // The noise guard only feeds decisions. A published arrival day keeps every digit.
+  assert.strictEqual(engine.stockoutExposure(engine.calculateItem(input()), 1, 4.12345678912).arrivalDay, 5.12345678912);
+});
+
+test("near-boundary sweep: offsets from 1e-6 to 1e-11 days match the oracle", function () {
+  var count = 0;
+  var failures = [];
+  [1, 1.1, 2.2, 3, 7].forEach(function (q) {
+    [0.5, 0.7, 1.4, 2].forEach(function (r) {
+      [0, 10, 50].forEach(function (v) {
+        ["weekly", "duration"].forEach(function (mode) {
+          [6, 8, 10, 11].forEach(function (m) {
+            [-1, 1].forEach(function (sign) {
+              ["quantity", "leadTimeDays", "bufferDays"].forEach(function (field) {
+                var item = input({ quantity: q, usageMode: mode, weeklyUsage: mode === "weekly" ? r : null, durationWeeks: mode === "duration" ? Number((r * 3).toFixed(4)) : null, variabilityPercent: v, leadTimeDays: 3, bufferDays: 3 });
+                item[field] = Number((item[field] + sign * Math.pow(10, -m)).toFixed(m + 2));
+                count += 1;
+                var diffs = typedDiffs(outputs(item, [0, 3, 7]), oracle.deriveItem(item, [0, 3, 7]).outputs, "");
+                if (diffs.length && failures.length < 3) failures.push({ item: item, diffs: diffs });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+  assert.ok(count >= 2880);
+  assert.deepStrictEqual(failures, []);
+});
+
+test("outputs changed from v0.2 are limited to whole-day decisions and what follows from them", function () {
+  var allowed = ["depletion_interval_days", "planning_trigger_days", "replenishment_cadence_days", "fixed_interval_fit", "lead_time_slip"];
+  var counts = {};
+  GRID.forEach(function (item) {
+    var before = engineV02.buildScenarioRecord([item]).items[0].outputs;
+    var after = engine.buildScenarioRecord([item]).items[0].outputs;
+    Object.keys(after).forEach(function (key) {
+      if (JSON.stringify(before[key]) !== JSON.stringify(after[key])) counts[key] = (counts[key] || 0) + 1;
+    });
+  });
+  Object.keys(counts).forEach(function (key) { assert.ok(allowed.indexOf(key) !== -1, key + " changed but is not a whole-day field"); });
+  ["consumption_rate_per_week", "usage_bounds_per_week", "lead_time_demand_units", "reserve_stock_units", "reorder_threshold_units", "at_or_below_reorder_threshold", "replenishment_quantity_applied"].forEach(function (key) {
+    assert.ok(!counts[key], key + " must not change");
+  });
+  assert.ok(counts.depletion_interval_days > 0 && counts.planning_trigger_days > 0);
 });
 
 test("results are dimensionally consistent", function () {
