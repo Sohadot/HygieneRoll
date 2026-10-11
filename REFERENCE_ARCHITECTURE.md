@@ -48,7 +48,7 @@ A HygieneRoll page cannot be used as evidence that a market, a household, or a c
 
 ## Source register
 
-`reference/source-register.json` version 0.1 may contain an empty `sources` array. Empty is valid. Sources are not added to make the register look active.
+`reference/source-register.json` may contain an empty `sources` array. Empty is valid. Sources are not added to make the register look active. Version 0.2 records the two market-research summaries cited on the homepage and the replenishment model as `REVIEW_REQUIRED`, with `cited_on` naming those pages. Neither is admitted.
 
 A future source object uses: id, title, publisher, url, source_type, publication_date, accessed_date, geography, population, scope, rights_note, admission_status, and notes. The identifier form is `SRC-HR-0001`.
 
@@ -68,9 +68,22 @@ Evidence supports understanding. It does not, by itself, become a prediction tha
 
 The page does not display a count of verified claims, an evidence score, a trust score, or a verification percentage.
 
+## Replenishment ontology
+
+`reference/replenishment-ontology.json` is the controlled vocabulary for the calculator's inputs and outputs. Concepts use `HRO-` identifiers and sit in exactly one layer:
+
+- `PROJECT_DEFINITION`: defined by HygieneRoll. Carries `origin_refs`, never `source_ids`.
+- `HYPOTHETICAL_SCENARIO`: a value the user supplies about their own household.
+- `DERIVED_CALCULATION`: arithmetic by the engine. Carries a `formula` and an exported `engine_operation`. It is not a `DERIVED_INTERPRETATION`: it interprets no evidence, so it needs no source.
+- `OBSERVED_EVIDENCE`: an external measurement. It stays `RESERVED` until every `source_id` resolves to an `ADMITTED` source, and it is never a scenario-record field.
+
+Each concept names the scenario-record fields it governs in `record_fields`. Tests check both directions: every named field exists in a generated record, and every record field is named by a concept. Relationships are typed triples drawn from a declared predicate list, and the `derived_from` graph must stay acyclic. Concepts may point to the knowledge objects they operationalize.
+
+The ontology is rendered as a table in the `#ontology` section of `reference.html` and as a schema.org `DefinedTermSet` in that page's JSON-LD. Versioning rules are inside the JSON: identifiers are never reused, and a change in meaning, unit, or formula issues a new identifier.
+
 ## Versioning
 
-Reference foundation v0.1. Knowledge register v0.1. Evidence policy v0.1. Source register v0.1.
+Reference foundation v0.1. Knowledge register v0.1. Evidence policy v0.1. Source register v0.2. Replenishment ontology v0.1. Engine v0.2.
 
 This is not called 1.0, final, or complete.
 

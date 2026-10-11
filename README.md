@@ -38,7 +38,8 @@ The public asset currently includes:
 - operating logic for a direct replenishment loop
 - household expansion logic from paper hygiene into personal care and home essentials
 - a public acquisition surface with a direct inquiry path
-- a browser-based household hygiene replenishment calculator using user-supplied usage, lead-time, buffer, and variability assumptions
+- a browser-based household hygiene replenishment calculator using user-supplied usage, lead-time, buffer, and variability assumptions, with reorder thresholds, fixed-interval fit, lead-time slip exposure, and a machine-readable scenario record
+- a versioned replenishment ontology that defines every calculator input and output, published as JSON and on the reference page
 - a governed household hygiene replenishment reference layer
 - a public evidence policy separating definitions, observations, interpretations, and illustrative models
 
@@ -68,11 +69,12 @@ Public pages:
 - [Home](https://hygieneroll.com/) — the asset thesis, operating concepts, and acquisition availability
 - [Replenishment model](https://hygieneroll.com/replenishment-model.html) — the reference document for the operating logic
 - [Calculator](https://hygieneroll.com/calculator.html) — a local planning estimator driven by the visitor’s own usage, lead-time, buffer, and variability assumptions
-- [Reference](https://hygieneroll.com/reference.html) — working definitions and evidence rules for the replenishment vocabulary
+- [Reference](https://hygieneroll.com/reference.html) — working definitions, the replenishment ontology, and evidence rules
+- [Acquisition](https://hygieneroll.com/acquisition/) — what can be evaluated, what is not claimed, and the inquiry address
 
 ## Strategic acquisition inquiries
 
-agent@sohadot.com
+agent@sohadot.com — scope at [hygieneroll.com/acquisition/](https://hygieneroll.com/acquisition/)
 
 ## Ownership / rights
 
@@ -91,6 +93,9 @@ HygieneRoll/
 ├── replenishment-model.html
 ├── calculator.html
 ├── reference.html
+├── acquisition/
+├── 404.html
+├── llms.txt
 ├── CALCULATOR_METHODOLOGY.md
 ├── REFERENCE_ARCHITECTURE.md
 ├── EVIDENCE_POLICY.md
@@ -102,4 +107,15 @@ HygieneRoll/
 ├── tests/
 ├── robots.txt
 └── sitemap.xml
+```
+
+## Tests
+
+No dependencies. Run each suite with Node:
+
+```
+node tests/replenishment-engine.test.js
+node tests/replenishment-ontology.test.js
+node tests/reference-governance.test.js
+node tests/site-integrity.test.js
 ```

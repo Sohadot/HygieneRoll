@@ -31,3 +31,21 @@ Phase II begins with one reference hub, `reference.html`, not with a separate pa
 Date: 2026-09-24
 
 The first eight knowledge objects are project definitions unless external evidence is separately admitted. Foundation v0.1 admits no external sources.
+
+## DEC-HR-006
+
+Date: 2026-10-11
+
+The replenishment ontology adds `DERIVED_CALCULATION` and `HYPOTHETICAL_SCENARIO` as layers for scenario fields. A deterministic calculation from user inputs needs a formula, not a source. That keeps the source requirement on `DERIVED_INTERPRETATION` intact.
+
+## DEC-HR-007
+
+Date: 2026-10-11
+
+Third-party figures already displayed on public pages are recorded in the source register as `REVIEW_REQUIRED`, so the register reflects what the site shows. Recording a figure does not admit it. Admitting or removing the displayed market figures is left to the owner.
+
+## DEC-HR-008
+
+Date: 2026-10-11
+
+Acquisition calls to action lead to `/acquisition/`, which lists the components available to evaluate and what is not claimed. The contact route is a mailto link to the published inquiry address. The address is excluded from CDN email rewriting so it works without JavaScript. No backend collects inquiries.

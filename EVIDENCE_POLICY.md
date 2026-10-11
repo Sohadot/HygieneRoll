@@ -128,7 +128,9 @@ A future source object uses these fields:
 
 `admission_status` is exactly one of `ADMITTED`, `REVIEW_REQUIRED`, or `BLOCKED`.
 
-Suggested identifier: `SRC-HR-0001`. No source is registered in v0.1. Speculative sources and research wishlists are not entered to fill the file.
+Identifier form: `SRC-HR-0001`. Speculative sources and research wishlists are not entered to fill the file.
+
+A third-party figure already shown on a public HygieneRoll page is entered in the register even before it is qualified. It is recorded as `REVIEW_REQUIRED`, with an optional `cited_on` list naming the pages that show it. That keeps every displayed figure traceable without admitting it. Register v0.2 records two such sources, `SRC-HR-0001` and `SRC-HR-0002`. Neither is admitted.
 
 Long excerpts are not reproduced. Paraphrase. A quotation is minimal and only when the exact words are necessary.
 

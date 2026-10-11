@@ -1,12 +1,14 @@
 # Household Hygiene Replenishment Calculator Methodology
 
-Version: v0.1
+Version: v0.2
+
+v0.2 adds a reorder threshold, a fixed-interval fit, lead-time slip with stockout exposure, and a machine-readable scenario record. All v0.1 formulas and outputs are unchanged. Every input and output is defined in `reference/replenishment-ontology.json`.
 
 ## Scope
 
 The calculator estimates a replenishment planning window from user-supplied household assumptions. It is a transparent, deterministic scenario tool.
 
-v0.1 does not know how a household uses a product. No empirical household-consumption benchmarks are embedded in v0.1. That is deliberate. The estimate stays inspectable until a later sprint introduces governed evidence.
+The engine does not know how a household uses a product. No empirical household-consumption benchmarks are embedded. That is deliberate. The estimate stays inspectable until a later sprint introduces governed evidence.
 
 The tool does not predict actual depletion, and it does not describe an output as optimal, guaranteed, or recommended. HygieneRoll does not operate fulfillment, subscriptions, logistics, accounts, or live inventory through this page.
 
@@ -26,6 +28,8 @@ Each item is an independent clock. The engine accepts:
 | Lead time | Days until a replenishment could arrive | Finite number, 0 or greater. No hidden default |
 | Safety buffer | Extra days the user wants before depletion | Finite number, 0 or greater. User-selected. Not an optimal stock level |
 | Variability | Planning allowance, 0% to 50% | Default visible value is 0%. Nothing is applied silently |
+| Fixed delivery interval | Days between deliveries of a schedule the user wants to compare | Optional. A supplied value must be a finite number greater than 0 |
+| Category | `PAPER_HYGIENE`, `PERSONAL_HYGIENE`, `HOUSEHOLD_HYGIENE`, or `OTHER` | Optional. Set by the preset's group. A label only. It does not change a result |
 
 Household size is not an input. It does not determine consumption.
 
@@ -133,6 +137,73 @@ cadence_latest_raw = (R / slow_usage) × 7
 
 The published label is “Illustrative cadence”. It is not an optimal cadence and it is not a recommended subscription frequency.
 
+## Reorder threshold
+
+The reorder threshold is the planning trigger expressed as a stock level. It uses the fast usage bound, which is the same bound that sets the earliest trigger.
+
+```
+lead_time_demand = ceil_0.01(L × fast_usage / 7)
+reserve_stock    = ceil_0.01(B × fast_usage / 7)
+reorder_threshold = lead_time_demand + reserve_stock
+```
+
+`ceil_0.01` rounds up to the next hundredth of a unit, so a published threshold never understates the stock it covers. Before rounding up, the engine strips binary noise. For example, 1.1 × 100 evaluates to 110.00000000000001 in floating point and is treated as 110. The threshold is the sum of the two published parts, so the displayed arithmetic adds up.
+
+`at_or_below_reorder_threshold` is true when current supply is less than or equal to the threshold.
+
+Day rounding and unit rounding are separate, so the threshold and the day trigger can differ by a fraction of a day's use. The day trigger stays the governing planning date.
+
+## Fixed-interval fit
+
+A fixed delivery interval `I` is compared with the illustrative cadence window:
+
+```
+fit = EARLIER_THAN_WINDOW  if I < cadence_earliest
+      LATER_THAN_WINDOW    if I > cadence_latest
+      WITHIN_WINDOW        otherwise
+drift_per_cycle.min = I − cadence_latest
+drift_per_cycle.max = I − cadence_earliest
+```
+
+Positive drift means each delivery arrives after the previous replenishment quantity would run out, so supply shrinks with each cycle. Negative drift means stock builds up. This makes the replenishment-versus-subscription distinction measurable for one item. It is not a recommendation to change a subscription.
+
+## Stockout exposure and lead-time slip
+
+Stockout exposure is evaluated for a given order day `d` and actual lead time `L'`:
+
+```
+arrival = d + L'
+gap.max = max(0, ceil(arrival − depletion_earliest))   fast usage bound
+gap.min = max(0, ceil(arrival − depletion_latest))     slow usage bound
+```
+
+Status:
+
+- `BUFFER_INTACT`: arrival is on or before `depletion_earliest − B`
+- `BUFFER_DRAWN`: arrival is after that day but on or before `depletion_earliest`
+- `STOCKOUT_POSSIBLE`: a gap exists at the fast bound only
+- `STOCKOUT_AT_BOTH_BOUNDS`: a gap exists at both bounds
+
+Lead-time slip applies fixed offsets of +3 and +7 days to the entered lead time. For each offset `s` the engine reports:
+
+- the planning trigger re-planned with lead time `L + s`
+- the stockout exposure if the order had been placed at `planning_trigger_earliest` but took `L + s` days to arrive
+
+When the trigger is not clamped and lead time and buffer are whole days, a slip no longer than the buffer leaves `gap.max` at 0. With fractional days, the half-up rounding of a single-day trigger can move the order day up to half a day later. The offsets are fixed sensitivity checks. They are not forecasts of delay, and the exposure is arithmetic, not a probability.
+
+## Scenario record
+
+`buildScenarioRecord(items)` returns one JSON object per scenario:
+
+- `record_type`, `record_version`, `engine_version`, and the ontology URL and version
+- `epistemic_status`: inputs are `HYPOTHETICAL_SCENARIO`, outputs are `DERIVED_CALCULATION`, `observed_evidence_used` is false, and `embedded_benchmarks` is false
+- `uncertainty`: `USER_VARIABILITY_ALLOWANCE`, with `statistical_confidence` false
+- `lead_time_slip_offsets_days`
+- `items[]`: each item with `inputs` exactly as entered and `outputs` as calculated
+- `household`: next return, whether another trigger begins within 7 days, and whether the clocks differ
+
+The record has no timestamp and no identifier from the browser, so identical inputs produce byte-identical JSON. Invalid input throws the same validation error as `calculateItem`, and no partial record is emitted. The calculator page shows the record and can save it as a local file. Nothing is sent over the network.
+
 ## Multi-item household summary
 
 Each calculated item keeps its own window. The household summary does not average unlike items.
@@ -187,7 +258,11 @@ Rejected cases include:
 - safety buffer missing, not finite, or negative
 - variability missing, not finite, below 0%, or above 50%
 - replenishment quantity supplied but not a finite number greater than 0
+- fixed delivery interval supplied but not a finite number greater than 0
+- category supplied but not one of the listed codes
 - item name empty after trimming
+- stockout exposure with a negative or non-finite order day or lead time
+- lead-time slip offsets that would make lead time negative
 
 Zero is valid for lead time, buffer, and variability. It is not valid for quantity or usage.
 
@@ -199,7 +274,8 @@ Zero is valid for lead time, buffer, and variability. It is not valid for quanti
 - The tool does not predict actual consumption.
 - The variability allowance is user-selected. It is not statistical confidence.
 - The output is a planning aid for commerce replenishment, not medical or sanitation-safety guidance.
-- v0.1 contains no embedded consumption benchmarks, no shipment optimization, and no product recommendation.
+- The engine contains no embedded consumption benchmarks, no shipment optimization, and no product recommendation.
+- Stockout exposure and fixed-interval fit are arithmetic on user assumptions. They are not probabilities.
 
 ## Privacy / local execution
 
@@ -207,4 +283,4 @@ Zero is valid for lead time, buffer, and variability. It is not valid for quanti
 
 ## Version
 
-v0.1
+v0.2. The formulas for depletion, trigger, and cadence are unchanged from v0.1.
