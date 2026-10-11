@@ -182,6 +182,40 @@ test("external evidence links on public pages are registered sources", function 
   });
 });
 
+test("every email address in a page is the inquiry address and sits inside email_off", function () {
+  ALL_PAGES.forEach(function (page) {
+    var html = read(page).replace(/"@(context|type|id|graph)"/g, "");
+    var pattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+    var match;
+    while ((match = pattern.exec(html))) {
+      assert.strictEqual(match[0], INQUIRY, page + " " + match[0]);
+      var open = html.lastIndexOf("<!--email_off-->", match.index);
+      var close = html.lastIndexOf("<!--/email_off-->", match.index);
+      assert.ok(open !== -1 && open > close, page + " address outside email_off");
+    }
+  });
+});
+
+test("only admitted sources may be displayed on public pages", function () {
+  register.sources.forEach(function (source) {
+    if (source.admission_status !== "ADMITTED") {
+      assert.deepStrictEqual(source.cited_on || [], [], source.id);
+      ALL_PAGES.concat(["llms.txt"]).forEach(function (page) {
+        assert.ok(read(page).indexOf(source.url) === -1, source.id + " linked from " + page);
+      });
+    }
+  });
+});
+
+test("public pages publish no market-size figures", function () {
+  ALL_PAGES.forEach(function (page) {
+    var text = read(page);
+    assert.ok(!/\$\s?\d[\d.,]*\s?(T|B|M|bn|tn)\b/.test(text), page);
+    assert.ok(!/\b(USD|US\$)\s?[\d.,]+\s?(billion|trillion|million)\b/i.test(text), page);
+    assert.ok(!/\b[\d.,]+\s?(billion|trillion)\b/i.test(text), page);
+  });
+});
+
 test("llms.txt links resolve to published files", function () {
   var text = read("llms.txt");
   var urls = text.match(/https:\/\/hygieneroll\.com\/[^)\s]*/g) || [];

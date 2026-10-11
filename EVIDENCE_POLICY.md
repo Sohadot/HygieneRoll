@@ -130,7 +130,9 @@ A future source object uses these fields:
 
 Identifier form: `SRC-HR-0001`. Speculative sources and research wishlists are not entered to fill the file.
 
-A third-party figure already shown on a public HygieneRoll page is entered in the register even before it is qualified. It is recorded as `REVIEW_REQUIRED`, with an optional `cited_on` list naming the pages that show it. That keeps every displayed figure traceable without admitting it. Register v0.2 records two such sources, `SRC-HR-0001` and `SRC-HR-0002`. Neither is admitted.
+A public HygieneRoll page may display a third-party figure only when its source is `ADMITTED`. The optional `cited_on` list names every page that displays a figure from that source. A source that is `REVIEW_REQUIRED` or `BLOCKED` has an empty `cited_on`. A figure whose source loses admission is removed from public pages, and its record stays in the register.
+
+Register v0.2 records `SRC-HR-0001` and `SRC-HR-0002` as `REVIEW_REQUIRED`. Their figures were displayed before this rule and were removed on 2026-10-11. Neither source is admitted.
 
 Long excerpts are not reproduced. Paraphrase. A quotation is minimal and only when the exact words are necessary.
 

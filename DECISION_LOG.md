@@ -49,3 +49,9 @@ Third-party figures already displayed on public pages are recorded in the source
 Date: 2026-10-11
 
 Acquisition calls to action lead to `/acquisition/`, which lists the components available to evaluate and what is not claimed. The contact route is a mailto link to the published inquiry address. The address is excluded from CDN email rewriting so it works without JavaScript. No backend collects inquiries.
+
+## DEC-HR-009
+
+Date: 2026-10-11
+
+This decision replaces the display part of DEC-HR-007. Public pages show no third-party market figure until its source is `ADMITTED`. The Grand View Research figures were removed from the homepage and the replenishment model. Their records stay in the register as `REVIEW_REQUIRED`, with empty `cited_on`.

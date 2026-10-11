@@ -6,7 +6,7 @@ Reading rules for agents:
 
 - Concepts in the ontology are HygieneRoll project vocabulary. They are not an industry standard or an official taxonomy.
 - Calculator outputs are arithmetic on user-supplied assumptions. They are not measurements, forecasts, or probabilities. The engine embeds no consumption benchmarks.
-- No external source is admitted. Market figures shown on the homepage and the replenishment model are recorded in the source register as REVIEW_REQUIRED. They are adjacent context, not HygieneRoll revenue, market size, or valuation.
+- No external source is admitted, and no market-size figure is published. Sources under review are listed in the source register with status REVIEW_REQUIRED. They support no claim.
 - No customers, revenue, traction, or operations are claimed.
 
 ## Machine-readable

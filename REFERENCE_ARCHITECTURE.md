@@ -48,7 +48,7 @@ A HygieneRoll page cannot be used as evidence that a market, a household, or a c
 
 ## Source register
 
-`reference/source-register.json` may contain an empty `sources` array. Empty is valid. Sources are not added to make the register look active. Version 0.2 records the two market-research summaries cited on the homepage and the replenishment model as `REVIEW_REQUIRED`, with `cited_on` naming those pages. Neither is admitted.
+`reference/source-register.json` may contain an empty `sources` array. Empty is valid. Sources are not added to make the register look active. Version 0.2 records two market-research summaries as `REVIEW_REQUIRED`. Their figures were removed from public pages, so `cited_on` is empty. Only an `ADMITTED` source may list a page in `cited_on`, and only a page in `cited_on` may link to the source.
 
 A future source object uses: id, title, publisher, url, source_type, publication_date, accessed_date, geography, population, scope, rights_note, admission_status, and notes. The identifier form is `SRC-HR-0001`.
 
