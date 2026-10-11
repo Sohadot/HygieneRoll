@@ -181,6 +181,7 @@ function caseSection(record, entry) {
     "<ul>" + record.methodology.steps.map(function (step) { return "<li>" + termLink(record, step.concept) + ": <code>" + esc(step.formula) + "</code></li>"; }).join("") + "</ul>",
     "<p>Terms: " + record.ontology_terms.map(function (t) { return termLink(record, t.id, t.id + " " + t.term); }).join(", ") + ".</p>",
     "</details>",
+    '<p class="open-link"><a class="open-calculator" href="../../calculator.html#case=' + esc(record.case.id) + '">Open ' + esc(record.case.id) + " in the calculator</a></p>",
     '<p class="record-link">Machine-readable record: <a href="' + esc(record.case.id) + '.json">' + esc(record.case.id) + ".json</a><br/>sha256 <code>" + esc(entry.sha256) + "</code></p>",
     "</article>"
   ].join("\n");
@@ -247,6 +248,9 @@ var CSS = [
   "details { margin-top: 14px; }",
   "summary { cursor: pointer; font-weight: 750; color: #0d2344; }",
   ".record-link { margin-top: 16px; font-size: 0.92rem; overflow-wrap: anywhere; }",
+  ".open-link { margin-top: 18px; }",
+  ".open-calculator { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 999px; background: var(--blue); color: #fff; font-weight: 750; text-decoration: none; }",
+  ".open-calculator:hover { background: #1d4ed8; }",
   ".footer { padding: 28px 0 48px; color: var(--muted); font-size: 14px; }",
   ".footer-inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid rgba(167, 188, 217, 0.18); padding-top: 22px; }",
   "@media (max-width: 640px) { .container { width: min(calc(100% - 24px), var(--container)); } .case { padding: 18px 14px; } .brand-mark { font-size: 1.5rem; }",
@@ -328,7 +332,7 @@ function render(records, manifest, registry) {
     '        <h2 id="verify-heading">How to check a case yourself</h2>',
     "        <ol>",
     "          <li>Work through the hand derivation shown for the case. Every step uses only the formulas in the <a href=\"../../CALCULATOR_METHODOLOGY.md\">calculator methodology</a>.</li>",
-    "          <li>Enter the same inputs in the <a href=\"../../calculator.html\">calculator</a>. Its JSON record should match the <code>results</code> block of the case record.</li>",
+    "          <li>Open the case in the <a href=\"../../calculator.html\">calculator</a> with its \"Open in the calculator\" link. The calculator checks the record against the manifest fingerprint, loads its inputs, and compares any changes you make with the verified values. Its JSON record should match the <code>results</code> block of the case record.</li>",
     "          <li>Download the <a href=\"manifest.json\">manifest</a> and a record, and compare the record's sha256 with the manifest. Records use the serialization the manifest describes.</li>",
     "          <li>From a copy of the <a href=\"https://github.com/Sohadot/HygieneRoll\">public repository</a>, run <code>node verification/build-reference-records.js --check</code>. It recomputes every case with the engine and the <a href=\"../../verification/oracle.js\">oracle</a>, and fails if any value or file differs.</li>",
     "        </ol>",

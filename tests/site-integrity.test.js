@@ -81,7 +81,14 @@ test("every internal link and fragment resolves", function () {
       var target = resolve(page, href);
       assert.ok(fs.existsSync(path.join(root, target.file)), page + " -> " + href);
       if (target.fragment && /\.html$/.test(target.file)) {
-        assert.ok(ids(read(target.file)).indexOf(target.fragment) !== -1, page + " -> " + href);
+        var caseLink = /^case=(HRR-\d{3})$/.exec(target.fragment);
+        if (target.file === "calculator.html" && caseLink) {
+          // A calculator case link must name a case listed in the published manifest.
+          var listed = JSON.parse(read("reference/cases/manifest.json")).records.map(function (r) { return r.id; });
+          assert.ok(listed.indexOf(caseLink[1]) !== -1, page + " -> " + href);
+        } else {
+          assert.ok(ids(read(target.file)).indexOf(target.fragment) !== -1, page + " -> " + href);
+        }
       }
     });
   });
@@ -253,8 +260,12 @@ test("llms.txt links resolve to published files", function () {
   var text = read("llms.txt");
   var urls = text.match(/https:\/\/hygieneroll\.com\/[^)\s]*/g) || [];
   assert.ok(urls.length >= 8);
+  var listed = JSON.parse(read("reference/cases/manifest.json")).records.map(function (r) { return r.id; });
   urls.forEach(function (url) {
-    assert.ok(fs.existsSync(path.join(root, urlToFile(url))), url);
+    var parts = url.split("#");
+    assert.ok(fs.existsSync(path.join(root, urlToFile(parts[0]))), url);
+    var caseLink = /^case=(HRR-\d{3})$/.exec(parts[1] || "");
+    if (caseLink) assert.ok(listed.indexOf(caseLink[1]) !== -1, url);
   });
 });
 
