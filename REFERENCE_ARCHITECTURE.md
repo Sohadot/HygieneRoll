@@ -81,9 +81,30 @@ Each concept names the scenario-record fields it governs in `record_fields`. Tes
 
 The ontology is rendered as a table in the `#ontology` section of `reference.html` and as a schema.org `DefinedTermSet` in that page's JSON-LD. Versioning rules are inside the JSON: identifiers are never reused, and a change in meaning, unit, or formula issues a new identifier.
 
+## Reference cases
+
+`reference/cases/registry.json` is the authored registry of reference cases. Cases use `HRR-` identifiers and integer case versions. A change to a case's inputs or expected values increments its version and is recorded in the registry changelog.
+
+Each case is synthetic. It carries the claim class `ILLUSTRATIVE_MODEL`, input layer `HYPOTHETICAL_SCENARIO`, and output layer `DERIVED_CALCULATION`. It has no `source_ids` and no external observations. Its title and item name end in "(synthetic)".
+
+`verification/build-reference-records.js` publishes a record only when four conditions hold:
+
+- every expected value equals both the engine result and the result from `verification/oracle.js`, which uses exact rational arithmetic and does not use the engine
+- every ontology term resolves to an ACTIVE concept, and every applicable output is governed by a listed term
+- the evidence labels follow the rules above
+- the record validates against `reference/schema/reference-case-record.schema.json`
+
+If any case fails, the build writes nothing.
+
+The schema is an internal HygieneRoll contract, not an external standard. `verification/schema-validator.js` rejects any keyword it does not implement.
+
+Records are serialized with sorted keys and LF line endings. `reference/cases/manifest.json` lists each record's sha256. `reference/cases/index.html` is generated from the same records. Tests fail if any committed file differs from a fresh build.
+
+`verification/baselines/` holds byte-exact copies of engine v0.1 and v0.2. Tests compare the current engine with them, and require every changed result to match the oracle.
+
 ## Versioning
 
-Reference foundation v0.1. Knowledge register v0.1. Evidence policy v0.1. Source register v0.2. Replenishment ontology v0.1. Engine v0.2.
+Reference foundation v0.1. Knowledge register v0.1. Evidence policy v0.1. Source register v0.2. Replenishment ontology v0.1. Engine v0.2.1. Reference case registry v0.1. Reference case record schema v0.1. Oracle v0.1.
 
 This is not called 1.0, final, or complete.
 

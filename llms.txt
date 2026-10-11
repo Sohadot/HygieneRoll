@@ -5,6 +5,7 @@
 Reading rules for agents:
 
 - Concepts in the ontology are HygieneRoll project vocabulary. They are not an industry standard or an official taxonomy.
+- Reference cases are synthetic illustrations. Their inputs are not observed behavior, and their results verify the arithmetic, not real-world consumption.
 - Calculator outputs are arithmetic on user-supplied assumptions. They are not measurements, forecasts, or probabilities. The engine embeds no consumption benchmarks.
 - No external source is admitted, and no market-size figure is published. Sources under review are listed in the source register with status REVIEW_REQUIRED. They support no claim.
 - No customers, revenue, traction, or operations are claimed.
@@ -14,7 +15,11 @@ Reading rules for agents:
 - [Replenishment ontology](https://hygieneroll.com/reference/replenishment-ontology.json): HRO- concepts with layers, units, formulas, record fields, typed relationships, and versioning rules
 - [Knowledge objects](https://hygieneroll.com/reference/knowledge-objects.json): HRK- objects and HRC- claims with claim classes and provenance
 - [Source register](https://hygieneroll.com/reference/source-register.json): external sources and their admission status
-- [Replenishment engine](https://hygieneroll.com/assets/js/replenishment-engine.js): pure functions (UMD). `calculateItem`, `calculateHousehold`, `stockoutExposure`, `leadTimeSlip`, `buildScenarioRecord`
+- [Replenishment engine](https://hygieneroll.com/assets/js/replenishment-engine.js): pure functions (UMD), version v0.2.1. `calculateItem`, `calculateHousehold`, `stockoutExposure`, `leadTimeSlip`, `buildScenarioRecord`
+- [Reference case manifest](https://hygieneroll.com/reference/cases/manifest.json): the five published reference case records, with sha256 digests and validation outcomes
+- [Reference case registry](https://hygieneroll.com/reference/cases/registry.json): the authored synthetic cases with hand-derived expected values
+- [Reference case record schema](https://hygieneroll.com/reference/schema/reference-case-record.schema.json): internal HygieneRoll contract, version 0.1. Not an external standard
+- [Verification oracle](https://hygieneroll.com/verification/oracle.js): exact rational re-derivation of the methodology. It does not use the engine
 
 ## Method and governance
 
@@ -25,6 +30,7 @@ Reading rules for agents:
 ## Pages
 
 - [Calculator](https://hygieneroll.com/calculator.html): runs locally in the browser and shows a JSON scenario record for each calculation
+- [Reference cases](https://hygieneroll.com/reference/cases/): five synthetic cases with timelines, hand derivations, and expected, engine, and oracle values. Static HTML
 - [Reference](https://hygieneroll.com/reference.html): knowledge objects and the ontology table
 - [Replenishment model](https://hygieneroll.com/replenishment-model.html): the operating logic
 - [Acquisition](https://hygieneroll.com/acquisition/): what can be evaluated, what is not claimed, and the inquiry address

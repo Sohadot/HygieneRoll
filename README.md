@@ -70,6 +70,7 @@ Public pages:
 - [Replenishment model](https://hygieneroll.com/replenishment-model.html) — the reference document for the operating logic
 - [Calculator](https://hygieneroll.com/calculator.html) — a local planning estimator driven by the visitor’s own usage, lead-time, buffer, and variability assumptions
 - [Reference](https://hygieneroll.com/reference.html) — working definitions, the replenishment ontology, and evidence rules
+- [Reference cases](https://hygieneroll.com/reference/cases/) — five synthetic scenarios whose results are checked against an independent oracle
 - [Acquisition](https://hygieneroll.com/acquisition/) — what can be evaluated, what is not claimed, and the inquiry address
 
 ## Strategic acquisition inquiries
@@ -101,6 +102,9 @@ HygieneRoll/
 ├── EVIDENCE_POLICY.md
 ├── DECISION_LOG.md
 ├── reference/
+│   ├── cases/
+│   └── schema/
+├── verification/
 ├── assets/
 │   ├── images/
 │   └── js/
@@ -118,4 +122,14 @@ node tests/replenishment-engine.test.js
 node tests/replenishment-ontology.test.js
 node tests/reference-governance.test.js
 node tests/site-integrity.test.js
+node tests/reference-cases.test.js
+node tests/independent-verification.test.js
 ```
+
+After changing the engine, the ontology, or `reference/cases/registry.json`, rebuild the published reference records:
+
+```
+node verification/build-reference-records.js
+```
+
+The build fails, and writes nothing, if any expected value disagrees with the engine or the oracle.

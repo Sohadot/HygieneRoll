@@ -61,3 +61,15 @@ This decision replaces the display part of DEC-HR-007. Public pages show no thir
 Date: 2026-10-11
 
 Market-condition statements on public pages are either project theses, marked as the model's premise or design intent, or verified external claims with an admitted source. Unsourced statements about trends, consumer behavior, channel effects, and scarcity were rewritten as statements of the model's premise. The withdrawn phrasings are listed in `tests/site-integrity.test.js` and may return only with an admitted source.
+
+## DEC-HR-011
+
+Date: 2026-10-11
+
+Engine v0.2.1 rounds each value to 9 decimal places before a whole-day floor, ceiling, half-up rounding, or comparison. The exact-arithmetic oracle showed that binary floating-point noise made v0.1 and v0.2 disagree with the published methodology for about 3% of the verification grid. The methodology defines the formulas on decimal inputs, so the engine was corrected to match it. The record field contract is unchanged. Tests require every changed result to match the oracle.
+
+## DEC-HR-012
+
+Date: 2026-10-11
+
+Reference cases are published only through `verification/build-reference-records.js`. Each case needs hand-derived expected values that agree with both the engine and an independent oracle. A failed check blocks the whole build, so a failed case cannot appear as an approved record. Cases reuse the existing claim class `ILLUSTRATIVE_MODEL` and the ontology layers. No new evidence class was introduced.

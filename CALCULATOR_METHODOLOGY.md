@@ -1,6 +1,8 @@
 # Household Hygiene Replenishment Calculator Methodology
 
-Version: v0.2
+Version: v0.2.1
+
+v0.2.1 is a correctness patch. Before each whole-day decision, the engine now removes binary floating-point noise, so a value that is exactly a whole or half day in decimal arithmetic rounds as this document states. See "Binary noise" under the rounding law. No formula changed.
 
 v0.2 adds a reorder threshold, a fixed-interval fit, lead-time slip with stockout exposure, and a machine-readable scenario record. All v0.1 formulas and outputs are unchanged. Every input and output is defined in `reference/replenishment-ontology.json`.
 
@@ -204,6 +206,12 @@ When the trigger is not clamped and lead time and buffer are whole days, a slip 
 
 The record has no timestamp and no identifier from the browser, so identical inputs produce byte-identical JSON. Invalid input throws the same validation error as `calculateItem`, and no partial record is emitted. The calculator page shows the record and can save it as a local file. Nothing is sent over the network.
 
+## Reference cases
+
+`reference/cases/registry.json` holds synthetic scenarios with expected values derived by hand from this document. `verification/build-reference-records.js` compares each expected value with the engine and with the oracle. A case is published as a record only when all three agree, its ontology terms resolve, and its evidence labels are correct. If any check fails, nothing is written.
+
+Published records are serialized canonically, and their sha256 digests are listed in `reference/cases/manifest.json`. The explorer at `/reference/cases/` renders the same records as static HTML. The inputs are synthetic. They are not observed household behavior or benchmarks.
+
 ## Multi-item household summary
 
 Each calculated item keeps its own window. The household summary does not average unlike items.
@@ -238,6 +246,14 @@ Day math, in order:
 6. Round a fractional trigger by the same single-day or range rule, then clamp at 0.
 
 No result displays a fraction of a day.
+
+### Binary noise
+
+This document's formulas are defined on the decimal values the user enters. A browser stores most decimals as the nearest binary double, so arithmetic can land just above or below a whole day. For example, 1.1 / 0.35 × 7 is exactly 22, but evaluates to 22.000000000000004. Taking the ceiling of that gives 23, which is wrong.
+
+From v0.2.1, each value is rounded to 9 decimal places before a floor, ceiling, half-up rounding, or comparison decides a whole day. This applies to depletion and cadence days, planning-trigger days, arrival day, and supply-gap days. Unit quantities already strip noise before rounding up to 0.01.
+
+An independent exact-arithmetic oracle (`verification/oracle.js`) checks this rule. On the verification grid of 42,240 inputs, v0.1 published 1,224 wrong depletion, trigger, or cadence windows, and v0.2 published 1,455 wrong outputs. v0.2.1 publishes none. Every result that changed from v0.1 or v0.2 now matches the oracle.
 
 A week phrase is display only. Days are divided by 7 and rounded to the nearest half week. Examples: 21 days is “about 3 weeks”; 25 days is “about 3½ weeks”; a 17–27 day window is “about 2½–4 weeks”. The week phrase does not replace the day count. A trigger of `Now`, or a window that starts at `Now`, does not receive a week phrase.
 
@@ -283,4 +299,4 @@ Zero is valid for lead time, buffer, and variability. It is not valid for quanti
 
 ## Version
 
-v0.2. The formulas for depletion, trigger, and cadence are unchanged from v0.1.
+v0.2.1. The formulas for depletion, trigger, and cadence are unchanged from v0.1. v0.2.1 corrects binary-noise rounding, and its record field contract is the same as v0.2.
