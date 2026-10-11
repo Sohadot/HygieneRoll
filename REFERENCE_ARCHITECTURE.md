@@ -102,9 +102,17 @@ Records are serialized with sorted keys and LF line endings. `reference/cases/ma
 
 `verification/baselines/` holds byte-exact copies of engine v0.1 and v0.2. Tests compare the current engine with them, and require every changed result to match the oracle.
 
+## Reference cases in the calculator
+
+`assets/js/reference-scenario.js` (v0.1) is a pure module that the calculator uses to open a case from `calculator.html#case=HRR-###`. The calculator reads only the identifier. It requires exactly one PASS entry in the manifest, checks the record's sha256 against that entry, accepts only the known input fields, and runs the engine's validation. Records are never modified.
+
+A visitor's changes are compared with the record's verified outputs. The optional export is a `USER_SCENARIO` record that names its source case and sha256. It is not a reference record.
+
+The extended numerical audit (`verification/audit-numerical.js`, sets in `verification/audit-sets.js`) is separate from the test suite. The suite pins the size and fingerprint of every set and runs a sample of each.
+
 ## Versioning
 
-Reference foundation v0.1. Knowledge register v0.1. Evidence policy v0.1. Source register v0.2. Replenishment ontology v0.1. Engine v0.2.1. Reference case registry v0.1. Reference case record schema v0.1. Oracle v0.1.
+Reference foundation v0.1. Knowledge register v0.1. Evidence policy v0.1. Source register v0.2. Replenishment ontology v0.1. Engine v0.2.1. Reference case registry v0.1. Reference case record schema v0.1. Oracle v0.1. Reference scenario module v0.1. Reference-derived scenario export v0.1.
 
 This is not called 1.0, final, or complete.
 

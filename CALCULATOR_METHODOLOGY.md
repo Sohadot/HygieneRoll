@@ -212,6 +212,37 @@ The record has no timestamp and no identifier from the browser, so identical inp
 
 Published records are serialized canonically, and their sha256 digests are listed in `reference/cases/manifest.json`. The explorer at `/reference/cases/` renders the same records as static HTML. The inputs are synthetic. They are not observed household behavior or benchmarks.
 
+### Opening a reference case in the calculator
+
+Each case links to `calculator.html#case=HRR-###`. The fragment carries only the case identifier and is never sent to the server. The calculator then works through these steps:
+
+1. It reads the identifier only if the whole fragment is `case=` followed by `HRR-` and three digits. Any other content is ignored or reported as malformed.
+2. It loads `reference/cases/manifest.json` and requires exactly one entry with that identifier and the outcome PASS.
+3. It loads that record and computes its sha256 in the browser. A record that does not match the manifest is refused.
+4. It accepts only the known input fields with the expected types, and runs them through the engine's validation.
+5. It fills the form with those inputs. The page does not store anything.
+
+After a calculation, the visitor's scenario is compared with the reference record's verified outputs. The comparison shows the depletion window, order window, cadence, reorder threshold, fixed-interval fit, and late-delivery exposure. Each difference is the scenario minus the reference. Fixed-interval fit is marked not applicable on any side without an interval, with the reason.
+
+The comparison can be saved as JSON with `record_type` `hygieneroll.reference-derived-scenario`, `classification` `USER_SCENARIO`, and `verified_reference` false. It names the source case, version, and sha256, and the engine version. A scenario is never a reference record and never changes one.
+
+### Extended numerical audit
+
+`node verification/audit-numerical.js` compares the engine with the exact oracle on every unique input of six deterministic sets in `verification/audit-sets.js`:
+
+- A: exploratory grid
+- B: adversarial decimals
+- C: extended near-boundary
+- D: standard test grid
+- E: standard near-boundary
+- U: unit rounding
+
+It reports listed, unique, and duplicate counts and the overlaps between sets. It takes about 8 seconds.
+
+A result that differs from exact arithmetic is counted as a documented precision limit only when it matches the oracle run with the 2⁻⁴⁷ tolerance described under "Binary noise" exactly. Any other difference is a mismatch, and the command exits non-zero.
+
+The standard test suite runs sets D and E on every run. Sets A, B, C, and U run only in the extended audit.
+
 ## Multi-item household summary
 
 Each calculated item keeps its own window. The household summary does not average unlike items.
@@ -256,6 +287,13 @@ From v0.2.1, a value is treated as noise only when it sits within 2⁻⁴⁷ (ab
 The guard applies to depletion and cadence days, planning-trigger days, supply-gap days, and the buffer comparison. Unit quantities use the same bound before rounding up to 0.01, so a genuine excess as small as 7 × 10⁻¹⁰ units still rounds up. The adjusted value is used only for the decision. Published values such as the arrival day are never altered.
 
 Offsets smaller than the bound, about 1.4 × 10⁻¹² days at a 200-day magnitude, cannot be told apart from binary noise in double precision. They arise only from inputs with roughly 13 or more significant digits.
+
+The operands used for each scale are:
+
+- depletion and cadence days: the value itself
+- planning trigger: the largest of the depletion day, the lead time, and the buffer
+- supply gap and buffer comparison: the largest of the order day, the lead time, the latest depletion day, and the buffer
+- units: the value in hundredths
 
 An independent exact-arithmetic oracle (`verification/oracle.js`) checks this rule.
 

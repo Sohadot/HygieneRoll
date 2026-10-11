@@ -73,3 +73,15 @@ Before a whole-day floor, ceiling, half-up rounding, or comparison, engine v0.2.
 Date: 2026-10-11
 
 Reference cases are published only through `verification/build-reference-records.js`. Each case needs hand-derived expected values that agree with both the engine and an independent oracle. A failed check blocks the whole build, so a failed case cannot appear as an approved record. Cases reuse the existing claim class `ILLUSTRATIVE_MODEL` and the ontology layers. No new evidence class was introduced.
+
+## DEC-HR-013
+
+Date: 2026-10-11
+
+A reference case opens in the calculator through `#case=HRR-###`, never through input values in the URL. The calculator trusts a record only after its sha256 matches the published manifest. The visitor's scenario and its export are labeled `USER_SCENARIO` and `verified_reference: false`. Published records and the manifest are not changed by this feature.
+
+## DEC-HR-014
+
+Date: 2026-10-11
+
+The one-off numerical sweeps from Sprint #10 became a permanent, deterministic audit with pinned set fingerprints. When the engine differs from exact arithmetic, the audit counts the input as a documented precision limit only if the engine matches the documented 2⁻⁴⁷ rule computed exactly. Otherwise it reports a mismatch. The audit runs separately from the standard tests because of its size.

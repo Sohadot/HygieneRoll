@@ -31,6 +31,7 @@ Reading rules for agents:
 
 - [Calculator](https://hygieneroll.com/calculator.html): runs locally in the browser and shows a JSON scenario record for each calculation
 - [Reference cases](https://hygieneroll.com/reference/cases/): five synthetic cases with timelines, hand derivations, and expected, engine, and oracle values. Static HTML
+- Calculator case links: https://hygieneroll.com/calculator.html#case=HRR-001 (through HRR-005) open a case in the calculator after checking its sha256 against the manifest. A modified scenario is a user scenario, not a reference record
 - [Reference](https://hygieneroll.com/reference.html): knowledge objects and the ontology table
 - [Replenishment model](https://hygieneroll.com/replenishment-model.html): the operating logic
 - [Acquisition](https://hygieneroll.com/acquisition/): what can be evaluated, what is not claimed, and the inquiry address
