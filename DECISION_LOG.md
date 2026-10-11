@@ -55,3 +55,9 @@ Acquisition calls to action lead to `/acquisition/`, which lists the components 
 Date: 2026-10-11
 
 This decision replaces the display part of DEC-HR-007. Public pages show no third-party market figure until its source is `ADMITTED`. The Grand View Research figures were removed from the homepage and the replenishment model. Their records stay in the register as `REVIEW_REQUIRED`, with empty `cited_on`.
+
+## DEC-HR-010
+
+Date: 2026-10-11
+
+Market-condition statements on public pages are either project theses, marked as the model's premise or design intent, or verified external claims with an admitted source. Unsourced statements about trends, consumer behavior, channel effects, and scarcity were rewritten as statements of the model's premise. The withdrawn phrasings are listed in `tests/site-integrity.test.js` and may return only with an admitted source.

@@ -216,6 +216,38 @@ test("public pages publish no market-size figures", function () {
   });
 });
 
+// Market-condition assertions withdrawn in the PR #9 evidence review. They return only with an admitted source.
+var UNSUPPORTED_MARKET_ASSERTIONS = [
+  /\bincreasingly\b/i,
+  /\btypically\b/i,
+  /\bmost brands\b/i,
+  /\buniversally\b/i,
+  /\byear over year\b/i,
+  /\blow-margin\b/i,
+  /compete on price/i,
+  /trust forms/i,
+  /leak both conversion/i,
+  /rewards direct consumer control/i,
+  /weakens the category/i,
+  /few names combine/i,
+  /households think in categories/i,
+  /published series mix/i
+];
+
+function visibleText(html) {
+  return html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+}
+
+test("public pages carry no withdrawn or unsourced market-condition assertions", function () {
+  ALL_PAGES.forEach(function (page) {
+    var html = read(page);
+    var text = visibleText(html) + " " + (html.match(/content="[^"]*"/g) || []).join(" ");
+    UNSUPPORTED_MARKET_ASSERTIONS.forEach(function (pattern) {
+      assert.ok(!pattern.test(text), page + " " + pattern);
+    });
+  });
+});
+
 test("llms.txt links resolve to published files", function () {
   var text = read("llms.txt");
   var urls = text.match(/https:\/\/hygieneroll\.com\/[^)\s]*/g) || [];

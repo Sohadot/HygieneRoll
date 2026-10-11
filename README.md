@@ -6,7 +6,7 @@ A developed strategic digital asset for recurring household hygiene replenishmen
 
 HygieneRoll.com is a category-native consumer entry layer developed around recurring hygiene demand. The work concentrates on replenishment continuity, cadence, usage, re-entry, and household expansion.
 
-Paper hygiene — tissue, rolls, towels, wipes — is the clearest entry point, because that is where household language and depletion behavior are already specific. It is not the ceiling. The same relationship is built to extend into personal care and broader household hygiene essentials.
+Paper hygiene — tissue, rolls, towels, wipes — is the model's clearest entry point, because in the model that is where household language and depletion behavior are most specific. It is not the ceiling. The same relationship is built to extend into personal care and broader household hygiene essentials.
 
 This repository is the public record of that asset. It is not an operating tissue company, a fulfillment business, or a live subscription service.
 
