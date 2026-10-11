@@ -1,0 +1,60 @@
+{
+  "engine_version": "v0.2.1",
+  "ontology_version": "0.1",
+  "oracle": {
+    "name": "hygieneroll-reference-oracle",
+    "version": "0.1"
+  },
+  "records": [
+    {
+      "checks": 33,
+      "id": "HRR-001",
+      "outcome": "PASS",
+      "sha256": "ce575c9d78129705842fa7b9ae8fa70f84614c1f805d6a9736a7cdd0f2c36e88",
+      "title": "Stable consumption (synthetic)",
+      "url": "https://hygieneroll.com/reference/cases/HRR-001.json",
+      "version": 1
+    },
+    {
+      "checks": 33,
+      "id": "HRR-002",
+      "outcome": "PASS",
+      "sha256": "343b889d4bcbfeafe1b2f4eabdbd3cf976488b235d463879778b5c5b606698a3",
+      "title": "Variable consumption (synthetic)",
+      "url": "https://hygieneroll.com/reference/cases/HRR-002.json",
+      "version": 1
+    },
+    {
+      "checks": 33,
+      "id": "HRR-003",
+      "outcome": "PASS",
+      "sha256": "3f8192f8ddbf0ee8b0340bc0641c329650776b1398f804bd4eef3dc2748f9f92",
+      "title": "Short lead-time replenishment (synthetic)",
+      "url": "https://hygieneroll.com/reference/cases/HRR-003.json",
+      "version": 1
+    },
+    {
+      "checks": 33,
+      "id": "HRR-004",
+      "outcome": "PASS",
+      "sha256": "1a4b7c2013b7955287a29609d903cbee8c1f921c5158a1bede00b102a12a6fd0",
+      "title": "Delayed delivery and stockout exposure (synthetic)",
+      "url": "https://hygieneroll.com/reference/cases/HRR-004.json",
+      "version": 1
+    },
+    {
+      "checks": 35,
+      "id": "HRR-005",
+      "outcome": "PASS",
+      "sha256": "d5d9afa3df7a75d0d26a39aa9647be352e2ddacb07d5b9a0d481e56fc7b33239",
+      "title": "Fixed subscription interval versus replenishment window (synthetic)",
+      "url": "https://hygieneroll.com/reference/cases/HRR-005.json",
+      "version": 1
+    }
+  ],
+  "registry": {
+    "url": "https://hygieneroll.com/reference/cases/registry.json",
+    "version": "0.1"
+  },
+  "serialization": "UTF-8 JSON, keys sorted at every level, two-space indent, LF line endings, final newline. sha256 is taken over those exact bytes."
+}

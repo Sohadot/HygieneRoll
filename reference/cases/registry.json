@@ -1,0 +1,382 @@
+{
+  "id": "https://hygieneroll.com/reference/cases/registry.json",
+  "title": "HygieneRoll Reference Case Registry",
+  "version": "0.1",
+  "engine_version": "v0.2.1",
+  "ontology_version": "0.1",
+  "scope": "Synthetic replenishment scenarios with hand-derived expected values, used to verify the HygieneRoll replenishment engine. The inputs are invented to exercise the method. They are not observed household behavior, consumption statistics, or industry benchmarks.",
+  "changelog": [
+    {
+      "version": "0.1",
+      "date": "2026-10-11",
+      "change": "First registry: five synthetic cases, HRR-001 to HRR-005, each at case version 1. Expected values derived by hand from CALCULATOR_METHODOLOGY.md and checked against an exact-arithmetic oracle and engine v0.2.1."
+    }
+  ],
+  "cases": [
+    {
+      "id": "HRR-001",
+      "version": 1,
+      "slug": "stable-consumption",
+      "title": "Stable consumption (synthetic)",
+      "status": "PUBLISHED",
+      "purpose": "A household with steady use and no variability allowance. It shows the simplest path from supply to a single depletion day, a single planning trigger, and a reorder threshold.",
+      "evidence": {
+        "origin": "SYNTHETIC",
+        "claim_class": "ILLUSTRATIVE_MODEL",
+        "input_layer": "HYPOTHETICAL_SCENARIO",
+        "output_layer": "DERIVED_CALCULATION",
+        "source_ids": [],
+        "external_observations": []
+      },
+      "inputs": {
+        "name": "Toilet tissue (synthetic)",
+        "unit": "rolls",
+        "unitKind": "preset",
+        "category": "PAPER_HYGIENE",
+        "quantity": 12,
+        "usageMode": "weekly",
+        "weeklyUsage": 3,
+        "durationWeeks": null,
+        "leadTimeDays": 3,
+        "bufferDays": 4,
+        "variabilityPercent": 0,
+        "replenishmentQuantity": null,
+        "intervalDays": null
+      },
+      "expected": {
+        "consumption_rate_per_week": 3,
+        "usage_bounds_per_week": { "slow": 3, "fast": 3 },
+        "depletion_interval_days": { "earliest": 28, "latest": 28 },
+        "planning_trigger_days": { "earliest": 21, "latest": 21 },
+        "replenishment_quantity_applied": 12,
+        "replenishment_cadence_days": { "earliest": 28, "latest": 28 },
+        "lead_time_demand_units": 1.29,
+        "reserve_stock_units": 1.72,
+        "reorder_threshold_units": 3.01,
+        "at_or_below_reorder_threshold": false,
+        "fixed_interval_fit": null,
+        "lead_time_slip": [
+          {
+            "slip_days": 3,
+            "replanned_trigger_days": { "earliest": 18, "latest": 18 },
+            "exposure_if_ordered_at_trigger": { "order_day": 21, "arrival_day": 27, "supply_gap_days": { "min": 0, "max": 0 }, "status": "BUFFER_DRAWN" }
+          },
+          {
+            "slip_days": 7,
+            "replanned_trigger_days": { "earliest": 14, "latest": 14 },
+            "exposure_if_ordered_at_trigger": { "order_day": 21, "arrival_day": 31, "supply_gap_days": { "min": 3, "max": 3 }, "status": "STOCKOUT_AT_BOTH_BOUNDS" }
+          }
+        ]
+      },
+      "derivation": [
+        "Weekly method: r = 3 rolls per week. Variability 0%, so slow = fast = 3.",
+        "Depletion: 12 / 3 × 7 = 28 days exactly. Single day 28.",
+        "Planning trigger: 28 − 3 − 4 = 21.",
+        "Replenishment quantity blank, so R = 12 and cadence = 28 days.",
+        "Lead-time demand: 3 × 3 / 7 = 1.2857… → rounded up to 1.29. Reserve: 4 × 3 / 7 = 1.7142… → 1.72. Threshold 1.29 + 1.72 = 3.01. 12 > 3.01, so not at or below.",
+        "Slip +3: lead 6. Re-planned trigger 28 − 6 − 4 = 18. Ordered on day 21, arrival 27. 27 ≤ 28, so no gap. 27 > 28 − 4 = 24, so the buffer is drawn.",
+        "Slip +7: lead 10. Re-planned trigger 28 − 10 − 4 = 14. Arrival 21 + 10 = 31. Gap 31 − 28 = 3 at both bounds."
+      ],
+      "assumptions": [
+        "Use is exactly 3 rolls every week.",
+        "Lead time and buffer are whole days chosen for the example."
+      ],
+      "limitations": [
+        "A 0% variability allowance gives a single day. It does not mean use is certain."
+      ],
+      "ontology_terms": ["HRO-001", "HRO-002", "HRO-003", "HRO-004", "HRO-005", "HRO-006", "HRO-007", "HRO-008", "HRO-009", "HRO-010", "HRO-011", "HRO-012", "HRO-013", "HRO-014", "HRO-015", "HRO-016", "HRO-017", "HRO-020", "HRO-021", "HRO-022", "HRO-023"]
+    },
+    {
+      "id": "HRR-002",
+      "version": 1,
+      "slug": "variable-consumption",
+      "title": "Variable consumption (synthetic)",
+      "status": "PUBLISHED",
+      "purpose": "Use is entered as how long supply usually lasts, with a 25% variability allowance and a larger replenishment quantity. It shows how the allowance widens every window and how floor and ceiling rounding set each end.",
+      "evidence": {
+        "origin": "SYNTHETIC",
+        "claim_class": "ILLUSTRATIVE_MODEL",
+        "input_layer": "HYPOTHETICAL_SCENARIO",
+        "output_layer": "DERIVED_CALCULATION",
+        "source_ids": [],
+        "external_observations": []
+      },
+      "inputs": {
+        "name": "Hand soap (synthetic)",
+        "unit": "bottles",
+        "unitKind": "preset",
+        "category": "PERSONAL_HYGIENE",
+        "quantity": 3,
+        "usageMode": "duration",
+        "weeklyUsage": null,
+        "durationWeeks": 6,
+        "leadTimeDays": 5,
+        "bufferDays": 5,
+        "variabilityPercent": 25,
+        "replenishmentQuantity": 4,
+        "intervalDays": null
+      },
+      "expected": {
+        "consumption_rate_per_week": 0.5,
+        "usage_bounds_per_week": { "slow": 0.375, "fast": 0.625 },
+        "depletion_interval_days": { "earliest": 33, "latest": 56 },
+        "planning_trigger_days": { "earliest": 23, "latest": 46 },
+        "replenishment_quantity_applied": 4,
+        "replenishment_cadence_days": { "earliest": 44, "latest": 75 },
+        "lead_time_demand_units": 0.45,
+        "reserve_stock_units": 0.45,
+        "reorder_threshold_units": 0.9,
+        "at_or_below_reorder_threshold": false,
+        "fixed_interval_fit": null,
+        "lead_time_slip": [
+          {
+            "slip_days": 3,
+            "replanned_trigger_days": { "earliest": 20, "latest": 43 },
+            "exposure_if_ordered_at_trigger": { "order_day": 23, "arrival_day": 31, "supply_gap_days": { "min": 0, "max": 0 }, "status": "BUFFER_DRAWN" }
+          },
+          {
+            "slip_days": 7,
+            "replanned_trigger_days": { "earliest": 16, "latest": 39 },
+            "exposure_if_ordered_at_trigger": { "order_day": 23, "arrival_day": 35, "supply_gap_days": { "min": 0, "max": 2 }, "status": "STOCKOUT_POSSIBLE" }
+          }
+        ]
+      },
+      "derivation": [
+        "Duration method: r = 3 / 6 = 0.5 bottles per week. v = 0.25, so slow = 0.5 × 0.75 = 0.375 and fast = 0.5 × 1.25 = 0.625.",
+        "Depletion earliest: 3 / 0.625 × 7 = 33.6 → floor 33. Latest: 3 / 0.375 × 7 = 56 exactly → ceiling 56.",
+        "Planning trigger: 33 − 5 − 5 = 23 and 56 − 5 − 5 = 46.",
+        "Cadence with R = 4: 4 / 0.625 × 7 = 44.8 → floor 44. 4 / 0.375 × 7 = 74.67 → ceiling 75.",
+        "Lead-time demand: 5 × 0.625 / 7 = 0.4464… → 0.45. Reserve: the same, 0.45. Threshold 0.90. 3 > 0.90.",
+        "Slip +3: lead 8. Re-planned 33 − 13 = 20 and 56 − 13 = 43. Ordered on day 23, arrival 31 ≤ 33, so no gap. 31 > 33 − 5 = 28, so the buffer is drawn.",
+        "Slip +7: lead 12. Re-planned 33 − 17 = 16 and 56 − 17 = 39. Arrival 35. At the fast bound 35 − 33 = 2 days without supply. At the slow bound 35 < 56, so none."
+      ],
+      "assumptions": [
+        "Three bottles usually last six weeks.",
+        "Actual use falls anywhere between 25% slower and 25% faster than that rate."
+      ],
+      "limitations": [
+        "The 25% allowance is a planning range chosen for the example. It is not a measured spread or a confidence interval."
+      ],
+      "ontology_terms": ["HRO-001", "HRO-002", "HRO-003", "HRO-004", "HRO-005", "HRO-006", "HRO-007", "HRO-008", "HRO-009", "HRO-010", "HRO-011", "HRO-012", "HRO-013", "HRO-014", "HRO-015", "HRO-016", "HRO-017", "HRO-020", "HRO-021", "HRO-022", "HRO-023"]
+    },
+    {
+      "id": "HRR-003",
+      "version": 1,
+      "slug": "short-lead-time",
+      "title": "Short lead-time replenishment (synthetic)",
+      "status": "PUBLISHED",
+      "purpose": "A one-day lead time with a two-day buffer. The planning window opens late, so a delay longer than the buffer exposes the household at the fast usage bound.",
+      "evidence": {
+        "origin": "SYNTHETIC",
+        "claim_class": "ILLUSTRATIVE_MODEL",
+        "input_layer": "HYPOTHETICAL_SCENARIO",
+        "output_layer": "DERIVED_CALCULATION",
+        "source_ids": [],
+        "external_observations": []
+      },
+      "inputs": {
+        "name": "Paper towels (synthetic)",
+        "unit": "rolls",
+        "unitKind": "preset",
+        "category": "PAPER_HYGIENE",
+        "quantity": 4,
+        "usageMode": "weekly",
+        "weeklyUsage": 1,
+        "durationWeeks": null,
+        "leadTimeDays": 1,
+        "bufferDays": 2,
+        "variabilityPercent": 10,
+        "replenishmentQuantity": null,
+        "intervalDays": null
+      },
+      "expected": {
+        "consumption_rate_per_week": 1,
+        "usage_bounds_per_week": { "slow": 0.9, "fast": 1.1 },
+        "depletion_interval_days": { "earliest": 25, "latest": 32 },
+        "planning_trigger_days": { "earliest": 22, "latest": 29 },
+        "replenishment_quantity_applied": 4,
+        "replenishment_cadence_days": { "earliest": 25, "latest": 32 },
+        "lead_time_demand_units": 0.16,
+        "reserve_stock_units": 0.32,
+        "reorder_threshold_units": 0.48,
+        "at_or_below_reorder_threshold": false,
+        "fixed_interval_fit": null,
+        "lead_time_slip": [
+          {
+            "slip_days": 3,
+            "replanned_trigger_days": { "earliest": 19, "latest": 26 },
+            "exposure_if_ordered_at_trigger": { "order_day": 22, "arrival_day": 26, "supply_gap_days": { "min": 0, "max": 1 }, "status": "STOCKOUT_POSSIBLE" }
+          },
+          {
+            "slip_days": 7,
+            "replanned_trigger_days": { "earliest": 15, "latest": 22 },
+            "exposure_if_ordered_at_trigger": { "order_day": 22, "arrival_day": 30, "supply_gap_days": { "min": 0, "max": 5 }, "status": "STOCKOUT_POSSIBLE" }
+          }
+        ]
+      },
+      "derivation": [
+        "Weekly method: r = 1 roll per week. v = 0.10, so slow = 0.9 and fast = 1.1.",
+        "Depletion earliest: 4 / 1.1 × 7 = 25.45 → floor 25. Latest: 4 / 0.9 × 7 = 31.11 → ceiling 32.",
+        "Planning trigger: 25 − 1 − 2 = 22 and 32 − 1 − 2 = 29.",
+        "Replenishment quantity blank, so cadence equals the depletion window, 25 to 32.",
+        "Lead-time demand: 1 × 1.1 / 7 = 0.1571… → 0.16. Reserve: 2 × 1.1 / 7 = 0.3142… → 0.32. Threshold 0.48.",
+        "Slip +3: lead 4. Re-planned 25 − 6 = 19 and 32 − 6 = 26. Ordered on day 22, arrival 26. 26 − 25 = 1 day without supply at the fast bound, none at the slow bound.",
+        "Slip +7: lead 8. Re-planned 25 − 10 = 15 and 32 − 10 = 22. Arrival 30. 30 − 25 = 5 days at the fast bound. 30 < 32, so none at the slow bound."
+      ],
+      "assumptions": [
+        "Delivery normally arrives the day after ordering.",
+        "The household keeps a two-day buffer."
+      ],
+      "limitations": [
+        "The +3 and +7 day slips are fixed checks, not forecasts of delay."
+      ],
+      "ontology_terms": ["HRO-001", "HRO-002", "HRO-003", "HRO-004", "HRO-005", "HRO-006", "HRO-007", "HRO-008", "HRO-009", "HRO-010", "HRO-011", "HRO-012", "HRO-013", "HRO-014", "HRO-015", "HRO-016", "HRO-017", "HRO-020", "HRO-021", "HRO-022", "HRO-023"]
+    },
+    {
+      "id": "HRR-004",
+      "version": 1,
+      "slug": "delayed-delivery-stockout",
+      "title": "Delayed delivery and stockout exposure (synthetic)",
+      "status": "PUBLISHED",
+      "purpose": "Lead time plus buffer is longer than the supply lasts. The planning trigger is clamped to Now, supply is already at or below the reorder threshold, and any delay leaves days without supply at both bounds.",
+      "evidence": {
+        "origin": "SYNTHETIC",
+        "claim_class": "ILLUSTRATIVE_MODEL",
+        "input_layer": "HYPOTHETICAL_SCENARIO",
+        "output_layer": "DERIVED_CALCULATION",
+        "source_ids": [],
+        "external_observations": []
+      },
+      "inputs": {
+        "name": "Wipes (synthetic)",
+        "unit": "packs",
+        "unitKind": "preset",
+        "category": "PAPER_HYGIENE",
+        "quantity": 2,
+        "usageMode": "weekly",
+        "weeklyUsage": 1,
+        "durationWeeks": null,
+        "leadTimeDays": 12,
+        "bufferDays": 4,
+        "variabilityPercent": 0,
+        "replenishmentQuantity": null,
+        "intervalDays": null
+      },
+      "expected": {
+        "consumption_rate_per_week": 1,
+        "usage_bounds_per_week": { "slow": 1, "fast": 1 },
+        "depletion_interval_days": { "earliest": 14, "latest": 14 },
+        "planning_trigger_days": { "earliest": 0, "latest": 0 },
+        "replenishment_quantity_applied": 2,
+        "replenishment_cadence_days": { "earliest": 14, "latest": 14 },
+        "lead_time_demand_units": 1.72,
+        "reserve_stock_units": 0.58,
+        "reorder_threshold_units": 2.3,
+        "at_or_below_reorder_threshold": true,
+        "fixed_interval_fit": null,
+        "lead_time_slip": [
+          {
+            "slip_days": 3,
+            "replanned_trigger_days": { "earliest": 0, "latest": 0 },
+            "exposure_if_ordered_at_trigger": { "order_day": 0, "arrival_day": 15, "supply_gap_days": { "min": 1, "max": 1 }, "status": "STOCKOUT_AT_BOTH_BOUNDS" }
+          },
+          {
+            "slip_days": 7,
+            "replanned_trigger_days": { "earliest": 0, "latest": 0 },
+            "exposure_if_ordered_at_trigger": { "order_day": 0, "arrival_day": 19, "supply_gap_days": { "min": 5, "max": 5 }, "status": "STOCKOUT_AT_BOTH_BOUNDS" }
+          }
+        ]
+      },
+      "derivation": [
+        "Weekly method: r = 1 pack per week. Variability 0%.",
+        "Depletion: 2 / 1 × 7 = 14 days.",
+        "Planning trigger: 14 − 12 − 4 = −2 → clamped to 0, shown as Now.",
+        "Lead-time demand: 12 × 1 / 7 = 1.7142… → 1.72. Reserve: 4 / 7 = 0.5714… → 0.58. Threshold 2.30. Supply 2 ≤ 2.30, so it is at or below the threshold.",
+        "Slip +3: lead 15. Re-planned 14 − 19 = −5 → 0. Ordered on day 0, arrival 15. 15 − 14 = 1 day without supply.",
+        "Slip +7: lead 19. Re-planned 0. Arrival 19. 19 − 14 = 5 days without supply."
+      ],
+      "assumptions": [
+        "Delivery normally takes 12 days.",
+        "The household wants 4 days of buffer."
+      ],
+      "limitations": [
+        "Days without supply are arithmetic on the entered assumptions. They are not a probability of running out."
+      ],
+      "ontology_terms": ["HRO-001", "HRO-002", "HRO-003", "HRO-004", "HRO-005", "HRO-006", "HRO-007", "HRO-008", "HRO-009", "HRO-010", "HRO-011", "HRO-012", "HRO-013", "HRO-014", "HRO-015", "HRO-016", "HRO-017", "HRO-020", "HRO-021", "HRO-022", "HRO-023"]
+    },
+    {
+      "id": "HRR-005",
+      "version": 1,
+      "slug": "fixed-interval-versus-window",
+      "title": "Fixed subscription interval versus replenishment window (synthetic)",
+      "status": "PUBLISHED",
+      "purpose": "A fixed 35-day delivery schedule is compared with the item's replenishment cadence. The interval falls after the cadence window, so each delivery arrives after the previous quantity would run out.",
+      "evidence": {
+        "origin": "SYNTHETIC",
+        "claim_class": "ILLUSTRATIVE_MODEL",
+        "input_layer": "HYPOTHETICAL_SCENARIO",
+        "output_layer": "DERIVED_CALCULATION",
+        "source_ids": [],
+        "external_observations": []
+      },
+      "inputs": {
+        "name": "Laundry detergent (synthetic)",
+        "unit": "bottles",
+        "unitKind": "custom",
+        "category": "HOUSEHOLD_HYGIENE",
+        "quantity": 2,
+        "usageMode": "weekly",
+        "weeklyUsage": 0.5,
+        "durationWeeks": null,
+        "leadTimeDays": 4,
+        "bufferDays": 3,
+        "variabilityPercent": 15,
+        "replenishmentQuantity": 2,
+        "intervalDays": 35
+      },
+      "expected": {
+        "consumption_rate_per_week": 0.5,
+        "usage_bounds_per_week": { "slow": 0.425, "fast": 0.575 },
+        "depletion_interval_days": { "earliest": 24, "latest": 33 },
+        "planning_trigger_days": { "earliest": 17, "latest": 26 },
+        "replenishment_quantity_applied": 2,
+        "replenishment_cadence_days": { "earliest": 24, "latest": 33 },
+        "lead_time_demand_units": 0.33,
+        "reserve_stock_units": 0.25,
+        "reorder_threshold_units": 0.58,
+        "at_or_below_reorder_threshold": false,
+        "fixed_interval_fit": { "fit": "LATER_THAN_WINDOW", "drift_days_per_cycle": { "min": 2, "max": 11 } },
+        "lead_time_slip": [
+          {
+            "slip_days": 3,
+            "replanned_trigger_days": { "earliest": 14, "latest": 23 },
+            "exposure_if_ordered_at_trigger": { "order_day": 17, "arrival_day": 24, "supply_gap_days": { "min": 0, "max": 0 }, "status": "BUFFER_DRAWN" }
+          },
+          {
+            "slip_days": 7,
+            "replanned_trigger_days": { "earliest": 10, "latest": 19 },
+            "exposure_if_ordered_at_trigger": { "order_day": 17, "arrival_day": 28, "supply_gap_days": { "min": 0, "max": 4 }, "status": "STOCKOUT_POSSIBLE" }
+          }
+        ]
+      },
+      "derivation": [
+        "Weekly method: r = 0.5 bottles per week. v = 0.15, so slow = 0.425 and fast = 0.575.",
+        "Depletion earliest: 2 / 0.575 × 7 = 24.35 → floor 24. Latest: 2 / 0.425 × 7 = 32.94 → ceiling 33.",
+        "Planning trigger: 24 − 4 − 3 = 17 and 33 − 4 − 3 = 26.",
+        "Cadence with R = 2 equals the depletion window, 24 to 33.",
+        "Interval 35 > 33, so it is later than the window. Drift per delivery: 35 − 33 = 2 to 35 − 24 = 11 days. Supply shrinks each delivery.",
+        "Lead-time demand: 4 × 0.575 / 7 = 0.3285… → 0.33. Reserve: 3 × 0.575 / 7 = 0.2464… → 0.25. Threshold 0.58.",
+        "Slip +3: lead 7. Re-planned 24 − 10 = 14 and 33 − 10 = 23. Ordered on day 17, arrival 24 = 24, so no gap. 24 > 24 − 3 = 21, so the buffer is drawn.",
+        "Slip +7: lead 11. Re-planned 24 − 14 = 10 and 33 − 14 = 19. Arrival 28. 28 − 24 = 4 days at the fast bound, none at the slow bound."
+      ],
+      "assumptions": [
+        "The household holds or is considering a fixed delivery every 35 days.",
+        "Each delivery adds 2 bottles."
+      ],
+      "limitations": [
+        "The comparison is arithmetic for one item. It is not a recommendation to change a subscription."
+      ],
+      "ontology_terms": ["HRO-001", "HRO-002", "HRO-003", "HRO-004", "HRO-005", "HRO-006", "HRO-007", "HRO-008", "HRO-009", "HRO-010", "HRO-011", "HRO-012", "HRO-013", "HRO-014", "HRO-015", "HRO-016", "HRO-017", "HRO-018", "HRO-019", "HRO-020", "HRO-021", "HRO-022", "HRO-023"]
+    }
+  ]
+}
