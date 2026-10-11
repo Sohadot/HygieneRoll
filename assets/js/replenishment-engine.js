@@ -1,5 +1,8 @@
 /*
- * HygieneRoll replenishment engine v0.1
+ * HygieneRoll replenishment engine v0.2
+ *
+ * v0.2 adds reorder-threshold, lead-time slip, stockout exposure, fixed-interval fit,
+ * and a machine-readable scenario record. Every v0.1 output field is unchanged.
  *
  * Human-readable specification: CALCULATOR_METHODOLOGY.md
  * This file is the machine source of truth. The page must not reimplement these formulas.
@@ -14,7 +17,11 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
-  var VERSION = "v0.1";
+  var VERSION = "v0.2";
+  var ONTOLOGY_VERSION = "0.1";
+  var RECORD_VERSION = "0.2";
+  var DEFAULT_SLIP_DAYS = [3, 7];
+  var CATEGORIES = ["PAPER_HYGIENE", "PERSONAL_HYGIENE", "HOUSEHOLD_HYGIENE", "OTHER"];
 
   function validationError(errors) {
     var error = new Error(errors[0] ? errors[0].message : "Invalid input");
@@ -37,6 +44,16 @@
 
   function roundHalfUp(value) {
     return Math.round(value);
+  }
+
+  // Unit quantities round up to 0.01 so a published threshold never understates the stock it covers.
+  // The toFixed step strips binary noise such as 1.1 × 100 = 110.00000000000001 before the ceiling.
+  function roundUnitsUp(value) {
+    return Math.ceil(Number((value * 100).toFixed(6))) / 100;
+  }
+
+  function roundUnits(value) {
+    return Number(value.toFixed(2));
   }
 
   function dayCount(value, singular, plural) {
@@ -170,6 +187,16 @@
       }
     }
 
+    if (!omitted(source.intervalDays)) {
+      if (!isFiniteNumber(source.intervalDays) || source.intervalDays <= 0) {
+        push(errors, "intervalDays", "Enter a fixed delivery interval greater than zero.");
+      }
+    }
+
+    if (!omitted(source.category) && CATEGORIES.indexOf(source.category) === -1) {
+      push(errors, "category", "Choose a listed product category.");
+    }
+
     return errors;
   }
 
@@ -197,6 +224,88 @@
     return { weeklyUsage: weeklyUsage };
   }
 
+  function reorderPoint(leadTimeDays, bufferDays, fastUsage, quantity) {
+    var leadTimeDemand = roundUnitsUp((leadTimeDays * fastUsage) / 7);
+    var reserve = roundUnitsUp((bufferDays * fastUsage) / 7);
+    var threshold = roundUnits(leadTimeDemand + reserve);
+    return {
+      leadTimeDemandUnits: leadTimeDemand,
+      reserveUnits: reserve,
+      thresholdUnits: threshold,
+      atOrBelowThreshold: quantity <= threshold
+    };
+  }
+
+  function intervalFit(cadence, intervalDays) {
+    var fit = "WITHIN_WINDOW";
+    if (intervalDays < cadence.earliest) fit = "EARLIER_THAN_WINDOW";
+    if (intervalDays > cadence.latest) fit = "LATER_THAN_WINDOW";
+    return {
+      intervalDays: intervalDays,
+      fit: fit,
+      driftDaysPerCycle: {
+        min: intervalDays - cadence.latest,
+        max: intervalDays - cadence.earliest
+      }
+    };
+  }
+
+  function requireCalculated(item) {
+    if (!item || !item.depletion || !item.trigger || !isFiniteNumber(item.leadTimeDays) || !isFiniteNumber(item.bufferDays)) {
+      throw validationError([{ field: "item", message: "Pass a result from calculateItem." }]);
+    }
+  }
+
+  function stockoutExposure(item, orderDay, actualLeadTimeDays) {
+    requireCalculated(item);
+    var lead = omitted(actualLeadTimeDays) ? item.leadTimeDays : actualLeadTimeDays;
+    var errors = [];
+    if (!isFiniteNumber(orderDay) || orderDay < 0) {
+      push(errors, "orderDay", "Enter an order day of zero or more.");
+    }
+    if (!isFiniteNumber(lead) || lead < 0) {
+      push(errors, "leadTimeDays", "Enter a lead time of zero or more days.");
+    }
+    if (errors.length) throw validationError(errors);
+
+    var arrival = orderDay + lead;
+    var worst = Math.max(0, Math.ceil(arrival - item.depletion.earliest));
+    var best = Math.max(0, Math.ceil(arrival - item.depletion.latest));
+    var status;
+    if (worst === 0) {
+      status = arrival <= item.depletion.earliest - item.bufferDays ? "BUFFER_INTACT" : "BUFFER_DRAWN";
+    } else {
+      status = best === 0 ? "STOCKOUT_POSSIBLE" : "STOCKOUT_AT_BOTH_BOUNDS";
+    }
+    return {
+      orderDay: orderDay,
+      leadTimeDays: lead,
+      arrivalDay: arrival,
+      gapDays: { min: best, max: worst },
+      status: status
+    };
+  }
+
+  function leadTimeSlip(item, slipDays) {
+    requireCalculated(item);
+    var offsets = slipDays === undefined ? DEFAULT_SLIP_DAYS : slipDays;
+    if (!Array.isArray(offsets)) {
+      throw validationError([{ field: "slipDays", message: "Pass a list of slip offsets in days." }]);
+    }
+    return offsets.map(function (slip) {
+      if (!isFiniteNumber(slip) || item.leadTimeDays + slip < 0) {
+        throw validationError([{ field: "slipDays", message: "Each slip must keep lead time at zero or more days." }]);
+      }
+      var lead = item.leadTimeDays + slip;
+      return {
+        slipDays: slip,
+        leadTimeDays: lead,
+        replannedTrigger: triggerWindow(item.depletion, lead, item.bufferDays),
+        exposureIfOrderedAtTrigger: stockoutExposure(item, item.trigger.earliest, lead)
+      };
+    });
+  }
+
   function calculateItem(input) {
     var errors = validateItem(input);
     if (errors.length) throw validationError(errors);
@@ -215,6 +324,7 @@
     var depletion = usageWindow(quantity, fastUsage, slowUsage, variability);
     var cadence = usageWindow(replenishmentQuantity, fastUsage, slowUsage, variability);
     var trigger = triggerWindow(depletion, input.leadTimeDays, input.bufferDays);
+    var intervalDays = omitted(input.intervalDays) ? null : input.intervalDays;
 
     return {
       name: name,
@@ -235,6 +345,9 @@
       depletion: depletion,
       trigger: trigger,
       cadence: cadence,
+      category: omitted(input.category) ? null : input.category,
+      reorder: reorderPoint(input.leadTimeDays, input.bufferDays, fastUsage, quantity),
+      intervalFit: intervalDays === null ? null : intervalFit(cadence, intervalDays),
       text: {
         depletion: formatDepletion(depletion),
         depletionWeeks: formatWeekAside(depletion.earliest, depletion.latest),
@@ -290,8 +403,106 @@
     };
   }
 
+  function dayWindow(window) {
+    return { earliest: window.earliest, latest: window.latest };
+  }
+
+  function itemRecord(item, slipDays) {
+    return {
+      name: item.name,
+      inputs: {
+        category: item.category,
+        unit_label: item.unit,
+        current_quantity: item.quantity,
+        usage_method: item.usageMode,
+        weekly_usage: item.usageMode === "weekly" ? item.weeklyUsage : null,
+        duration_weeks: item.durationWeeks,
+        lead_time_days: item.leadTimeDays,
+        safety_buffer_days: item.bufferDays,
+        variability_percent: item.variabilityPercent,
+        replenishment_quantity: item.replenishmentDefaulted ? null : item.replenishmentQuantity,
+        fixed_interval_days: item.intervalFit ? item.intervalFit.intervalDays : null
+      },
+      outputs: {
+        consumption_rate_per_week: item.weeklyUsage,
+        usage_bounds_per_week: { slow: item.slowUsage, fast: item.fastUsage },
+        depletion_interval_days: dayWindow(item.depletion),
+        planning_trigger_days: dayWindow(item.trigger),
+        replenishment_quantity_applied: item.replenishmentQuantity,
+        replenishment_cadence_days: dayWindow(item.cadence),
+        lead_time_demand_units: item.reorder.leadTimeDemandUnits,
+        reserve_stock_units: item.reorder.reserveUnits,
+        reorder_threshold_units: item.reorder.thresholdUnits,
+        at_or_below_reorder_threshold: item.reorder.atOrBelowThreshold,
+        fixed_interval_fit: item.intervalFit ? {
+          fit: item.intervalFit.fit,
+          drift_days_per_cycle: {
+            min: item.intervalFit.driftDaysPerCycle.min,
+            max: item.intervalFit.driftDaysPerCycle.max
+          }
+        } : null,
+        lead_time_slip: leadTimeSlip(item, slipDays).map(function (row) {
+          return {
+            slip_days: row.slipDays,
+            replanned_trigger_days: dayWindow(row.replannedTrigger),
+            exposure_if_ordered_at_trigger: {
+              order_day: row.exposureIfOrderedAtTrigger.orderDay,
+              arrival_day: row.exposureIfOrderedAtTrigger.arrivalDay,
+              supply_gap_days: row.exposureIfOrderedAtTrigger.gapDays,
+              status: row.exposureIfOrderedAtTrigger.status
+            }
+          };
+        })
+      }
+    };
+  }
+
+  function buildScenarioRecord(items, options) {
+    var settings = options || {};
+    var summary = calculateHousehold(items);
+    var slipDays = settings.slipDays === undefined ? DEFAULT_SLIP_DAYS : settings.slipDays;
+    return {
+      record_type: "hygieneroll.replenishment-scenario",
+      record_version: RECORD_VERSION,
+      engine_version: VERSION,
+      ontology: {
+        url: "https://hygieneroll.com/reference/replenishment-ontology.json",
+        version: ONTOLOGY_VERSION
+      },
+      methodology: "https://hygieneroll.com/CALCULATOR_METHODOLOGY.md",
+      epistemic_status: {
+        inputs: "HYPOTHETICAL_SCENARIO",
+        outputs: "DERIVED_CALCULATION",
+        observed_evidence_used: false,
+        embedded_benchmarks: false
+      },
+      uncertainty: {
+        method: "USER_VARIABILITY_ALLOWANCE",
+        statistical_confidence: false,
+        note: "Windows widen only by the variability allowance the user entered. They are not probability intervals or forecasts."
+      },
+      lead_time_slip_offsets_days: slipDays.slice(),
+      items: summary.items.map(function (item) { return itemRecord(item, slipDays); }),
+      household: {
+        next_return: {
+          names: summary.nextReturn.names.slice(),
+          planning_trigger_days: summary.nextReturn.trigger ? dayWindow(summary.nextReturn.trigger) : null
+        },
+        another_within_7_days: summary.anotherSoon,
+        clocks_differ: summary.clocksDiffer
+      }
+    };
+  }
+
   return {
     version: VERSION,
+    ontologyVersion: ONTOLOGY_VERSION,
+    recordVersion: RECORD_VERSION,
+    defaultSlipDays: DEFAULT_SLIP_DAYS.slice(),
+    categories: CATEGORIES.slice(),
+    stockoutExposure: stockoutExposure,
+    leadTimeSlip: leadTimeSlip,
+    buildScenarioRecord: buildScenarioRecord,
     validateItem: validateItem,
     normalizeUsage: normalizeUsage,
     calculateItem: calculateItem,
