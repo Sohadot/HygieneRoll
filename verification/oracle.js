@@ -67,22 +67,46 @@ var ONE = Q(1n);
 var SEVEN = Q(7n);
 var HUNDRED = Q(100n);
 
-// Units round up to the next hundredth; returned as an exact fraction over 100.
-function ceilHundredth(a) { return Q(ceilQ(mul(a, HUNDRED)), 100n); }
+function absQ(a) { return a.n < 0n ? Q(-a.n, a.d) : a; }
+function maxQ() { return Array.prototype.reduce.call(arguments, function (m, x) { return cmp(x, m) > 0 ? x : m; }); }
 
-function dayWindow(quantity, fast, slow, singleRate) {
+/*
+ * Optional documented tolerance (CALCULATOR_METHODOLOGY.md, "Binary noise"). With
+ * `tol` set, a value within tol × max(1, |value|, scale) of a whole or half day is moved
+ * onto it before the decision, in exact arithmetic. With `tol` null the oracle is exact.
+ * The audit uses the tolerant mode only to classify differences from exact results.
+ */
+function snapQ(x, scale, tol) {
+  if (!tol) return x;
+  var nearest = Q(roundHalfUpQ(mul(x, Q(2n))), 2n);
+  var size = maxQ(ONE, absQ(x), absQ(scale || ZERO));
+  return cmp(absQ(sub(x, nearest)), mul(tol, size)) <= 0 ? nearest : x;
+}
+
+// Units round up to the next hundredth; returned as an exact fraction over 100.
+function ceilHundredth(a, tol) {
+  var hundredths = mul(a, HUNDRED);
+  if (tol) {
+    var nearest = Q(roundHalfUpQ(hundredths));
+    if (cmp(absQ(sub(hundredths, nearest)), mul(tol, maxQ(ONE, absQ(hundredths)))) <= 0) return Q(nearest.n, 100n);
+  }
+  return Q(ceilQ(hundredths), 100n);
+}
+
+function dayWindow(quantity, fast, slow, singleRate, tol) {
   if (singleRate) {
-    var day = roundHalfUpQ(mul(div(quantity, fast), SEVEN));
+    var day = roundHalfUpQ(snapQ(mul(div(quantity, fast), SEVEN), null, tol));
     return { earliest: day, latest: day, single: true };
   }
-  var earliest = floorQ(mul(div(quantity, fast), SEVEN));
-  var latest = ceilQ(mul(div(quantity, slow), SEVEN));
+  var earliest = floorQ(snapQ(mul(div(quantity, fast), SEVEN), null, tol));
+  var latest = ceilQ(snapQ(mul(div(quantity, slow), SEVEN), null, tol));
   return { earliest: earliest, latest: latest, single: earliest === latest };
 }
 
-function trigger(depletion, lead, buffer) {
-  var rawEarliest = sub(sub(Q(depletion.earliest), lead), buffer);
-  var rawLatest = sub(sub(Q(depletion.latest), lead), buffer);
+function trigger(depletion, lead, buffer, tol) {
+  var operands = maxQ(Q(depletion.latest), lead, buffer);
+  var rawEarliest = snapQ(sub(sub(Q(depletion.earliest), lead), buffer), operands, tol);
+  var rawLatest = snapQ(sub(sub(Q(depletion.latest), lead), buffer), operands, tol);
   if (depletion.single) {
     var day = maxInt(0n, roundHalfUpQ(rawEarliest));
     return { earliest: day, latest: day };
@@ -93,13 +117,14 @@ function trigger(depletion, lead, buffer) {
   return { earliest: earliest, latest: latest };
 }
 
-function exposure(depletion, buffer, orderDay, lead) {
+function exposure(depletion, buffer, orderDay, lead, tol) {
   var arrival = add(orderDay, lead);
-  var worst = maxInt(0n, ceilQ(sub(arrival, Q(depletion.earliest))));
-  var best = maxInt(0n, ceilQ(sub(arrival, Q(depletion.latest))));
+  var operands = maxQ(orderDay, lead, Q(depletion.latest), buffer);
+  var worst = maxInt(0n, ceilQ(snapQ(sub(arrival, Q(depletion.earliest)), operands, tol)));
+  var best = maxInt(0n, ceilQ(snapQ(sub(arrival, Q(depletion.latest)), operands, tol)));
   var status;
   if (worst === 0n) {
-    status = cmp(arrival, sub(Q(depletion.earliest), buffer)) <= 0 ? "BUFFER_INTACT" : "BUFFER_DRAWN";
+    status = cmp(snapQ(sub(arrival, sub(Q(depletion.earliest), buffer)), operands, tol), ZERO) <= 0 ? "BUFFER_INTACT" : "BUFFER_DRAWN";
   } else {
     status = best === 0n ? "STOCKOUT_POSSIBLE" : "STOCKOUT_AT_BOTH_BOUNDS";
   }
@@ -112,7 +137,8 @@ function windowOut(w) { return { earliest: int(w.earliest), latest: int(w.latest
  * Returns the derived outputs for one item, named as in the scenario record, plus exact
  * fractions under `exact` for continuous values. Throws on input the methodology rejects.
  */
-function deriveItem(input, slipDays) {
+function deriveItem(input, slipDays, options) {
+  var tol = options && options.tolerance ? options.tolerance : null;
   var q = fromDecimal(input.quantity);
   if (cmp(q, ZERO) <= 0) throw new Error("quantity must be > 0");
   var rate;
@@ -137,12 +163,12 @@ function deriveItem(input, slipDays) {
   var singleRate = cmp(v, ZERO) === 0;
   var slow = mul(rate, sub(ONE, v));
   var fast = mul(rate, add(ONE, v));
-  var depletion = dayWindow(q, fast, slow, singleRate);
-  var trig = trigger(depletion, lead, buffer);
-  var cadence = dayWindow(replenishment, fast, slow, singleRate);
+  var depletion = dayWindow(q, fast, slow, singleRate, tol);
+  var trig = trigger(depletion, lead, buffer, tol);
+  var cadence = dayWindow(replenishment, fast, slow, singleRate, tol);
 
-  var leadDemand = ceilHundredth(div(mul(lead, fast), SEVEN));
-  var reserve = ceilHundredth(div(mul(buffer, fast), SEVEN));
+  var leadDemand = ceilHundredth(div(mul(lead, fast), SEVEN), tol);
+  var reserve = ceilHundredth(div(mul(buffer, fast), SEVEN), tol);
   var threshold = add(leadDemand, reserve);
 
   var fit = null;
@@ -162,10 +188,10 @@ function deriveItem(input, slipDays) {
 
   var slips = (slipDays || [3, 7]).map(function (slip) {
     var slipLead = add(lead, fromDecimal(slip));
-    var e = exposure(depletion, buffer, Q(trig.earliest), slipLead);
+    var e = exposure(depletion, buffer, Q(trig.earliest), slipLead, tol);
     return {
       slip_days: slip,
-      replanned_trigger_days: windowOut(trigger(depletion, slipLead, buffer)),
+      replanned_trigger_days: windowOut(trigger(depletion, slipLead, buffer, tol)),
       exposure_if_ordered_at_trigger: {
         order_day: int(trig.earliest),
         arrival_day: toNumber(e.arrival),
@@ -231,6 +257,7 @@ module.exports = {
   version: "0.1",
   arithmetic: "exact rational (BigInt)",
   deriveItem: deriveItem,
+  DOCUMENTED_TOLERANCE: Q(1n, 2n ** 47n),
   deriveHousehold: deriveHousehold,
   fromDecimal: fromDecimal
 };
