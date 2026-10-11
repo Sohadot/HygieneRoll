@@ -25,7 +25,8 @@ var PAGES = {
   "calculator.html": SITE + "calculator.html",
   "reference.html": SITE + "reference.html",
   "replenishment-model.html": SITE + "replenishment-model.html",
-  "acquisition/index.html": SITE + "acquisition/"
+  "acquisition/index.html": SITE + "acquisition/",
+  "reference/cases/index.html": SITE + "reference/cases/"
 };
 var ALL_PAGES = Object.keys(PAGES).concat(["404.html"]);
 // External links that are navigation or infrastructure, not cited evidence.

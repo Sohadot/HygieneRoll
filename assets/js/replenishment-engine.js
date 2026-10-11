@@ -1,8 +1,10 @@
 /*
- * HygieneRoll replenishment engine v0.2
+ * HygieneRoll replenishment engine v0.2.1
  *
  * v0.2 adds reorder-threshold, lead-time slip, stockout exposure, fixed-interval fit,
  * and a machine-readable scenario record. Every v0.1 output field is unchanged.
+ * v0.2.1 removes binary rounding noise before each whole-day decision, so a value that is
+ * exactly a whole or half day in decimal arithmetic rounds as the methodology states.
  *
  * Human-readable specification: CALCULATOR_METHODOLOGY.md
  * This file is the machine source of truth. The page must not reimplement these formulas.
@@ -17,7 +19,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
 
-  var VERSION = "v0.2";
+  var VERSION = "v0.2.1";
   var ONTOLOGY_VERSION = "0.1";
   var RECORD_VERSION = "0.2";
   var DEFAULT_SLIP_DAYS = [3, 7];
@@ -42,14 +44,34 @@
     errors.push({ field: field, message: message });
   }
 
+  // Binary doubles cannot represent most decimal inputs, so 1.1 / 0.35 × 7 evaluates to
+  // 22.000000000000004 instead of 22. Before a floor, ceiling, half-up rounding, or
+  // comparison decides a whole day, a value within NOISE × scale of a whole or half day is
+  // moved onto it. `scale` is the largest operand magnitude. A day calculation carries at
+  // most nine roundings of 2^-53 relative error (three decimal inputs and six operations),
+  // about 2^-49.8 in the worst case, so 2^-47 leaves a sevenfold margin. Offsets larger than
+  // that are genuine and are left alone. The snapped value only feeds the decision and is
+  // never published.
+  var NOISE = Math.pow(2, -47);
+
+  function snap(value, scale) {
+    var nearest = Math.round(value * 2) / 2;
+    var size = Math.max(1, Math.abs(value), Math.abs(scale === undefined ? 0 : scale));
+    return Math.abs(value - nearest) <= NOISE * size ? nearest : value;
+  }
+
   function roundHalfUp(value) {
     return Math.round(value);
   }
 
   // Unit quantities round up to 0.01 so a published threshold never understates the stock it covers.
-  // The toFixed step strips binary noise such as 1.1 × 100 = 110.00000000000001 before the ceiling.
+  // Binary noise such as 1.1 × 100 = 110.00000000000001 is removed with the same bound as day
+  // decisions, so a genuine excess as small as 7e-10 units still rounds up to the next hundredth.
   function roundUnitsUp(value) {
-    return Math.ceil(Number((value * 100).toFixed(6))) / 100;
+    var hundredths = value * 100;
+    var nearest = Math.round(hundredths);
+    var noise = Math.abs(hundredths - nearest) <= NOISE * Math.max(1, Math.abs(hundredths));
+    return (noise ? nearest : Math.ceil(hundredths)) / 100;
   }
 
   function roundUnits(value) {
@@ -122,17 +144,18 @@
 
   function usageWindow(quantity, fastUsage, slowUsage, variability) {
     if (variability === 0) {
-      var day = roundHalfUp((quantity / fastUsage) * 7);
+      var day = roundHalfUp(snap((quantity / fastUsage) * 7));
       return { earliest: day, latest: day, single: true };
     }
-    var earliest = Math.floor((quantity / fastUsage) * 7);
-    var latest = Math.ceil((quantity / slowUsage) * 7);
+    var earliest = Math.floor(snap((quantity / fastUsage) * 7));
+    var latest = Math.ceil(snap((quantity / slowUsage) * 7));
     return { earliest: earliest, latest: latest, single: earliest === latest };
   }
 
   function triggerWindow(depletion, leadTimeDays, bufferDays) {
-    var rawEarliest = depletion.earliest - leadTimeDays - bufferDays;
-    var rawLatest = depletion.latest - leadTimeDays - bufferDays;
+    var operands = Math.max(depletion.latest, leadTimeDays, bufferDays);
+    var rawEarliest = snap(depletion.earliest - leadTimeDays - bufferDays, operands);
+    var rawLatest = snap(depletion.latest - leadTimeDays - bufferDays, operands);
     var earliest;
     var latest;
     if (depletion.single) {
@@ -269,11 +292,12 @@
     if (errors.length) throw validationError(errors);
 
     var arrival = orderDay + lead;
-    var worst = Math.max(0, Math.ceil(arrival - item.depletion.earliest));
-    var best = Math.max(0, Math.ceil(arrival - item.depletion.latest));
+    var operands = Math.max(orderDay, lead, item.depletion.latest, item.bufferDays);
+    var worst = Math.max(0, Math.ceil(snap(arrival - item.depletion.earliest, operands)));
+    var best = Math.max(0, Math.ceil(snap(arrival - item.depletion.latest, operands)));
     var status;
     if (worst === 0) {
-      status = arrival <= item.depletion.earliest - item.bufferDays ? "BUFFER_INTACT" : "BUFFER_DRAWN";
+      status = snap(arrival - (item.depletion.earliest - item.bufferDays), operands) <= 0 ? "BUFFER_INTACT" : "BUFFER_DRAWN";
     } else {
       status = best === 0 ? "STOCKOUT_POSSIBLE" : "STOCKOUT_AT_BOTH_BOUNDS";
     }

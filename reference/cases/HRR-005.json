@@ -1,0 +1,779 @@
+{
+  "$schema": "https://hygieneroll.com/reference/schema/reference-case-record.schema.json",
+  "assumptions": [
+    "The household holds or is considering a fixed delivery every 35 days.",
+    "Each delivery adds 2 bottles."
+  ],
+  "case": {
+    "id": "HRR-005",
+    "purpose": "A fixed 35-day delivery schedule is compared with the item's replenishment cadence. The interval falls after the cadence window, so each delivery arrives after the previous quantity would run out.",
+    "slug": "fixed-interval-versus-window",
+    "status": "PUBLISHED",
+    "title": "Fixed subscription interval versus replenishment window (synthetic)",
+    "version": 1
+  },
+  "derivation": [
+    "Weekly method: r = 0.5 bottles per week. v = 0.15, so slow = 0.425 and fast = 0.575.",
+    "Depletion earliest: 2 / 0.575 × 7 = 24.35 → floor 24. Latest: 2 / 0.425 × 7 = 32.94 → ceiling 33.",
+    "Planning trigger: 24 − 4 − 3 = 17 and 33 − 4 − 3 = 26.",
+    "Cadence with R = 2 equals the depletion window, 24 to 33.",
+    "Interval 35 > 33, so it is later than the window. Drift per delivery: 35 − 33 = 2 to 35 − 24 = 11 days. Supply shrinks each delivery.",
+    "Lead-time demand: 4 × 0.575 / 7 = 0.3285… → 0.33. Reserve: 3 × 0.575 / 7 = 0.2464… → 0.25. Threshold 0.58.",
+    "Slip +3: lead 7. Re-planned 24 − 10 = 14 and 33 − 10 = 23. Ordered on day 17, arrival 24 = 24, so no gap. 24 > 24 − 3 = 21, so the buffer is drawn.",
+    "Slip +7: lead 11. Re-planned 24 − 14 = 10 and 33 − 14 = 19. Arrival 28. 28 − 24 = 4 days at the fast bound, none at the slow bound."
+  ],
+  "evidence": {
+    "claim_class": "ILLUSTRATIVE_MODEL",
+    "external_observations": [],
+    "input_layer": "HYPOTHETICAL_SCENARIO",
+    "origin": "SYNTHETIC",
+    "output_layer": "DERIVED_CALCULATION",
+    "source_ids": [],
+    "statement": "Synthetic inputs chosen to exercise the method. They are not observed household behavior, consumption statistics, or benchmarks. Outputs are arithmetic on those inputs."
+  },
+  "expected": {
+    "at_or_below_reorder_threshold": false,
+    "consumption_rate_per_week": 0.5,
+    "depletion_interval_days": {
+      "earliest": 24,
+      "latest": 33
+    },
+    "fixed_interval_fit": {
+      "drift_days_per_cycle": {
+        "max": 11,
+        "min": 2
+      },
+      "fit": "LATER_THAN_WINDOW"
+    },
+    "lead_time_demand_units": 0.33,
+    "lead_time_slip": [
+      {
+        "exposure_if_ordered_at_trigger": {
+          "arrival_day": 24,
+          "order_day": 17,
+          "status": "BUFFER_DRAWN",
+          "supply_gap_days": {
+            "max": 0,
+            "min": 0
+          }
+        },
+        "replanned_trigger_days": {
+          "earliest": 14,
+          "latest": 23
+        },
+        "slip_days": 3
+      },
+      {
+        "exposure_if_ordered_at_trigger": {
+          "arrival_day": 28,
+          "order_day": 17,
+          "status": "STOCKOUT_POSSIBLE",
+          "supply_gap_days": {
+            "max": 4,
+            "min": 0
+          }
+        },
+        "replanned_trigger_days": {
+          "earliest": 10,
+          "latest": 19
+        },
+        "slip_days": 7
+      }
+    ],
+    "planning_trigger_days": {
+      "earliest": 17,
+      "latest": 26
+    },
+    "reorder_threshold_units": 0.58,
+    "replenishment_cadence_days": {
+      "earliest": 24,
+      "latest": 33
+    },
+    "replenishment_quantity_applied": 2,
+    "reserve_stock_units": 0.25,
+    "usage_bounds_per_week": {
+      "fast": 0.575,
+      "slow": 0.425
+    }
+  },
+  "inputs": {
+    "bufferDays": 3,
+    "category": "HOUSEHOLD_HYGIENE",
+    "durationWeeks": null,
+    "intervalDays": 35,
+    "leadTimeDays": 4,
+    "name": "Laundry detergent (synthetic)",
+    "quantity": 2,
+    "replenishmentQuantity": 2,
+    "unit": "bottles",
+    "unitKind": "custom",
+    "usageMode": "weekly",
+    "variabilityPercent": 15,
+    "weeklyUsage": 0.5
+  },
+  "limitations": [
+    "The comparison is arithmetic for one item. It is not a recommendation to change a subscription."
+  ],
+  "methodology": {
+    "document": "https://hygieneroll.com/CALCULATOR_METHODOLOGY.md",
+    "engine": {
+      "url": "https://hygieneroll.com/assets/js/replenishment-engine.js",
+      "version": "v0.2.1"
+    },
+    "ontology": {
+      "url": "https://hygieneroll.com/reference/replenishment-ontology.json",
+      "version": "0.1"
+    },
+    "steps": [
+      {
+        "concept": "HRO-005",
+        "formula": "weekly method: r = weekly_usage; duration method: r = current_quantity / duration_weeks",
+        "term": "Consumption rate"
+      },
+      {
+        "concept": "HRO-008",
+        "formula": "slow = r × (1 − v); fast = r × (1 + v); v = variability_percent / 100",
+        "term": "Usage bounds"
+      },
+      {
+        "concept": "HRO-009",
+        "formula": "earliest = floor((q / fast) × 7); latest = ceil((q / slow) × 7); at v = 0 both equal round_half_up((q / r) × 7)",
+        "term": "Depletion interval"
+      },
+      {
+        "concept": "HRO-012",
+        "formula": "ceil_0.01(lead_time_days × fast / 7)",
+        "term": "Lead-time demand"
+      },
+      {
+        "concept": "HRO-013",
+        "formula": "ceil_0.01(safety_buffer_days × fast / 7)",
+        "term": "Reserve stock"
+      },
+      {
+        "concept": "HRO-014",
+        "formula": "lead_time_demand + reserve_stock",
+        "term": "Reorder threshold"
+      },
+      {
+        "concept": "HRO-015",
+        "formula": "max(0, depletion − lead_time_days − safety_buffer_days), each end separately",
+        "term": "Planning trigger"
+      },
+      {
+        "concept": "HRO-017",
+        "formula": "same day-window rule as the depletion interval, with replenishment_quantity in place of q",
+        "term": "Replenishment cadence"
+      },
+      {
+        "concept": "HRO-019",
+        "formula": "EARLIER_THAN_WINDOW if interval < cadence.earliest; LATER_THAN_WINDOW if interval > cadence.latest; otherwise WITHIN_WINDOW; drift = interval − cadence, from latest (min) to earliest (max)",
+        "term": "Subscription compatibility"
+      },
+      {
+        "concept": "HRO-020",
+        "formula": "arrival = order_day + lead_time; max = max(0, ceil(arrival − depletion.earliest)); min = max(0, ceil(arrival − depletion.latest))",
+        "term": "Stockout exposure"
+      },
+      {
+        "concept": "HRO-021",
+        "formula": "for each offset s: trigger(depletion, lead_time + s, buffer); stockout_exposure(order_day = trigger.earliest, lead_time + s)",
+        "term": "Lead-time slip"
+      },
+      {
+        "concept": "HRO-022",
+        "formula": "items with minimum planning_trigger.earliest, in input order",
+        "term": "Next household return"
+      }
+    ]
+  },
+  "ontology_terms": [
+    {
+      "id": "HRO-001",
+      "layer": "PROJECT_DEFINITION",
+      "term": "Product category",
+      "url": "https://hygieneroll.com/reference.html#term-product-category"
+    },
+    {
+      "id": "HRO-002",
+      "layer": "PROJECT_DEFINITION",
+      "term": "Consumption unit",
+      "url": "https://hygieneroll.com/reference.html#term-consumption-unit"
+    },
+    {
+      "id": "HRO-003",
+      "layer": "HYPOTHETICAL_SCENARIO",
+      "term": "Household demand profile",
+      "url": "https://hygieneroll.com/reference.html#term-household-demand-profile"
+    },
+    {
+      "id": "HRO-004",
+      "layer": "HYPOTHETICAL_SCENARIO",
+      "term": "Current supply",
+      "url": "https://hygieneroll.com/reference.html#term-current-supply"
+    },
+    {
+      "id": "HRO-005",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Consumption rate",
+      "url": "https://hygieneroll.com/reference.html#term-consumption-rate"
+    },
+    {
+      "id": "HRO-006",
+      "layer": "HYPOTHETICAL_SCENARIO",
+      "term": "Usage assumption",
+      "url": "https://hygieneroll.com/reference.html#term-usage-assumption"
+    },
+    {
+      "id": "HRO-007",
+      "layer": "HYPOTHETICAL_SCENARIO",
+      "term": "Variability allowance",
+      "url": "https://hygieneroll.com/reference.html#term-variability-allowance"
+    },
+    {
+      "id": "HRO-008",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Usage bounds",
+      "url": "https://hygieneroll.com/reference.html#term-usage-bounds"
+    },
+    {
+      "id": "HRO-009",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Depletion interval",
+      "url": "https://hygieneroll.com/reference.html#term-depletion-interval"
+    },
+    {
+      "id": "HRO-010",
+      "layer": "HYPOTHETICAL_SCENARIO",
+      "term": "Fulfillment lead time",
+      "url": "https://hygieneroll.com/reference.html#term-fulfillment-lead-time"
+    },
+    {
+      "id": "HRO-011",
+      "layer": "HYPOTHETICAL_SCENARIO",
+      "term": "Safety buffer",
+      "url": "https://hygieneroll.com/reference.html#term-safety-buffer"
+    },
+    {
+      "id": "HRO-012",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Lead-time demand",
+      "url": "https://hygieneroll.com/reference.html#term-lead-time-demand"
+    },
+    {
+      "id": "HRO-013",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Reserve stock",
+      "url": "https://hygieneroll.com/reference.html#term-reserve-stock"
+    },
+    {
+      "id": "HRO-014",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Reorder threshold",
+      "url": "https://hygieneroll.com/reference.html#term-reorder-threshold"
+    },
+    {
+      "id": "HRO-015",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Planning trigger",
+      "url": "https://hygieneroll.com/reference.html#term-planning-trigger"
+    },
+    {
+      "id": "HRO-016",
+      "layer": "HYPOTHETICAL_SCENARIO",
+      "term": "Replenishment quantity",
+      "url": "https://hygieneroll.com/reference.html#term-replenishment-quantity"
+    },
+    {
+      "id": "HRO-017",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Replenishment cadence",
+      "url": "https://hygieneroll.com/reference.html#term-replenishment-cadence"
+    },
+    {
+      "id": "HRO-018",
+      "layer": "HYPOTHETICAL_SCENARIO",
+      "term": "Fixed delivery interval",
+      "url": "https://hygieneroll.com/reference.html#term-fixed-delivery-interval"
+    },
+    {
+      "id": "HRO-019",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Subscription compatibility",
+      "url": "https://hygieneroll.com/reference.html#term-subscription-compatibility"
+    },
+    {
+      "id": "HRO-020",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Stockout exposure",
+      "url": "https://hygieneroll.com/reference.html#term-stockout-exposure"
+    },
+    {
+      "id": "HRO-021",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Lead-time slip",
+      "url": "https://hygieneroll.com/reference.html#term-lead-time-slip"
+    },
+    {
+      "id": "HRO-022",
+      "layer": "DERIVED_CALCULATION",
+      "term": "Next household return",
+      "url": "https://hygieneroll.com/reference.html#term-next-household-return"
+    },
+    {
+      "id": "HRO-023",
+      "layer": "PROJECT_DEFINITION",
+      "term": "Scenario record",
+      "url": "https://hygieneroll.com/reference.html#term-scenario-record"
+    }
+  ],
+  "parameters": [
+    {
+      "concept": "HRO-001",
+      "field": "category",
+      "unit": "code",
+      "value": "HOUSEHOLD_HYGIENE"
+    },
+    {
+      "concept": "HRO-002",
+      "field": "unit",
+      "unit": "text",
+      "value": "bottles"
+    },
+    {
+      "concept": "HRO-004",
+      "field": "quantity",
+      "unit": "bottles",
+      "value": 2
+    },
+    {
+      "concept": "HRO-006",
+      "field": "usageMode",
+      "unit": "code",
+      "value": "weekly"
+    },
+    {
+      "concept": "HRO-006",
+      "field": "weeklyUsage",
+      "unit": "bottles per week",
+      "value": 0.5
+    },
+    {
+      "concept": "HRO-007",
+      "field": "variabilityPercent",
+      "unit": "percent",
+      "value": 15
+    },
+    {
+      "concept": "HRO-010",
+      "field": "leadTimeDays",
+      "unit": "days",
+      "value": 4
+    },
+    {
+      "concept": "HRO-011",
+      "field": "bufferDays",
+      "unit": "days",
+      "value": 3
+    },
+    {
+      "concept": "HRO-016",
+      "field": "replenishmentQuantity",
+      "unit": "bottles",
+      "value": 2
+    },
+    {
+      "concept": "HRO-018",
+      "field": "intervalDays",
+      "unit": "days",
+      "value": 35
+    }
+  ],
+  "record_type": "hygieneroll.reference-case-record",
+  "record_version": "0.1",
+  "registry": {
+    "url": "https://hygieneroll.com/reference/cases/registry.json",
+    "version": "0.1"
+  },
+  "results": {
+    "engine_version": "v0.2.1",
+    "epistemic_status": {
+      "embedded_benchmarks": false,
+      "inputs": "HYPOTHETICAL_SCENARIO",
+      "observed_evidence_used": false,
+      "outputs": "DERIVED_CALCULATION"
+    },
+    "household": {
+      "another_within_7_days": false,
+      "clocks_differ": false,
+      "next_return": {
+        "names": [
+          "Laundry detergent (synthetic)"
+        ],
+        "planning_trigger_days": {
+          "earliest": 17,
+          "latest": 26
+        }
+      }
+    },
+    "items": [
+      {
+        "inputs": {
+          "category": "HOUSEHOLD_HYGIENE",
+          "current_quantity": 2,
+          "duration_weeks": null,
+          "fixed_interval_days": 35,
+          "lead_time_days": 4,
+          "replenishment_quantity": 2,
+          "safety_buffer_days": 3,
+          "unit_label": "bottles",
+          "usage_method": "weekly",
+          "variability_percent": 15,
+          "weekly_usage": 0.5
+        },
+        "name": "Laundry detergent (synthetic)",
+        "outputs": {
+          "at_or_below_reorder_threshold": false,
+          "consumption_rate_per_week": 0.5,
+          "depletion_interval_days": {
+            "earliest": 24,
+            "latest": 33
+          },
+          "fixed_interval_fit": {
+            "drift_days_per_cycle": {
+              "max": 11,
+              "min": 2
+            },
+            "fit": "LATER_THAN_WINDOW"
+          },
+          "lead_time_demand_units": 0.33,
+          "lead_time_slip": [
+            {
+              "exposure_if_ordered_at_trigger": {
+                "arrival_day": 24,
+                "order_day": 17,
+                "status": "BUFFER_DRAWN",
+                "supply_gap_days": {
+                  "max": 0,
+                  "min": 0
+                }
+              },
+              "replanned_trigger_days": {
+                "earliest": 14,
+                "latest": 23
+              },
+              "slip_days": 3
+            },
+            {
+              "exposure_if_ordered_at_trigger": {
+                "arrival_day": 28,
+                "order_day": 17,
+                "status": "STOCKOUT_POSSIBLE",
+                "supply_gap_days": {
+                  "max": 4,
+                  "min": 0
+                }
+              },
+              "replanned_trigger_days": {
+                "earliest": 10,
+                "latest": 19
+              },
+              "slip_days": 7
+            }
+          ],
+          "planning_trigger_days": {
+            "earliest": 17,
+            "latest": 26
+          },
+          "reorder_threshold_units": 0.58,
+          "replenishment_cadence_days": {
+            "earliest": 24,
+            "latest": 33
+          },
+          "replenishment_quantity_applied": 2,
+          "reserve_stock_units": 0.25,
+          "usage_bounds_per_week": {
+            "fast": 0.575,
+            "slow": 0.425
+          }
+        }
+      }
+    ],
+    "lead_time_slip_offsets_days": [
+      3,
+      7
+    ],
+    "methodology": "https://hygieneroll.com/CALCULATOR_METHODOLOGY.md",
+    "ontology": {
+      "url": "https://hygieneroll.com/reference/replenishment-ontology.json",
+      "version": "0.1"
+    },
+    "record_type": "hygieneroll.replenishment-scenario",
+    "record_version": "0.2",
+    "uncertainty": {
+      "method": "USER_VARIABILITY_ALLOWANCE",
+      "note": "Windows widen only by the variability allowance the user entered. They are not probability intervals or forecasts.",
+      "statistical_confidence": false
+    }
+  },
+  "validation": {
+    "checks": [
+      {
+        "engine": 0.5,
+        "expected": 0.5,
+        "oracle": 0.5,
+        "path": "outputs.consumption_rate_per_week",
+        "result": "PASS"
+      },
+      {
+        "engine": 0.425,
+        "expected": 0.425,
+        "oracle": 0.425,
+        "path": "outputs.usage_bounds_per_week.slow",
+        "result": "PASS"
+      },
+      {
+        "engine": 0.575,
+        "expected": 0.575,
+        "oracle": 0.575,
+        "path": "outputs.usage_bounds_per_week.fast",
+        "result": "PASS"
+      },
+      {
+        "engine": 24,
+        "expected": 24,
+        "oracle": 24,
+        "path": "outputs.depletion_interval_days.earliest",
+        "result": "PASS"
+      },
+      {
+        "engine": 33,
+        "expected": 33,
+        "oracle": 33,
+        "path": "outputs.depletion_interval_days.latest",
+        "result": "PASS"
+      },
+      {
+        "engine": 17,
+        "expected": 17,
+        "oracle": 17,
+        "path": "outputs.planning_trigger_days.earliest",
+        "result": "PASS"
+      },
+      {
+        "engine": 26,
+        "expected": 26,
+        "oracle": 26,
+        "path": "outputs.planning_trigger_days.latest",
+        "result": "PASS"
+      },
+      {
+        "engine": 2,
+        "expected": 2,
+        "oracle": 2,
+        "path": "outputs.replenishment_quantity_applied",
+        "result": "PASS"
+      },
+      {
+        "engine": 24,
+        "expected": 24,
+        "oracle": 24,
+        "path": "outputs.replenishment_cadence_days.earliest",
+        "result": "PASS"
+      },
+      {
+        "engine": 33,
+        "expected": 33,
+        "oracle": 33,
+        "path": "outputs.replenishment_cadence_days.latest",
+        "result": "PASS"
+      },
+      {
+        "engine": 0.33,
+        "expected": 0.33,
+        "oracle": 0.33,
+        "path": "outputs.lead_time_demand_units",
+        "result": "PASS"
+      },
+      {
+        "engine": 0.25,
+        "expected": 0.25,
+        "oracle": 0.25,
+        "path": "outputs.reserve_stock_units",
+        "result": "PASS"
+      },
+      {
+        "engine": 0.58,
+        "expected": 0.58,
+        "oracle": 0.58,
+        "path": "outputs.reorder_threshold_units",
+        "result": "PASS"
+      },
+      {
+        "engine": false,
+        "expected": false,
+        "oracle": false,
+        "path": "outputs.at_or_below_reorder_threshold",
+        "result": "PASS"
+      },
+      {
+        "engine": "LATER_THAN_WINDOW",
+        "expected": "LATER_THAN_WINDOW",
+        "oracle": "LATER_THAN_WINDOW",
+        "path": "outputs.fixed_interval_fit.fit",
+        "result": "PASS"
+      },
+      {
+        "engine": 2,
+        "expected": 2,
+        "oracle": 2,
+        "path": "outputs.fixed_interval_fit.drift_days_per_cycle.min",
+        "result": "PASS"
+      },
+      {
+        "engine": 11,
+        "expected": 11,
+        "oracle": 11,
+        "path": "outputs.fixed_interval_fit.drift_days_per_cycle.max",
+        "result": "PASS"
+      },
+      {
+        "engine": 3,
+        "expected": 3,
+        "oracle": 3,
+        "path": "outputs.lead_time_slip[0].slip_days",
+        "result": "PASS"
+      },
+      {
+        "engine": 14,
+        "expected": 14,
+        "oracle": 14,
+        "path": "outputs.lead_time_slip[0].replanned_trigger_days.earliest",
+        "result": "PASS"
+      },
+      {
+        "engine": 23,
+        "expected": 23,
+        "oracle": 23,
+        "path": "outputs.lead_time_slip[0].replanned_trigger_days.latest",
+        "result": "PASS"
+      },
+      {
+        "engine": 17,
+        "expected": 17,
+        "oracle": 17,
+        "path": "outputs.lead_time_slip[0].exposure_if_ordered_at_trigger.order_day",
+        "result": "PASS"
+      },
+      {
+        "engine": 24,
+        "expected": 24,
+        "oracle": 24,
+        "path": "outputs.lead_time_slip[0].exposure_if_ordered_at_trigger.arrival_day",
+        "result": "PASS"
+      },
+      {
+        "engine": 0,
+        "expected": 0,
+        "oracle": 0,
+        "path": "outputs.lead_time_slip[0].exposure_if_ordered_at_trigger.supply_gap_days.min",
+        "result": "PASS"
+      },
+      {
+        "engine": 0,
+        "expected": 0,
+        "oracle": 0,
+        "path": "outputs.lead_time_slip[0].exposure_if_ordered_at_trigger.supply_gap_days.max",
+        "result": "PASS"
+      },
+      {
+        "engine": "BUFFER_DRAWN",
+        "expected": "BUFFER_DRAWN",
+        "oracle": "BUFFER_DRAWN",
+        "path": "outputs.lead_time_slip[0].exposure_if_ordered_at_trigger.status",
+        "result": "PASS"
+      },
+      {
+        "engine": 7,
+        "expected": 7,
+        "oracle": 7,
+        "path": "outputs.lead_time_slip[1].slip_days",
+        "result": "PASS"
+      },
+      {
+        "engine": 10,
+        "expected": 10,
+        "oracle": 10,
+        "path": "outputs.lead_time_slip[1].replanned_trigger_days.earliest",
+        "result": "PASS"
+      },
+      {
+        "engine": 19,
+        "expected": 19,
+        "oracle": 19,
+        "path": "outputs.lead_time_slip[1].replanned_trigger_days.latest",
+        "result": "PASS"
+      },
+      {
+        "engine": 17,
+        "expected": 17,
+        "oracle": 17,
+        "path": "outputs.lead_time_slip[1].exposure_if_ordered_at_trigger.order_day",
+        "result": "PASS"
+      },
+      {
+        "engine": 28,
+        "expected": 28,
+        "oracle": 28,
+        "path": "outputs.lead_time_slip[1].exposure_if_ordered_at_trigger.arrival_day",
+        "result": "PASS"
+      },
+      {
+        "engine": 0,
+        "expected": 0,
+        "oracle": 0,
+        "path": "outputs.lead_time_slip[1].exposure_if_ordered_at_trigger.supply_gap_days.min",
+        "result": "PASS"
+      },
+      {
+        "engine": 4,
+        "expected": 4,
+        "oracle": 4,
+        "path": "outputs.lead_time_slip[1].exposure_if_ordered_at_trigger.supply_gap_days.max",
+        "result": "PASS"
+      },
+      {
+        "engine": "STOCKOUT_POSSIBLE",
+        "expected": "STOCKOUT_POSSIBLE",
+        "oracle": "STOCKOUT_POSSIBLE",
+        "path": "outputs.lead_time_slip[1].exposure_if_ordered_at_trigger.status",
+        "result": "PASS"
+      },
+      {
+        "engine": 17,
+        "expected": 17,
+        "oracle": 17,
+        "path": "household.next_return.planning_trigger_days.earliest",
+        "result": "PASS"
+      },
+      {
+        "engine": 26,
+        "expected": 26,
+        "oracle": 26,
+        "path": "household.next_return.planning_trigger_days.latest",
+        "result": "PASS"
+      }
+    ],
+    "checks_failed": 0,
+    "checks_total": 35,
+    "engine_version": "v0.2.1",
+    "oracle": {
+      "arithmetic": "exact rational (BigInt)",
+      "name": "hygieneroll-reference-oracle",
+      "url": "https://hygieneroll.com/verification/oracle.js",
+      "version": "0.1"
+    },
+    "outcome": "PASS",
+    "rule": "Each expected value must equal the engine result and the oracle result. Whole days, hundredths of a unit, codes, and booleans must match exactly. Rates, drift, and arrival days may differ by at most 1e-9 relative."
+  }
+}

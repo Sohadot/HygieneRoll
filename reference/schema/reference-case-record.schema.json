@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hygieneroll.com/reference/schema/reference-case-record.schema.json",
+  "title": "HygieneRoll reference case record",
+  "description": "Internal HygieneRoll contract for a published reference case record, version 0.1. It is a project schema, not an adopted external standard. A record that fails validation cannot be published, so validation.outcome is always PASS in a valid record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "record_type", "record_version", "registry", "case", "evidence", "inputs", "parameters", "methodology", "ontology_terms", "expected", "derivation", "results", "validation", "assumptions", "limitations"],
+  "properties": {
+    "$schema": { "const": "https://hygieneroll.com/reference/schema/reference-case-record.schema.json" },
+    "record_type": { "const": "hygieneroll.reference-case-record" },
+    "record_version": { "const": "0.1" },
+    "registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "version"],
+      "properties": {
+        "url": { "const": "https://hygieneroll.com/reference/cases/registry.json" },
+        "version": { "type": "string", "pattern": "^\\d+\\.\\d+$" }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "version", "slug", "title", "purpose", "status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^HRR-\\d{3}$" },
+        "version": { "type": "integer", "minimum": 1 },
+        "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+        "title": { "type": "string", "pattern": "\\(synthetic\\)$" },
+        "purpose": { "type": "string", "minLength": 20 },
+        "status": { "const": "PUBLISHED" }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "claim_class", "input_layer", "output_layer", "source_ids", "external_observations", "statement"],
+      "properties": {
+        "origin": { "const": "SYNTHETIC" },
+        "claim_class": { "const": "ILLUSTRATIVE_MODEL" },
+        "input_layer": { "const": "HYPOTHETICAL_SCENARIO" },
+        "output_layer": { "const": "DERIVED_CALCULATION" },
+        "source_ids": { "type": "array", "maxItems": 0 },
+        "external_observations": { "type": "array", "maxItems": 0 },
+        "statement": { "type": "string", "minLength": 20 }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "required": ["name", "quantity", "usageMode", "leadTimeDays", "bufferDays", "variabilityPercent"],
+      "properties": {
+        "name": { "type": "string", "pattern": "\\(synthetic\\)$" },
+        "quantity": { "type": "number", "exclusiveMinimum": 0 },
+        "usageMode": { "enum": ["weekly", "duration"] },
+        "leadTimeDays": { "type": "number", "minimum": 0 },
+        "bufferDays": { "type": "number", "minimum": 0 },
+        "variabilityPercent": { "type": "number", "minimum": 0, "maximum": 50 }
+      }
+    },
+    "parameters": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "concept", "value", "unit"],
+        "properties": {
+          "field": { "type": "string" },
+          "concept": { "type": "string", "pattern": "^HRO-\\d{3}$" },
+          "value": { "type": ["number", "string"] },
+          "unit": { "type": "string" }
+        }
+      }
+    },
+    "methodology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["document", "engine", "ontology", "steps"],
+      "properties": {
+        "document": { "const": "https://hygieneroll.com/CALCULATOR_METHODOLOGY.md" },
+        "engine": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["url", "version"],
+          "properties": {
+            "url": { "const": "https://hygieneroll.com/assets/js/replenishment-engine.js" },
+            "version": { "type": "string", "pattern": "^v\\d+\\.\\d+(\\.\\d+)?$" }
+          }
+        },
+        "ontology": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["url", "version"],
+          "properties": {
+            "url": { "const": "https://hygieneroll.com/reference/replenishment-ontology.json" },
+            "version": { "type": "string", "pattern": "^\\d+\\.\\d+$" }
+          }
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["concept", "term", "formula"],
+            "properties": {
+              "concept": { "type": "string", "pattern": "^HRO-\\d{3}$" },
+              "term": { "type": "string" },
+              "formula": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "ontology_terms": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "term", "layer", "url"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^HRO-\\d{3}$" },
+          "term": { "type": "string" },
+          "layer": { "enum": ["PROJECT_DEFINITION", "HYPOTHETICAL_SCENARIO", "DERIVED_CALCULATION"] },
+          "url": { "type": "string", "pattern": "^https://hygieneroll\\.com/reference\\.html#term-" }
+        }
+      }
+    },
+    "expected": { "type": "object", "required": ["depletion_interval_days", "planning_trigger_days", "reorder_threshold_units", "lead_time_slip"] },
+    "derivation": { "type": "array", "minItems": 3, "items": { "type": "string" } },
+    "results": {
+      "type": "object",
+      "required": ["record_type", "engine_version", "epistemic_status", "items", "household"],
+      "properties": {
+        "record_type": { "const": "hygieneroll.replenishment-scenario" },
+        "epistemic_status": {
+          "type": "object",
+          "required": ["inputs", "outputs", "observed_evidence_used", "embedded_benchmarks"],
+          "properties": {
+            "inputs": { "const": "HYPOTHETICAL_SCENARIO" },
+            "outputs": { "const": "DERIVED_CALCULATION" },
+            "observed_evidence_used": { "const": false },
+            "embedded_benchmarks": { "const": false }
+          }
+        },
+        "items": { "type": "array", "minItems": 1, "maxItems": 1 }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outcome", "rule", "engine_version", "oracle", "checks_total", "checks_failed", "checks"],
+      "properties": {
+        "outcome": { "const": "PASS" },
+        "rule": { "type": "string" },
+        "engine_version": { "type": "string" },
+        "oracle": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "version", "arithmetic", "url"],
+          "properties": {
+            "name": { "type": "string" },
+            "version": { "type": "string" },
+            "arithmetic": { "type": "string" },
+            "url": { "type": "string" }
+          }
+        },
+        "checks_total": { "type": "integer", "minimum": 1 },
+        "checks_failed": { "const": 0 },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "expected", "engine", "oracle", "result"],
+            "properties": {
+              "path": { "type": "string" },
+              "expected": { "type": ["number", "string", "boolean", "null"] },
+              "engine": { "type": ["number", "string", "boolean", "null"] },
+              "oracle": { "type": ["number", "string", "boolean", "null"] },
+              "result": { "const": "PASS" }
+            }
+          }
+        }
+      }
+    },
+    "assumptions": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "limitations": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+  }
+}

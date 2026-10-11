@@ -158,6 +158,8 @@ Derived claims stay in interpretive voice. They name the supporting source IDs. 
 
 An example used to show arithmetic or a loop is labeled illustrative. It is not labeled as an average household, a customer history, or a market result. Calculator fixtures used in tests are not public consumption benchmarks.
 
+Published reference cases (`reference/cases/`) are illustrative models. Their inputs are synthetic and labeled "(synthetic)". They cite no sources and carry no external observations. The reference build refuses to publish a case that breaks any of these rules.
+
 ## Version
 
 v0.1. This is the foundation contract, not a complete evidence corpus.
