@@ -2,6 +2,7 @@
   "use strict";
 
   var engine = window.HygieneRollReplenishment;
+  var scenarioApi = window.HygieneRollReferenceScenario;
   var MAX_ITEMS = 10;
   var nextId = 1;
 
@@ -42,6 +43,9 @@
   var limitNote;
   var results;
   var status;
+  var banner;
+  var activeReference = null;
+  var pendingCase = null;
 
   document.addEventListener("DOMContentLoaded", init);
 
@@ -57,6 +61,7 @@
     limitNote = document.getElementById("item-limit");
     results = document.getElementById("calculator-results");
     status = document.getElementById("calculator-status");
+    banner = document.getElementById("reference-banner");
 
     var form = document.getElementById("calculator-form");
     form.addEventListener("submit", function (event) {
@@ -79,6 +84,8 @@
     document.getElementById("reset-scenario").addEventListener("click", resetScenario);
 
     addItem();
+    loadReferenceFromLocation();
+    window.addEventListener("hashchange", loadReferenceFromLocation);
   }
 
   function addItem() {
@@ -352,7 +359,7 @@
     }
 
     var summary = engine.calculateHousehold(inputs);
-    render(summary, engine.buildScenarioRecord(inputs));
+    render(summary, engine.buildScenarioRecord(inputs), inputs);
   }
 
   function readCard(card) {
@@ -383,7 +390,7 @@
         variabilityPercent: variability.empty || variability.invalid ? Number.NaN : variability.value,
         replenishmentQuantity: replenishment.empty ? "" : (replenishment.invalid ? Number.NaN : replenishment.value),
         intervalDays: interval.empty ? "" : (interval.invalid ? Number.NaN : interval.value),
-        category: CATEGORY_BY_GROUP[preset.group] || "OTHER"
+        category: preset.id === "custom" && card.dataset.category ? card.dataset.category : (CATEGORY_BY_GROUP[preset.group] || "OTHER")
       }
     };
   }
@@ -476,7 +483,7 @@
     if (select) select.focus();
   }
 
-  function render(summary, record) {
+  function render(summary, record, inputs) {
     results.textContent = "";
     var summaryCard = document.createElement("article");
     summaryCard.className = "result-card glass";
@@ -515,6 +522,7 @@
     });
 
     results.appendChild(recordPanel(record));
+    if (activeReference) results.appendChild(comparisonPanel(record, inputs[0], inputs.length));
 
     var first = summary.nextReturn.names.join(", ");
     var triggerText = summary.nextReturn.trigger
@@ -576,19 +584,28 @@
   }
 
   function recordPanel(record) {
+    return jsonPanel(
+      "Machine-readable scenario (JSON)",
+      "Every input and derived value, named by the replenishment ontology. Inputs are your assumptions; outputs are calculations from them. Identical inputs produce an identical record.",
+      JSON.stringify(record, null, 2),
+      "Scenario record JSON",
+      "hygieneroll-scenario.json"
+    );
+  }
+
+  function jsonPanel(title, noteText, json, label, filename) {
     var details = document.createElement("details");
     details.className = "result-card glass record-panel";
     var summary = document.createElement("summary");
-    summary.textContent = "Machine-readable scenario (JSON)";
+    summary.textContent = title;
     details.appendChild(summary);
     var note = document.createElement("p");
     note.className = "result-aside";
-    note.textContent = "Every input and derived value, named by the replenishment ontology. Inputs are your assumptions; outputs are calculations from them. Identical inputs produce an identical record.";
+    note.textContent = noteText;
     details.appendChild(note);
-    var json = JSON.stringify(record, null, 2);
     var pre = document.createElement("pre");
     pre.tabIndex = 0;
-    pre.setAttribute("aria-label", "Scenario record JSON");
+    pre.setAttribute("aria-label", label);
     pre.textContent = json;
     details.appendChild(pre);
     var save = document.createElement("button");
@@ -599,7 +616,7 @@
       var url = URL.createObjectURL(new Blob([json], { type: "application/json" }));
       var link = document.createElement("a");
       link.href = url;
-      link.download = "hygieneroll-scenario.json";
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -607,6 +624,335 @@
     });
     details.appendChild(save);
     return details;
+  }
+
+  // ---- Reference cases: open, verify, compare --------------------------------------
+
+  function referenceError(message) {
+    var error = new Error(message);
+    error.reference = true;
+    return error;
+  }
+
+  function loadReferenceFromLocation() {
+    if (!scenarioApi || !banner) return;
+    var request = scenarioApi.parseCaseFragment(window.location.hash);
+    if (request.none) {
+      pendingCase = null;
+      if (activeReference) clearReference(false);
+      return;
+    }
+    if (request.error) {
+      pendingCase = null;
+      showReferenceProblem(request.error);
+      return;
+    }
+    if (activeReference && activeReference.id === request.id) return;
+    pendingCase = request.id;
+    showReferenceMessage("Loading reference case " + request.id + "…");
+    loadReference(request.id).then(function (reference) {
+      if (pendingCase !== reference.id) return;
+      pendingCase = null;
+      applyReference(reference);
+    }, function (error) {
+      if (pendingCase !== request.id) return;
+      pendingCase = null;
+      showReferenceProblem(error && error.reference ? error.message : "Reference case " + request.id + " could not be loaded.");
+    });
+  }
+
+  function fetchText(url) {
+    if (typeof fetch !== "function") return Promise.reject(referenceError("This browser cannot load reference cases."));
+    return fetch(url, { credentials: "same-origin", cache: "no-cache" }).then(function (response) {
+      if (!response.ok) throw referenceError("The reference case could not be loaded.");
+      return response.text();
+    });
+  }
+
+  function sha256Hex(text) {
+    if (!window.crypto || !window.crypto.subtle || typeof TextEncoder === "undefined") {
+      return Promise.reject(referenceError("This browser cannot verify the reference record, so it was not loaded."));
+    }
+    return window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then(function (buffer) {
+      return Array.prototype.map.call(new Uint8Array(buffer), function (byte) { return ("0" + byte.toString(16)).slice(-2); }).join("");
+    });
+  }
+
+  // The id has already matched HRR-###; it must also be listed in the published manifest,
+  // and the record must hash to the manifest's sha256 before anything is read from it.
+  function loadReference(id) {
+    return fetchText("reference/cases/manifest.json").then(function (manifestText) {
+      var entry = scenarioApi.manifestEntry(JSON.parse(manifestText), id);
+      if (!entry) throw referenceError("Reference case " + id + " is not published.");
+      return fetchText("reference/cases/" + entry.id + ".json").then(function (recordText) {
+        return sha256Hex(recordText).then(function (digest) {
+          if (digest !== entry.sha256) throw referenceError("Reference case " + id + " does not match its published fingerprint, so it was not loaded.");
+          var checked = scenarioApi.validateReferenceRecord(JSON.parse(recordText), entry, engine);
+          if (!checked.ok) throw referenceError("Reference case " + id + " failed validation: " + checked.errors[0]);
+          return checked.reference;
+        });
+      });
+    });
+  }
+
+  function applyReference(reference) {
+    while (list.firstChild) list.removeChild(list.firstChild);
+    nextId = 1;
+    var card = addItem();
+    fillCard(card, reference.inputs);
+    activeReference = reference;
+    clearResults();
+    renderBanner(reference);
+    status.textContent = "Loaded reference case " + reference.id + ". Calculate to see its results, or change the inputs to compare.";
+  }
+
+  function fillCard(card, inputs) {
+    var preset = element(card, "preset");
+    preset.value = "custom";
+    preset.dispatchEvent(new Event("change", { bubbles: true }));
+    var name = element(card, "name");
+    name.value = inputs.name;
+    name.dispatchEvent(new Event("input", { bubbles: true }));
+    var unit = element(card, "unit");
+    unit.value = inputs.unit || "";
+    unit.dataset.touched = "true";
+    card.dataset.category = inputs.category || "";
+    var radio = card.querySelector('input[type="radio"][value="' + (inputs.usageMode === "duration" ? "duration" : "weekly") + '"]');
+    radio.checked = true;
+    radio.dispatchEvent(new Event("change", { bubbles: true }));
+    setNumber(card, "quantity", inputs.quantity);
+    setNumber(card, "weekly", inputs.weeklyUsage);
+    setNumber(card, "duration", inputs.durationWeeks);
+    setNumber(card, "lead", inputs.leadTimeDays);
+    setNumber(card, "buffer", inputs.bufferDays);
+    setNumber(card, "variability", inputs.variabilityPercent);
+    setNumber(card, "replenishment", inputs.replenishmentQuantity);
+    setNumber(card, "interval", inputs.intervalDays);
+  }
+
+  function setNumber(card, key, value) {
+    var input = element(card, key);
+    if (input) input.value = value === null || value === undefined ? "" : String(value);
+  }
+
+  function clearBanner() {
+    banner.textContent = "";
+    banner.className = "reference-banner glass";
+  }
+
+  function renderBanner(reference) {
+    clearBanner();
+    banner.hidden = false;
+    var title = document.createElement("p");
+    title.className = "reference-title";
+    title.textContent = "Reference case " + reference.id + " · version " + reference.version + ": " + reference.title;
+    banner.appendChild(title);
+    var note = document.createElement("p");
+    note.textContent = "Verified synthetic reference. Its fingerprint matches the published manifest. Change any input and calculate to compare your scenario with it. Your scenario is yours: it is not verified and does not change the reference.";
+    banner.appendChild(note);
+    var links = document.createElement("p");
+    links.className = "reference-links";
+    links.appendChild(link("reference/cases/#" + reference.slug, "View the reference case"));
+    links.appendChild(document.createTextNode(" · "));
+    links.appendChild(link("reference/cases/" + reference.id + ".json", "Reference record (JSON)"));
+    banner.appendChild(links);
+    banner.appendChild(bannerButton("Stop comparing", function () { clearReference(true); }));
+  }
+
+  function showReferenceMessage(text) {
+    clearBanner();
+    banner.hidden = false;
+    var note = document.createElement("p");
+    note.textContent = text;
+    banner.appendChild(note);
+  }
+
+  function showReferenceProblem(text) {
+    activeReference = null;
+    clearBanner();
+    banner.hidden = false;
+    banner.className = "reference-banner reference-problem glass";
+    var note = document.createElement("p");
+    note.textContent = text + " The calculator works normally without it.";
+    banner.appendChild(note);
+    banner.appendChild(bannerButton("Dismiss", function () { clearReference(true); }));
+    status.textContent = text;
+  }
+
+  function clearReference(updateUrl) {
+    activeReference = null;
+    pendingCase = null;
+    clearBanner();
+    banner.hidden = true;
+    if (updateUrl && window.location.hash && window.history && window.history.replaceState) {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+    if (results.childNodes.length) clearResults();
+    status.textContent = "Reference comparison closed. Your inputs are kept.";
+  }
+
+  function link(href, text) {
+    var anchor = document.createElement("a");
+    anchor.href = href;
+    anchor.textContent = text;
+    return anchor;
+  }
+
+  function bannerButton(text, onClick) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn btn-secondary";
+    button.textContent = text;
+    button.addEventListener("click", onClick);
+    return button;
+  }
+
+  function windowLabel(w) {
+    if (w.earliest === w.latest) return w.earliest === 0 ? "Now" : dayLabel(w.earliest);
+    return w.earliest + "–" + w.latest + " days";
+  }
+
+  function signed(value) {
+    if (value === 0) return "0";
+    return (value > 0 ? "+" : "−") + formatNumber(Math.abs(value));
+  }
+
+  function windowChange(delta) {
+    if (delta.earliest === 0 && delta.latest === 0) return "No change";
+    if (delta.earliest === delta.latest) return signed(delta.earliest) + " days";
+    return signed(delta.earliest) + " / " + signed(delta.latest) + " days";
+  }
+
+  function fitLabel(side) {
+    if (!side.applicable) return "Not applicable";
+    return FIT_TEXT[side.fit] + " (" + formatNumber(side.interval_days) + "-day interval)";
+  }
+
+  function gapLabel(gap) {
+    if (gap.max === 0) return "no days without supply";
+    if (gap.min === gap.max) return dayLabel(gap.max) + " without supply";
+    return gap.min + "–" + dayLabel(gap.max) + " without supply";
+  }
+
+  var STATUS_SHORT = {
+    BUFFER_INTACT: "Buffer intact",
+    BUFFER_DRAWN: "Buffer absorbs it",
+    STOCKOUT_POSSIBLE: "Stockout possible",
+    STOCKOUT_AT_BOTH_BOUNDS: "Stockout at both bounds"
+  };
+
+  var FIELD_LABELS = {
+    quantity: "Current quantity",
+    usageMode: "Usage method",
+    weeklyUsage: "Units per week",
+    durationWeeks: "Typical duration (weeks)",
+    variabilityPercent: "Usage variability (%)",
+    leadTimeDays: "Lead time (days)",
+    bufferDays: "Safety buffer (days)",
+    replenishmentQuantity: "Replenishment quantity",
+    intervalDays: "Fixed delivery interval (days)"
+  };
+
+  function comparisonPanel(record, scenarioInputs, itemCount) {
+    var comparison = scenarioApi.compare(activeReference, scenarioInputs, record.items[0].outputs);
+    var panel = document.createElement("article");
+    panel.className = "result-card glass compare-card";
+    panel.setAttribute("aria-labelledby", "compare-heading");
+    var heading = document.createElement("h2");
+    heading.id = "compare-heading";
+    heading.textContent = "Reference vs your scenario";
+    panel.appendChild(heading);
+
+    var badges = document.createElement("p");
+    badges.className = "compare-badges";
+    var refBadge = document.createElement("span");
+    refBadge.className = "badge badge-ref";
+    refBadge.textContent = "Reference " + activeReference.id + " v" + activeReference.version + ": verified synthetic record";
+    var userBadge = document.createElement("span");
+    userBadge.className = "badge badge-user";
+    userBadge.textContent = "Your scenario: user-generated, not verified";
+    badges.appendChild(refBadge);
+    badges.appendChild(userBadge);
+    panel.appendChild(badges);
+
+    if (itemCount > 1) appendNote(panel, "Only the first item is compared with the reference.");
+    if (comparison.identical_inputs) {
+      var same = scenarioApi.canonical(record.items[0].outputs) === scenarioApi.canonical(activeReference.outputs);
+      appendNote(panel, same
+        ? "Your inputs match the reference, and the results equal its verified values."
+        : "Your inputs match the reference, but this engine gives different results from the reference record. The reference record was verified with engine " + activeReference.engineVersion + ".");
+    } else {
+      var changed = document.createElement("ul");
+      changed.className = "compare-changes";
+      comparison.changed_inputs.forEach(function (change) {
+        var item = document.createElement("li");
+        item.textContent = (FIELD_LABELS[change.field] || change.field) + ": " + inputText(change.reference) + " → " + inputText(change.scenario);
+        changed.appendChild(item);
+      });
+      appendNote(panel, "You changed:");
+      panel.appendChild(changed);
+    }
+
+    var table = document.createElement("table");
+    table.className = "compare-table";
+    var head = document.createElement("thead");
+    head.appendChild(row(["Measure", "Reference (verified)", "Your scenario", "Change"], "th", "col"));
+    table.appendChild(head);
+    var body = document.createElement("tbody");
+    body.appendChild(row(["Supply runs out", windowLabel(comparison.depletion_days.reference), windowLabel(comparison.depletion_days.scenario), windowChange(comparison.depletion_days.delta)], "td"));
+    body.appendChild(row(["Order window", windowLabel(comparison.planning_trigger_days.reference), windowLabel(comparison.planning_trigger_days.scenario), windowChange(comparison.planning_trigger_days.delta)], "td"));
+    body.appendChild(row(["Replenishment cadence", windowLabel(comparison.replenishment_cadence_days.reference), windowLabel(comparison.replenishment_cadence_days.scenario), windowChange(comparison.replenishment_cadence_days.delta)], "td"));
+    var threshold = comparison.reorder_threshold_units;
+    body.appendChild(row(["Reorder threshold", formatNumber(threshold.reference) + " units", formatNumber(threshold.scenario) + " units", threshold.delta === 0 ? "No change" : signed(threshold.delta) + " units"], "td"));
+    var fit = comparison.fixed_interval_fit;
+    var fitChange = !fit.reference.applicable && !fit.scenario.applicable ? "Not applicable" : (fit.reference.fit === fit.scenario.fit && fit.reference.interval_days === fit.scenario.interval_days ? "No change" : "Changed");
+    body.appendChild(row(["Fixed delivery interval", fitLabel(fit.reference), fitLabel(fit.scenario), fitChange], "td"));
+    comparison.stockout_exposure.forEach(function (slip) {
+      var gapChange = slip.delta_gap_days.min === 0 && slip.delta_gap_days.max === 0 && slip.reference.status === slip.scenario.status ? "No change" : (slip.delta_gap_days.max === 0 && slip.delta_gap_days.min === 0 ? "Status changed" : windowChange({ earliest: slip.delta_gap_days.min, latest: slip.delta_gap_days.max }) + " without supply");
+      body.appendChild(row([
+        "Delivery " + slip.slip_days + " days late",
+        STATUS_SHORT[slip.reference.status] + ", " + gapLabel(slip.reference.supply_gap_days),
+        STATUS_SHORT[slip.scenario.status] + ", " + gapLabel(slip.scenario.supply_gap_days),
+        gapChange
+      ], "td"));
+    });
+    table.appendChild(body);
+    var wrap = document.createElement("div");
+    wrap.className = "compare-wrap";
+    wrap.appendChild(table);
+    panel.appendChild(wrap);
+
+    [fit.reference, fit.scenario].forEach(function (side, index) {
+      if (!side.applicable) appendAside(panel, (index === 0 ? "Reference: " : "Your scenario: ") + side.reason);
+    });
+    appendAside(panel, "Changes are your scenario minus the reference. Late-delivery rows assume the order is placed at the earliest planning trigger of each side.");
+
+    var exportRecord = scenarioApi.buildScenarioExport(activeReference, scenarioInputs, record, comparison);
+    panel.appendChild(jsonPanel(
+      "Comparison and provenance (JSON)",
+      "Your scenario, its source reference case and version, the engine version, and the differences. It is marked as a user scenario, not a reference record.",
+      scenarioApi.canonical(exportRecord),
+      "Comparison and provenance JSON",
+      "hygieneroll-" + activeReference.id.toLowerCase() + "-scenario.json"
+    ));
+    return panel;
+  }
+
+  function inputText(value) {
+    if (value === null || value === undefined || value === "") return "blank";
+    return typeof value === "number" ? formatNumber(value) : String(value);
+  }
+
+  function row(cells, tag, scope) {
+    var tr = document.createElement("tr");
+    cells.forEach(function (text, index) {
+      var cell = document.createElement(index === 0 && tag === "td" ? "th" : tag);
+      if (index === 0 && tag === "td") cell.scope = "row";
+      if (scope) cell.scope = scope;
+      cell.textContent = text;
+      tr.appendChild(cell);
+    });
+    return tr;
   }
 
   function usageText(item) {

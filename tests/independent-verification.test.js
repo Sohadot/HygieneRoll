@@ -52,43 +52,8 @@ function normalized(value) {
   return JSON.stringify(value, function (key, v) { return typeof v === "number" ? Number(v.toFixed(9)) : v; });
 }
 
-function grid() {
-  var cases = [];
-  var quantities = [0.3, 0.5, 1, 1.1, 1.4, 2.2, 3, 4.9, 6, 12, 13.3];
-  var rates = [0.1, 0.3, 0.7, 1, 1.1, 2, 3.5, 7.7];
-  var variability = [0, 5, 10, 15, 25, 33, 45, 50];
-  var leads = [0, 0.3, 0.7, 2.5, 4, 12];
-  var buffers = [0, 0.2, 0.3, 3, 7];
-  var intervals = ["", 0.5, 14, 21.1, 30];
-  var n = 0;
-  ["weekly", "duration"].forEach(function (mode) {
-    quantities.forEach(function (q) {
-      rates.forEach(function (r) {
-        variability.forEach(function (v) {
-          leads.forEach(function (l) {
-            buffers.forEach(function (b) {
-              n += 1;
-              cases.push(input({
-                quantity: q,
-                usageMode: mode,
-                weeklyUsage: mode === "weekly" ? r : null,
-                durationWeeks: mode === "duration" ? r : null,
-                variabilityPercent: v,
-                leadTimeDays: l,
-                bufferDays: b,
-                replenishmentQuantity: n % 3 === 0 ? "" : (n % 3 === 1 ? 1.1 : 4),
-                intervalDays: intervals[n % intervals.length]
-              }));
-            });
-          });
-        });
-      });
-    });
-  });
-  return cases;
-}
-
-var GRID = grid();
+var auditSets = require("../verification/audit-sets.js");
+var GRID = auditSets.standardGrid();
 
 function assertThrowsField(fn, field) {
   var thrown = null;
@@ -199,28 +164,13 @@ test("values just above and below each rounding threshold match exact arithmetic
 });
 
 test("near-boundary sweep: offsets from 1e-6 to 1e-11 days match the oracle", function () {
-  var count = 0;
+  var inputs = auditSets.nearBoundaryStandard();
   var failures = [];
-  [1, 1.1, 2.2, 3, 7].forEach(function (q) {
-    [0.5, 0.7, 1.4, 2].forEach(function (r) {
-      [0, 10, 50].forEach(function (v) {
-        ["weekly", "duration"].forEach(function (mode) {
-          [6, 8, 10, 11].forEach(function (m) {
-            [-1, 1].forEach(function (sign) {
-              ["quantity", "leadTimeDays", "bufferDays"].forEach(function (field) {
-                var item = input({ quantity: q, usageMode: mode, weeklyUsage: mode === "weekly" ? r : null, durationWeeks: mode === "duration" ? Number((r * 3).toFixed(4)) : null, variabilityPercent: v, leadTimeDays: 3, bufferDays: 3 });
-                item[field] = Number((item[field] + sign * Math.pow(10, -m)).toFixed(m + 2));
-                count += 1;
-                var diffs = typedDiffs(outputs(item, [0, 3, 7]), oracle.deriveItem(item, [0, 3, 7]).outputs, "");
-                if (diffs.length && failures.length < 3) failures.push({ item: item, diffs: diffs });
-              });
-            });
-          });
-        });
-      });
-    });
+  inputs.forEach(function (item) {
+    var diffs = typedDiffs(outputs(item, [0, 3, 7]), oracle.deriveItem(item, [0, 3, 7]).outputs, "");
+    if (diffs.length && failures.length < 3) failures.push({ item: item, diffs: diffs });
   });
-  assert.ok(count >= 2880);
+  assert.strictEqual(inputs.length, 2880);
   assert.deepStrictEqual(failures, []);
 });
 

@@ -124,6 +124,14 @@ node tests/reference-governance.test.js
 node tests/site-integrity.test.js
 node tests/reference-cases.test.js
 node tests/independent-verification.test.js
+node tests/reference-scenario.test.js
+node tests/numerical-audit.test.js
+```
+
+The extended numerical audit runs separately, in about 8 seconds:
+
+```
+node verification/audit-numerical.js
 ```
 
 After changing the engine, the ontology, or `reference/cases/registry.json`, rebuild the published reference records:

@@ -276,6 +276,22 @@
     .prose a, .footer a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
     details { margin-top: 16px; }
     .record-panel summary { cursor: pointer; font-weight: 750; color: #0d2344; }
+    .reference-banner { margin-bottom: 18px; padding: 18px 20px; border-left: 4px solid var(--blue); }
+    .reference-banner p { margin: 0 0 8px; color: var(--muted); line-height: 1.6; }
+    .reference-banner .reference-title { color: #0d2344; font-weight: 750; }
+    .reference-banner a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+    .reference-banner .btn { margin-top: 4px; }
+    .reference-problem { border-left-color: #b45309; }
+    .compare-badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    .badge { padding: 5px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 750; }
+    .badge-ref { border: 1px solid rgba(21, 128, 61, 0.3); background: rgba(21, 128, 61, 0.08); color: #14532d; }
+    .badge-user { border: 1px solid rgba(180, 83, 9, 0.3); background: rgba(180, 83, 9, 0.08); color: #7c2d12; }
+    .compare-changes { margin: 4px 0 12px; padding-left: 20px; color: var(--muted); }
+    .compare-wrap { overflow-x: auto; }
+    .compare-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.94rem; }
+    .compare-table th, .compare-table td { padding: 9px 8px; text-align: left; vertical-align: top; border-bottom: 1px solid rgba(15, 35, 66, 0.08); color: var(--muted); }
+    .compare-table thead th { color: #12325d; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .compare-table tbody th { color: #0d2344; font-weight: 700; }
     .record-panel pre {
       margin: 12px 0; max-height: 360px; overflow: auto; padding: 14px; border-radius: 14px;
       background: #0b1f3b; color: #e7eef8; font-size: 0.82rem; line-height: 1.5; white-space: pre;
@@ -313,6 +329,14 @@
       .actions .btn { width: 100%; }
       .item-card, .result-card { padding: 18px 16px; }
       input, select, button, summary { scroll-margin-top: 12px; }
+      .reference-banner { padding: 16px 14px; }
+      .compare-table thead { display: none; }
+      .compare-table, .compare-table tbody, .compare-table tr, .compare-table th, .compare-table td { display: block; width: 100%; }
+      .compare-table tr { padding: 8px 0; border-bottom: 1px solid rgba(15, 35, 66, 0.08); }
+      .compare-table th, .compare-table td { border: 0; padding: 2px 0; }
+      .compare-table td:nth-child(2)::before { content: "Reference: "; font-weight: 700; color: #12325d; }
+      .compare-table td:nth-child(3)::before { content: "Your scenario: "; font-weight: 700; color: #12325d; }
+      .compare-table td:nth-child(4)::before { content: "Change: "; font-weight: 700; color: #12325d; }
     }
   </style>
 </head>
@@ -346,6 +370,7 @@
         <noscript>
           <p class="lead">This calculator requires JavaScript to perform local calculations. The method and the limits below still apply.</p>
         </noscript>
+        <div id="reference-banner" class="reference-banner glass" role="status" aria-live="polite" hidden></div>
         <form id="calculator-form" action="#" method="post">
           <div id="item-list"></div>
           <p id="item-limit" class="limit-note" hidden>The calculator supports up to 10 items per scenario.</p>
@@ -411,6 +436,7 @@
   </footer>
 
   <script src="assets/js/replenishment-engine.js"></script>
+  <script src="assets/js/reference-scenario.js"></script>
   <script src="assets/js/replenishment-calculator.js"></script>
 </body>
 </html>
